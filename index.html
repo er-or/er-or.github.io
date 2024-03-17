@@ -1,10 +1,12 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<!--
-https://issuu.com/hochbau2/docs/mars_part1
-https://issuu.com/hochbau2/docs/mars_part2
-https://issuu.com/hochbau2/docs/mars_part3
--->
+
+	<!-- REF FOR MYSELF - MARTIAN SCIENCE STATION HABITAT
+	https://issuu.com/hochbau2/docs/mars_part1
+	https://issuu.com/hochbau2/docs/mars_part2
+	https://issuu.com/hochbau2/docs/mars_part3
+	-->
 
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +19,7 @@ https://issuu.com/hochbau2/docs/mars_part3
 
 	<script src="js/FBM.js"></script>
 	<script src="js/mountains_bg.js"></script>
-	<script src="js/star_viewer.js"></script
+	<script src="js/star_viewer.js"></script>
 	<script>
 		STAR_VIEWER.latitude = 0;
 		STAR_VIEWER.longitude = 0;
@@ -91,7 +93,6 @@ background: #1d1e23;
 	background: #0D3a32;
 			background: rgb(33,4,6);
 background: #1d1e1c;
-background: #1d1e1c;
 	background: rgb(10, 22, 11);
 	background: rgb(22, 22, 22);
 	background: rgb(22, 0, 22);
@@ -138,9 +139,9 @@ background: #1d1e1c;
 		}
 
 		#rock_container {
-			width:100vw;
-			top:60vh;
-			height:40vh;
+			width: 100vw;
+			top: 60vh;
+			height: 40vh;
 
 			background: linear-gradient(180deg, rgba(222, 111, 91, 1) 0%, rgba(195, 77, 65, 1) 9%, rgba(171, 59, 44, 1) 19%, rgba(173, 40, 23, 1) 26%, rgba(205, 87, 71, 1) 34%, rgba(190, 54, 32, 1) 43%, rgba(173, 40, 23, 1) 55%, rgba(143, 32, 21, 1) 63%, rgba(128, 22, 14, 1) 70%, rgba(102, 12, 11, 1) 77%, rgba(171, 59, 44, 1) 87%, rgba(173, 40, 23, 1) 100%);
 
@@ -156,7 +157,7 @@ background: #1d1e1c;
 				linear-gradient(-45deg, rgba(171,59,44,0) 20%, rgba(171,59,44,.1) 20%, rgba(171,59,44,.1) 40%, rgba(171,59,44,.2) 40%, rgba(171,59,44,.2) 60%, rgba(171,59,44,.4) 60%, rgba(171,59,44,.4) 80%, rgba(171,59,44,.6) 80%),
 				linear-gradient(90deg, rgba(173,40,23,0) 20%, rgba(173,40,23,.3) 20%, rgba(173,40,23,.3) 40%, rgba(173,40,23,.5) 40%, rgba(173,40,23,.5) 60%, rgba(173,40,23,.7) 60%, rgba(173,40,23,.7) 80%, rgba(173,40,23,.8) 80%),
 				linear-gradient(-90deg, rgba(205,87,71,0) 20%, rgba(205,87,71,.4) 20%, rgba(205,87,71,.4) 40%, rgba(205,87,71,.5) 40%, rgba(205,87,71,.5) 60%, rgba(205,87,71,.6) 60%, rgba(205,87,71,.6) 80%, rgba(205,87,71,.8) 80%),
-				linear-gradient(180deg, rgba(222, 111, 91, .2) 0%, rgba(195, 77, 65, .3) 9%, rgba(171, 59, 44, .4) 19%, rgba(173, 40, 23, .9) 26%, rgba(205, 87, 71, .5) 34%, rgba(190, 54, 32, 1) 43%, rgba(173, 40, 23, 1) 55%, rgba(143, 32, 21, .6) 63%, rgba(128, 22, 14, .7) 70%, rgba(102, 12, 11, .8) 77%, rgba(171, 59, 44, 1) 87%, rgba(173, 40, 23, 1) 100%)
+				linear-gradient(180deg, rgba(222, 111, 91, .2) 0%, rgba(195, 77, 65, .3) 9%, rgba(171, 59, 44, .4) 19%, rgba(173, 40, 23, .9) 26%, rgba(205, 87, 71, .5) 34%, rgba(190, 54, 32, 1) 43%, rgba(173, 40, 23, 1) 55%, rgba(143, 32, 21, .6) 63%, rgba(128, 22, 14, .7) 70%, rgba(102, 12, 11, .8) 77%, rgba(171, 59, 44, 1) 95%, rgba(173, 40, 23, 1) 100%)
 			;
 */
 		}
@@ -248,6 +249,7 @@ div.page_footer_wave {
 
 #background_mountain_container {
 	position: absolute;
+	z-index: 2;
 	top: 55vh;
 	top: calc(60vh - 50px);
 /*
@@ -286,7 +288,9 @@ div.page_footer_wave {
 
 		function redrawBackgroundMountains() {
 			let box = document.getElementById('background_mountain_container');
-			box.innerHTML = getHorizonMountainsSvg(Math.max(window.innerWidth, document.body.scrollWidth) + 50);
+			if (box) {
+				box.innerHTML = getHorizonMountainsSvg(Math.max(window.innerWidth, document.body.scrollWidth) + 50);
+			}
 		}
 
 
@@ -416,10 +420,9 @@ window.addEventListener('scroll', pageScrolled);
 	<!--<i style="font-size:0.825em">OUT OF THIS WORLD!</i>-->
 </div>
 
-
+<!-- contains a repeating star map background which streches to the current field of view -->
 <div id="sky_container">
 
-	<!-- contains a repeating star map background which streches to the current field of view -->
 	<div id="star_map_bg_container" class="star_container"><img id="star_map_rotating_bg_image" src="img/galaxy_background.webp" /></div>
 	<div id="star_map_bg_blur_layer" class="star_container"></div>
 
@@ -432,23 +435,42 @@ window.addEventListener('scroll', pageScrolled);
 
 </div>
 
-
 <div id="background_mountain_container">
 	<script>
 		document.write(getHorizonMountainsSvg(Math.max(window.innerWidth, document.body.scrollWidth) + 50));
 	</script>
 </div>
 
-
-
 <div id="rock_container">
+<div id="shadow_container" style="background-image:url('img/ground_shadows.svg');top:70vh;position:absolute;width:100%;height:15vh;background-opacity:0.5;background-position:-20px center;"></div>
 <svg id="rock_svg" x="0" y="0" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
 	<defs>
-		<linearGradient id="rockGrad" x1="20%" x2="0" y1="0" y2="100%">
-			<stop style="stop-color:#8a1f12" offset="0" />
+		<linearGradient id="rockGrad2" x1="20%" x2="0" y1="0" y2="100%">
+			<stop style="stop-color:#8f2015" offset="0" />
 			<stop style="stop-color:#5a0e0b" offset="1" />
 		</linearGradient>
+		<radialGradient id="rockGrad" cx="75%" cy="20%">
+			<stop style="stop-color:#ad332a" offset="0" />
+			<stop style="stop-color:#600c0b" offset="0.9" />
+			<stop style="stop-color:#5a0e0b" offset="1" />
+		</radialGradient>
+		<linearGradient id="shadowGrad" x1="30%" x2="0" y1="0" y2="100%">
+			<stop style="stop-color:#71150d" offset="0" />
+			<stop style="stop-color:#a62b1b" offset="1" />
+		</linearGradient>
+
 	</defs>
+	<!-- A couple of shading paths from the left, in addition to any other background shading is done for the ground -->
+	<g id="shadow_g">
+		<path
+			style="fill:url(#shadowGrad);fill-opacity:.25;stroke:none"
+			d="m -5,130 c 0,0 69.990768,0.81545 97.042868,1.49296 4.78336,0.1198 -11.94374,7.96248 -11.94374,7.96248 0,0 32.80282,3.37683 49.2679,3.98126 22.87736,0.83983 45.80445,-1.47125 68.67651,-0.49765 8.98798,0.38259 17.879882,2.27214 26.873412,2.48827 26.228,0.63031 52.4099,-2.57095 78.6296,-3.48358 13.1012,-0.45601 26.27077,-2.30013 39.3148,-0.99531 5.92615,0.5928 23.18609,2.49825 17.41795,3.98124 -18.97042,4.87732 -28.7743,5.03684 -43.29604,6.46951 -20.49435,2.02191 -41.14061,1.96891 -61.70931,2.98595 -16.42351,0.81208 -32.82482,2.36345 -49.267922,2.48828 -14.10862,0.10711 -28.21526,-0.67816 -42.30074,-1.49297 -14.45449,-0.83616 -28.865702,-2.30182 -43.29605,-3.48361 -21.89943,-1.79349 -43.74097,-4.46561 -65.69056,-5.4742 -19.057419,-0.8757 -57.230408,-0.49765 -57.230408,-0.49765 z"
+		/>
+		<path
+			style="fill:url(#shadowGrad);fill-opacity:.25;stroke:none"
+			d="m 55,111 c 7.254327,1.48743 34.453423,-3.12119 51.200816,-2.19935 11.77,0.64787 23.500805,-1.95266 35.27756,-2.46324 7.791124,-0.33778 15.605536,0.0362 23.391966,-0.3964 8.81736,-0.48989 17.56407,-1.90524 26.37576,-2.48827 8.69628,-0.57539 17.43117,-0.4121 26.12692,-0.99531 8.64639,-0.5799 17.2401,-1.79452 25.8781,-2.48828 10.27319,-0.82509 20.56681,-1.37457 30.85465,-1.99062 15.00863,-0.89873 30.16791,-0.26306 45.03785,-2.48827 24.05605,-3.59986 43.80879,-3.76089 77.88312,-4.97657 0.83303,-0.0297 0.58438,-2.46416 -0.24883,-2.48828 -11.03523,-0.31946 -20.00414,0.22279 -29.85935,0.49766 -10.63873,0.29673 -21.28677,0.93966 -31.84996,2.23946 -5.68438,0.69947 -11.2301,2.33557 -16.9203,2.98593 -12.46077,1.42421 -25.05606,1.19979 -37.573,1.99061 -9.04703,0.5716 -18.06326,1.65863 -27.12224,1.99062 -5.88498,0.21568 -11.78044,-0.17468 -17.66678,0 -8.38828,0.24894 -16.74333,1.24404 -25.13161,1.49297 -6.54958,0.19437 -13.10931,-0.23958 -19.6574,0 -19.28137,0.70549 -38.488525,2.77754 -57.728046,4.23008 -16.010637,1.20877 -32.050566,2.10208 -48.02378,3.73242 -9.039301,0.92262 -18.464606,1.79218 -27.122246,1.99062 -1.20533,0.0276 -4.30427,1.58206 -3.1232,1.82422 z"
+		/>
+	</g>
 	<g id="rock_g">
 	</g>
 </svg>
@@ -456,11 +478,10 @@ window.addEventListener('scroll', pageScrolled);
 
 
 
-<!-- FOREGROUND MOUNTAIN CONTAINER
+<!-- FOREGROUND MOUNTAIN CONTAINER -->
 <div style="position:absolute;top:60vh;top:calc(60vh - 10px);left:20px;">
 	<img src="img/foothills1.svg" width="270.40414" height="32.605999" />
 </div>
--->
 
 
 <div id="header_wave_container"></div>
@@ -469,17 +490,23 @@ window.addEventListener('scroll', pageScrolled);
 <script src="js/rock.js"></script>
 
 <script>
+
+// Need to check if resize is width-only, in which case we do not really need to replace the rocks.
+// But if the resize is also in height, we need to clear the rocks and replace them.
 function placeRocks() {
 
 
 	const container = document.getElementById('rock_container');
+	if (!container) {
+		return;
+	}
 	const containerR = container.getBoundingClientRect();
 	const containerY = containerR.top;
 	const containerW = containerR.width;
 	const containerH = containerR.height;
 
 	const rockSize = 30;
-	const spacing = 120;
+	const spacing = 150;
 	const fbm = new FBM(spacing, false);
 
 	const rockSvg = document.getElementById('rock_svg');
@@ -498,10 +525,12 @@ function placeRocks() {
 			continue;
 		}
 
+
+
 		xSpacing = Math.ceil((y + 1) * spacing / containerH) * 8;
 		for (let x = 0; x <= containerW; x += xSpacing) {
 
-			const rockId = 'rock_' + x + '_' + y;
+			const rockId = 'rock_' + Math.floor(x % spacing) + '_' + Math.floor(y % spacing);
 
 			if (rockSvg.getElementById(rockId)) {
 				//console.log('already have: ' + rockId);
@@ -526,7 +555,7 @@ function placeRocks() {
 			rockG.appendChild(rock);
 //console.log('created rock at ' + rockX + ' x ' + rockY);
 		}
-		xSpacing = Math.ceil((y + 1) * spacing / containerH) * 8;
+		//xSpacing = Math.ceil((y + 1) * spacing / containerH) * 8;
 	}
 }
 </script>
@@ -535,107 +564,164 @@ function placeRocks() {
 
 <div id="content">
 
+<style>
+h2 { font-family:"Bakbak One";}
+#content_section_about {
+	border-left: 5px solid white;
+	padding-left: 1em;
+}
+#content_section_about h2 { color: white; }
 
-IN DEVELOPMENT, JUST WANTED TO TEST ON GIT FIRST WITH STATIC WEBSITE!
-<br /><br />
-THE GOAL OF THIS WEBSITE IS NOT TO CRASH YOUR BROWSER :)
-<br /><br />
+#content_section_background {
+	border-left: 5px solid orange;
+    padding-left: 1em;
+}
+#content_section_background h2 { color: orange; }
 
-<ul>
-
-
-
-<li>1. Home Page:
-	<ul>
-		<li>
-			Hero Section: Mars background A concise introduction with your name, a high-quality headshot, and a tagline or short summary of who you are and what you do.
-			<hr />
-			Mars with stars and Earth on the background
-		</li>
-
-
-
-		<li>About Me: 
-			A more detailed description of yourself, your background, your skills and experience, your interests,
-			and anything else you want people to know about you. Consider adding a personal touch here to stand out.
-			<hr />
-
-Welcome to my homepage! I'm Joshua Shuller, call me Josh.
-
-With over two decades spent building software, I've traded in my youthful idealism for pragmatic solutions and a touch of wisdom and grey hairs. 
-My passion lies in the intricate world of code, crafting solutions that bring ideas to fruition.
+#content_section_programming {
+	border-left: 5px solid SteelBlue;
+    padding-left: 1em;
+}
+#content_section_programming h2 { color: SteelBlue; }
 
 
-My toolbelt holds 
-Java, C#, PHP, MySQL, and JavaScript, 
-adept at both front-end and back-end development, 
-ready to tackle any web development challenge. 
+#content_section_contact {
+	border-left: 5px solid green;
+    padding-left: 1em;
+}
+#content_section_contact h2 { color: green };
+</style>
 
-While I enjoy the challenge of tackling complex projects head-on, I also recognize the value of teamwork. 
-I'm constantly working on refining my communication skills to collaborate more effectively.
-My ideal work environment blends independent initiative with open communication and collaboration. 
-I can seamlessly navigate between these modes, ensuring efficient progress while remaining open to valuable input and feedback. 
+<section id="content_section_about">
+	<h2>About Website</h2>
+	<p>
+		Welcome to my homepage! I'm Joshua Shuller.
+	</p>
+	<p>
+		This is a static website that I have mainly to toy around with, but really because
+		my other hosting plan has reached it's CPU limit.  I wanted to
+		also provide some info about myself, just in case.  
+		I'm not anti-social, but I'm also not extremely social. 
+		As a result, I haven't jumped onto the regular social media bandwagons.
+	</p>
+</section>
+
+<section id="content_section_background">
+	<h2>Background and Early Life</h2>
+	<p>
+		I grew up in Oklahoma, USA.
+		As a child, I remember that my brother was the computer nerd, 
+		and I was the lego nerd.
+	</p>
+	<p>
+		I did not want to go to university right after I completed high school.  
+		Instead, I ended up homeless and then living with a very nice family 
+		of a friend in Tampico, Mexico.
+		After a breif time there, working with the family, me and some others
+		went back to the USA.  Walking through fields and on traintracks,
+		sleeping under the stars and whatnot.
+	</p>
+	<p>
+		I finally came back home, and I decided that university didn't sound so bad, afterall.
+		That's where I fell in love with computer programming.  I started coding all the
+		time, and reading all the books I had time for.
+	</p>
+	<p>
+		By the time I found an office job, I had already started independant contracting.  
+		The independant contracting work actually paid about the same as the first 
+		office job that I took.  So I ended up quiting and continued doing independant
+		contracting for various companies (including the one that I had been hired at).
+		And then I went to Asia.
+	</p>
+
+	<p>
+		In my thirties, I used to love cycling around and hiking around in Asia.
+		I used to, but I still do, too.
+		But nowadays, I'm mostly around the house, working on something or the other, or watering the plants.
+	</p>
+</section>
+
+
+<section id="content_section_programming">
+	<h2>Programming</h2>
+
+	<p>
+		With over two decades spent building software, I've traded in my youthful idealism for pragmatic solutions and a touch of wisdom and grey hairs. 
+		My passion lies in the intricate world of code, crafting solutions that bring ideas to fruition.
+	</p>
+	<p>
+		My toolbelt mainly holds
+		<ul>
+			<li>C#,</li>
+			<li>Java,</li>
+			<li>PHP,</li>
+			<li>MySQL,</li>
+			<li>and JavaScript</li>
+		</ul>
+		I'm adept at both front-end and back-end development, 
+		ready to tackle any web development challenge. 
+	</p>
+	<p>
+		While I enjoy the challenge of tackling complex projects head-on, I also recognize the value of teamwork. 
+		I'm constantly working on refining my communication skills to collaborate more effectively.
+		My ideal work environment blends independent initiative with open communication and collaboration. 
+		I can seamlessly navigate between these modes, ensuring efficient progress while remaining open to valuable input and feedback. 
+	</p>
+
+	<p>
+		In hind-sight, regarding my childhood lego ambitions, programming is a lot like playing with legos:
+		<ul>
+			<li>You think of the overall design first, and have an end goal.</li>
+			<li>
+				Then you enumerate the tasks recursively, and consider resources,
+				or if you have the right lego pieces, as you go along if one has the flexability.
+			</li>
+			<li>
+				Then you come up with an approach to build it, 
+				one task at a time.  Each one of those little tasks is the fun part.
+			</li>
+			<li>
+				In legos, you can start with the most size-determining parts and expand from there.
+				Then you can start expanding from that.
+				It's often similar in programming - if there's part with undetermined input and
+				output, you might start with that.  Or, if the most determining part is the user-interface
+				then you can just start from there and go top-down.
+			</li>
+			<li>
+				And in the end, you either end-up with one of the coolest lego robots ever,
+				or another one of those Nicolas Cage movies.
+			</li>
+		</ul>
+	</p>
+</section>
 
 
 
 
-		</li>
-			Call to Action: What do you want visitors to do after reading about you? This could be contacting you, checking out your portfolio, or subscribing to your newsletter.
 
-			Do not mention "freelance" or link to old freelance portfolio.
-<hr />
+<section id="content_section_contact">
+	<h2>Contact</h2>
+	<p>
+		Please feel free to contact me.  Email is my preferred method.
+		<pre style="font-size:0.4em;font-family:courier, courier new;font-weight:bold">
+█████████████              ██                               ▄██████▄  ██               ██  ██
+      ██                   ██                              ██▀    ▀██ ██               ██  ██
+      ██   ▄████▄    ▄███  ██▄██▄  ██   ██   ▄████▄██      ██▄        ██▄██▄  ██   ██  ██  ██   ▄████▄   ██▄██▄
+      ██  ██▀  ▀██  ██     ██▀ ▀██ ██   ██  ██▀  ▀███       ▀██████▄  ██▀ ▀██ ██   ██  ██  ██  ██▀  ▀██  ██▀ ▀██
+      ██ ██      ██  ████  ██   ██ ██   ██ ██      ██             ▀██ ██   ██ ██   ██  ██  ██ ██████████ ██
+██▄  ▄██  ██▄  ▄██      ██ ██   ██ ██▄ ▄██  ██▄  ▄███      ██▄    ▄██ ██   ██ ██  ▄██  ██  ██  ██▄       ██
+ ▀████▀    ▀████▀    ████  ██   ██  ▀██▀██   ▀████ ██       ▀██████▀  ██   ██  ▀██▀██  ██  ██   ▀█████   ██
+		</pre>
+		<br />
+		<script>
+			let email = 'shuller@gmail.com';
+			for (let i = 0; i < email.length; i++) {
+				document.write('[' + email[i].getCharCode() + ']');
+			}
 
-Looking for a developer who thrives on both autonomy and collaboration? 
-I understand the importance of clear communication and effective teamwork, 
-while also valuing independent initiative and ownership. 
-If you're seeking a skilled programmer who can seamlessly navigate between solo work and collaborative environments, 
-I'm eager to hear about your project and explore potential opportunities.
-		</li>
-	</ul>
-</li>
-<li>2. Portfolio or Projects:
-<br /><br />
-Showcase your work and achievements through projects, case studies, or samples. 
-Depending on your field, this could be writing samples, code snippets, designs, videos, or anything else relevant.
-Organize your projects in a clear and easy-to-navigate way, possibly by category or timeline.
-Briefly explain each project, highlighting your role, challenges overcome, and key results.
-
-
-</li>
-
-
-<li>3. Blog or Publications:
-<br /><br />
-Share your thoughts, expertise, and insights through blog posts or articles. This is a great way to establish yourself as an authority in your field and showcase your writing skills.
-Ensure your content is high-quality, relevant to your audience, and updated regularly.
-</li>
-
-<li>4. Contact Information:
-<br /><br />
-
-Make it easy for people to get in touch with you by providing your email address, phone number, social media profiles, or a contact form.
-Additional Tips:
-<br /><br />
-
-Keep it professional but personal: Let your personality shine through but maintain a professional image.
-Use high-quality visuals: Images and videos can make your website more engaging and visually appealing.
-Ensure mobile-friendliness: Make sure your website looks good and functions properly on all devices.
-Keep it updated: Regularly update your website with new content, projects, and information.
-Use clear and concise language: Write in a way that is easy for everyone to understand.
-Proofread carefully: Make sure your website is free of any typos or grammatical errors.
-<br /><br />
-Bonus:
-<br /><br />
-
-Testimonials: Include testimonials from clients, colleagues, or mentors to add credibility and social proof.
-<br /><br />
-Awards and Recognition: Highlight any awards or recognitions you have received in your field.
-<br /><br />
-Links to Social Media: Include links to your social media profiles where you share relevant content.
-<br /><br />
-</li>
-</ul>
-
+		</script>
+	</p>
+</section>
 </div>
 
 
