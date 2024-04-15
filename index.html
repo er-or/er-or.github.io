@@ -2,6 +2,42 @@
 <html lang="en">
 <head>
 
+<!--
+
+█████████████              ██                               ▄██████▄  ██               ██  ██
+      ██                   ██                              ██▀    ▀██ ██               ██  ██
+      ██   ▄████▄    ▄███  ██▄██▄  ██   ██   ▄████▄██      ██▄        ██▄██▄  ██   ██  ██  ██   ▄████▄   ██▄██▄
+      ██  ██▀  ▀██  ██     ██▀ ▀██ ██   ██  ██▀  ▀███       ▀██████▄  ██▀ ▀██ ██   ██  ██  ██  ██▀  ▀██  ██▀ ▀██
+      ██ ██      ██  ████  ██   ██ ██   ██ ██      ██             ▀██ ██   ██ ██   ██  ██  ██ ██████████ ██
+██▄  ▄██  ██▄  ▄██      ██ ██   ██ ██▄ ▄██  ██▄  ▄███      ██▄    ▄██ ██   ██ ██  ▄██  ██  ██  ██▄       ██
+ ▀████▀    ▀████▀    ████  ██   ██  ▀██▀██   ▀████ ██       ▀██████▀  ██   ██  ▀██▀██  ██  ██   ▀█████   ██
+
+
+
+
+
+To do:
+	- finish mountain to put on horizon, using some sort of curve-fitting algorithm to get a good svg
+	- include photo in 'background' section
+	- put underground martian colony design in right margin
+
+	- add link to resume? /docs/resume.pdf
+	- add link to github? https://github.com/er-or
+	- add link to linkedin?
+
+	- fix rock positioning on resize, but not so important
+
+	- possibly create a brightness control bar, using :root variables to adjust the colors dynamically
+		but keeping so many variables might not be so much fun
+
+	- move javascript and css to separate files
+
+	- add some type of link to portfolio, maybe a dynamically generated ajax list tree in the same page, or a separate page
+
+	- add some comments
+
+-->
+
 	<!-- REF FOR MYSELF - MARTIAN SCIENCE STATION HABITAT
 	https://issuu.com/hochbau2/docs/mars_part1
 	https://issuu.com/hochbau2/docs/mars_part2
@@ -30,6 +66,30 @@
 	<style>
 
 
+:root {
+
+	--callout-shadow-color-inner: rgba(255,255,255,0.25);
+	--callout-shadow-color-outer: rgba(255,255,255,0.25);
+
+	--tooltip-shadow-width: 3px;
+	--tooltip-background-color: #110000;
+
+	--callout-shadow-width: 10px;
+	--callout-background-color: rgba(98,14,14,0.75);
+	--callout-background-color: rgba(102,12,11,0.75);
+	--callout-background-color: rgba(11,11,33,0.85);
+
+	--tooltip-background-color-blue: #000033;
+	--tooltip-background-color-green: #003300;
+	--tooltip-background-color-red: #330000;
+
+	--sky-grad-top: rgba(6,6,6,0.5);
+	--sky-grad-mid: rgba(10,22,74,0.5);
+	--sky-grad-low: rgba(28,102,182,0.5);
+
+}
+
+
 
 		body {
 
@@ -41,8 +101,10 @@
 			font-family: arial, helvetica, sans-serif;
 
 			color: white;
-			background: rgb(254,43,20); /* computer bg way too bright*/
-			background: rgb(185,53,40); /* too bright */
+
+/*
+			background: rgb(254,43,20);
+			background: rgb(185,53,40);
 			background: rgb(76,10,12);
 			background: rgb(91,12,15);
 			background: rgb(98,14,14);
@@ -53,6 +115,7 @@
 			background: rgb(90,8,12);
 			background: rgb(85,27,29);
 			background: rgb(102,12,11);
+*/
 
 			background: linear-gradient(
 				to bottom, 
@@ -69,6 +132,9 @@
 
 		}
 
+		a { color: white }
+		a:hover {color: RoyalBlue }
+
 
 #content {
 	left: 0;
@@ -77,7 +143,8 @@
 	padding: 1em;
 	width: 100vw;
 	width: calc(100vw - 3em); /* WTF??? */
-/*
+
+/* this might be updated, possibly with a brightness control bar
 	background: rgb(71,79,70);
 	background: rgb(102,182,28);
 	background: rgb(10, 22, 11);
@@ -85,14 +152,15 @@
 	background: rgb(31, 59, 21);
 	background: #0D3a32;
 
-background: rgb(66,0,45);
-background: #0c0402;
-background: #2e2b26;
-background: #121112;
-background: #1d1e23;
+	background: rgb(66,0,45);
+	background: #0c0402;
+	background: #2e2b26;
+	background: #121112;
+	background: #1d1e23;
 	background: #0D3a32;
-			background: rgb(33,4,6);
-background: #1d1e1c;
+	background: rgb(33,4,6);
+
+	background: #1d1e1c;
 	background: rgb(10, 22, 11);
 	background: rgb(22, 22, 22);
 	background: rgb(22, 0, 22);
@@ -121,6 +189,12 @@ background: #1d1e1c;
 			height: 60vh;
 		}
 
+		#earth {
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+
 		#star_map_rotating_bg_image {
 			position: absolute;
 			opacity: 0;
@@ -130,12 +204,14 @@ background: #1d1e1c;
 
 		#star_map_bg_blur_layer {
 			backdrop-filter: blur(15px); /* Apply blur effect to background */
+			-webkit-backdrop-filter: blur(15px);
 		}
 
 
 
 		#star_map_sky_color_gradient {
 			background: linear-gradient(to bottom, rgba(6,6,6,0.5), rgba(10,22,74,0.5), rgba(28,102,182,0.5));
+			background: linear-gradient(to bottom, var(--sky-grad-top), var(--sky-grad-mid), var(--sky-grad-low));
 		}
 
 		#rock_container {
@@ -150,18 +226,8 @@ background: #1d1e1c;
 				linear-gradient(-2deg, rgba(190, 54, 32, 0) 20%, rgba(190, 54, 32,.1) 20%, rgba(190, 54, 32,.1) 40%, rgba(190, 54, 32,.2) 40%, rgba(190, 54, 32,.2) 60%, rgba(190, 54, 32,.4) 60%, rgba(190, 54, 32,.4) 80%, rgba(190, 54, 32,.6) 80%),
 				linear-gradient(180deg, rgba(222, 111, 91, .3) 0%, rgba(195, 77, 65, .4) 9%, rgba(171, 59, 44, .9) 19%, rgba(173, 40, 23, .7) 26%, rgba(205, 87, 71, .9) 34%, rgba(190, 54, 32, .6) 43%, rgba(173, 40, 23, 1) 55%, rgba(143, 32, 21, .8) 63%, rgba(128, 22, 14, .6) 70%, rgba(102, 12, 11, .8) 77%, rgba(171, 59, 44, .9) 87%, rgba(173, 40, 23, 1) 100%)
 			;
-/*
-			background: 
-				linear-gradient(180deg, rgba(222,111,91,0) 0%, rgba(195,77,65,.1) 9%, rgba(171,59,44,.2) 19%, rgba(173,40,23,.3) 26%, rgba(205,87,71,.5) 34%, rgba(190,54,32,.4) 43%, rgba(173,40,23,.3) 55%, rgba(143,32,21,.3) 63%, rgba(128,22,14,.3) 70%, rgba(102,12,11,.3) 77%, rgba(171,59,44,.1) 87%, rgba(173,40,23,0) 100%),
-				linear-gradient(45deg, rgba(222,111,91,.3) 20%, rgba(222,111,91,.4) 20%, rgba(222,111,91,.4) 40%, rgba(222,111,91,.5) 40%, rgba(222,111,91,.5) 60%, rgba(222,111,91,.6) 60%, rgba(222,111,91,.6) 80%, rgba(222,111,91,.7) 80%),
-				linear-gradient(-45deg, rgba(171,59,44,0) 20%, rgba(171,59,44,.1) 20%, rgba(171,59,44,.1) 40%, rgba(171,59,44,.2) 40%, rgba(171,59,44,.2) 60%, rgba(171,59,44,.4) 60%, rgba(171,59,44,.4) 80%, rgba(171,59,44,.6) 80%),
-				linear-gradient(90deg, rgba(173,40,23,0) 20%, rgba(173,40,23,.3) 20%, rgba(173,40,23,.3) 40%, rgba(173,40,23,.5) 40%, rgba(173,40,23,.5) 60%, rgba(173,40,23,.7) 60%, rgba(173,40,23,.7) 80%, rgba(173,40,23,.8) 80%),
-				linear-gradient(-90deg, rgba(205,87,71,0) 20%, rgba(205,87,71,.4) 20%, rgba(205,87,71,.4) 40%, rgba(205,87,71,.5) 40%, rgba(205,87,71,.5) 60%, rgba(205,87,71,.6) 60%, rgba(205,87,71,.6) 80%, rgba(205,87,71,.8) 80%),
-				linear-gradient(180deg, rgba(222, 111, 91, .2) 0%, rgba(195, 77, 65, .3) 9%, rgba(171, 59, 44, .4) 19%, rgba(173, 40, 23, .9) 26%, rgba(205, 87, 71, .5) 34%, rgba(190, 54, 32, 1) 43%, rgba(173, 40, 23, 1) 55%, rgba(143, 32, 21, .6) 63%, rgba(128, 22, 14, .7) 70%, rgba(102, 12, 11, .8) 77%, rgba(171, 59, 44, 1) 95%, rgba(173, 40, 23, 1) 100%)
-			;
-*/
 		}
-		
+
 
 		#star_map_bright_star_container {
 		}
@@ -171,12 +237,319 @@ background: #1d1e1c;
 		#star_map_bg_container {
 			background-color: black;
 		}
+
+/*
+ *
+ * TOOLTIP
+ *
+ */
+.tooltip_box {
+
+	position: absolute;
+	z-index: 100;
+
+	visibility: hidden;
+	opacity: 0;
+	height: 0;
+
+	font-size: 0.8em;
+
+	-webkit-transform: translateY(-25px) scaleX(0);
+	-khtml-transform: translateY(-25px) scaleX(0);
+	-ms-transform: translateY(-25px) scaleX(0);
+	transform: translateY(-25px) scaleX(0);
+
+	transition: all 0.5s cubic-bezier(0,.72,.21,1);
+    transition-property: transform, opacity, width, height, background-color, border-color, box-shadow;
+
+	background-color: #111111;
+	background-color: var(--tooltip-background-color);
+
+	border-radius: 3px;
+	padding:4px;
+
+	-webkit-box-shadow: 0 0px 5px 0 rgba(255,255,255,0.25), 0 0px 5px 0 rgba(255,255,255,0.25);
+	-moz-box-shadow: 0 0px 5px 0 rgba(255,255,255,0.25), 0 0px 5px 0 rgba(255,255,255,0.25);
+	box-shadow: 0 0px 5px 0 rgba(255,255,255,0.25), 0 0px 5px 0 rgba(255,255,255,0.25);
+
+	-webkit-box-shadow: 0 0px var(--tooltip-shadow-width) 0 var(--callout-shadow-color-inner), 0 0px var(--tooltip-shadow-width) 0 var(--callout-shadow-color-outer);
+	-moz-box-shadow: 0 0px var(--tooltip-shadow-width) 0 var(--callout-shadow-color-inner), 0 0px var(--tooltip-shadow-width) 0 var(--callout-shadow-color-outer);
+	box-shadow: 0 0px var(--tooltip-shadow-width) 0 var(--callout-shadow-color-inner), 0 0px var(--tooltip-shadow-width) 0 var(--callout-shadow-color-outer);
+
+	filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10,MakeShadow=true,ShadowOpacity=0.20);
+	-ms-filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10,MakeShadow=true,ShadowOpacity=0.20);
+	margin: 0px;
+
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+
+}
+
+/* ::before top border is used as a shadow, or border, for the down arrow in ::after */
+.tooltip_box::before {
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	left: calc(50% - 4px);
+	transform: translateX(-50%) ;
+	border-width: 9px;
+	border-style: solid;
+	border-color: #ffffff transparent transparent transparent;
+	border-top-width: 9px; /* Increase the border width to include the top border of the triangle */
+	border-top-style: solid; /* Set the border style for the top border of the triangle */
+	border-top-color: #ffffff;
+	border-top-color: var(--callout-shadow-color-inner);
+	pointer-events: none;
+	backdrop-filter: blur(15px);
+	-webkit-backdrop-filter: blur(15px);
+}
+
+/* down arrow of tool tip, just the top border of a square. */
+.tooltip_box::after {
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	left: calc(50% - 4px);
+	transform: translateX(-50%) ;
+	border-width: 8px;
+	border-style: solid;
+	border-color: #111111 transparent transparent transparent;
+	border-top-width: 8px; /* Increase the border width to include the top border of the triangle */
+	border-top-style: solid; /* Set the border style for the top border of the triangle */
+	border-top-color: #111111;
+	border-top-color: var(--tooltip-background-color);
+	pointer-events: none;
+}
+
+
+
+
+
+/*
+ *
+ * CALLOUT
+ *
+ */
+.callout_box {
+
+	position: absolute;
+	z-index: 100;
+
+	visibility: hidden;
+	opacity: 0;
+	height: 0;
+
+	pointer-events: none;
+
+	transition: all 0.5s cubic-bezier(0,.72,.21,1);
+    transition-property: transform, opacity, width, height, background-color, border-color, box-shadow;
+
+	display: inline-block;
+	margin: 10px;
+	padding: 30px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-radius:8px;
+	border: solid 1px gray;
+
+
+	background-color: rgba(28,42,43,0.5);
+	background-color: var(--callout-background-color);
+
+
+	filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10,MakeShadow=true,ShadowOpacity=0.20);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Blur(PixelRadius=10,MakeShadow=true,ShadowOpacity=0.20)";
+	zoom: 1;
+
+	backdrop-filter: blur(10px);
+
+	color: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+
+	-ms-box-shadow:0 2px 10px rgba(255,255,255,.2);
+	-ms-box-shadow:0 2px var(--callout-shadow-width) var(--callout-shadow-color-inner);
+
+	-o-box-shadow:0 2px 10px rgba(255,255,255,.2);
+	-o-box-shadow:0 2px var(--callout-shadow-width) var(--callout-shadow-color-inner);
+
+	box-shadow:0 2px 10px rgba(255,255,255,.2);
+	box-shadow:0 2px var(--callout-shadow-width) var(--callout-shadow-color-inner);
+
+	-webkit-box-shadow: 0px 2px 10px 1px rgba(255,255,255,0.2);
+	-webkit-box-shadow: 0px 2px var(--callout-shadow-width) 1px var(--callout-shadow-color-inner);
+
+	-moz-box-shadow: 0px 2px 10px 1px rgba(255,255,255,0.2);
+	-moz-box-shadow: 0px 2px var(--callout-shadow-width) 1px var(--callout-shadow-color-inner);
+
+	box-shadow: 0px 2px 10px 1px rgba(255,255,255,0.2);
+	box-shadow: 0px 2px var(--callout-shadow-width) 1px var(--callout-shadow-color-inner);
+
+	max-width: 500px;
+
+}
+
 	</style>
 
 	<script src="js/bright_stars.js"></script>
 
 
+<script>
+// move to tooltip.js ??
 
+
+
+// Returns element dimensions, 
+// normally in a wrapper in a separate javascript file, but don't expect to use it here much
+function getBoundingRect(element) {
+	let elementX = 0;
+	let elementY = 0;
+	let elementW = 0;
+	let elementH = 0;
+	let ep = element;
+	if (ep && ep.offsetParent) {
+		while (ep.offsetParent) {
+			elementX += ep.offsetLeft;
+			elementY += ep.offsetTop
+			ep = ep.offsetParent;
+		}
+	} else if (ep && (ep.x || ep.y)) {
+		elementX = ep.x;
+		elementY = ep.y;
+	} else {
+		// This is the only one we need, works in modern browsers...
+		const rect = element.getBoundingClientRect();
+		const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+		const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+		elementX = rect.left + scrollLeft;
+		elementY = rect.top + scrollTop;
+		elementW = rect.width;
+		elementH = rect.height;
+	}
+	if (element.clip && (element.clip.width || element.clip.height)) {
+		elementW = element.clip.width;
+		elementH = element.clip.height;
+	} else if (element.offsetWidth || element.offsetHeight) {
+		elementW = element.offsetWidth;
+		elementH = element.offsetHeight;
+	} else if (element.width || element.height) {
+		elementW = element.width;
+		elementH = element.height;
+	} else if (element.w || element.h) {
+		elementW = element.w;
+		elementH = element.h;
+	} else if (element.style && (element.style.width || element.style.height)) {
+		elementW = element.style.width;
+		elementH = element.style.height;
+	} else if (element.style && (element.style.pixelWidth || element.style.pixelHeight)) {
+		elementW = element.style.pixelWidth;
+	}
+	return {x: elementX, y: elementY, w: elementW, h: elementH};
+}
+
+// Shows a tooltip box over the specified element with the specified message.
+// If the message is null, the tooltip box is hidden
+let tooltipLastElement = null;
+let tooltipTimeoutId = null;
+function tip(element, message, bgcolor, adjustX, adjustY, timeout) {
+	if (!element) element = null;
+	if (!message) message = null;
+	if (!bgcolor) bgcolor = null;
+	if (!adjustX) adjustX = 0;
+	if (!adjustY) adjustY = 0;
+	if (!timeout) timeout = 0;
+	const tip = document.getElementById('tooltip_box');
+	if (message) {
+
+		// Put it in the offscreen tooltip box for sizing
+		offscreenTooltipBox.innerHTML = message;
+
+		// Put it in the actual tooltip box for display, but the transition animation will take hundreds of milliseconds
+		tip.innerHTML = message;
+
+		// Place above the element
+		const elementRect = getBoundingRect(element);
+		const elementX = elementRect.x;
+		const elementY = elementRect.y;
+		const elementW = elementRect.w;
+		const elementH = elementRect.h;
+
+		// Get tooltip size
+		const tooltipRect = getBoundingRect(offscreenTooltipBox);
+		const tooltipW = tooltipRect.w;
+		const tooltipH = tooltipRect.h;
+
+		// Adjust for shadow?
+		const tooltipShadowWidth = getComputedStyle(offscreenTooltipBox).getPropertyValue('--tooltip-shadow-width'); 
+
+		// Put at center of element
+		const tooltipX = Math.round(Math.max(0, Math.min(window.innerWidth - tooltipW, elementX + (elementW - tooltipW) / 2 + adjustX ))); // Ensure tip is within viewport
+		const tooltipY = Math.max(0, elementY - tooltipH - 20 + adjustY); // Down arrow causes flicker in animation if too low
+
+
+		// Set visible
+		tip.style.visibility = 'visible';
+		tip.style.opacity = '1';
+		tip.style.height = 'auto';
+		tip.style.left = tooltipX + 'px';
+		tip.style.top = tooltipY + 'px';
+		tip.style.width = tooltipW + 'px';
+
+		// Show full size and at zero Y
+		tip.style.webkitTransform = 'translateY(0px) scaleX(1)';
+		tip.style.khtmlTransform = 'translateY(0px) scaleX(1)';
+		tip.style.msTransform = 'translateY(0px) scaleX(1)';
+		tip.style.transform = 'translateY(0px) scaleX(1)';
+
+		// Set background color if specified
+		if (bgcolor) {
+			tip.style.setProperty('--tooltip-background-color', bgcolor);
+		}
+
+		// A timeout can be given to indicate that the tooltip should disappear afterwards
+		if (timeout > 0) {
+			// Clear the previous timeout if it exists
+			if (tooltipTimeoutId) {
+				clearTimeout(tooltipTimeoutId);
+			}
+
+			// Set a new timeout
+			tooltipTimeoutId = setTimeout(function() {
+				// Check if the last element hasn't changed
+				if (element === tooltipLastElement) {
+					tip.innerHTML = '';
+					tip.style.height = '1px'
+					tip.style.opacity = '0';
+					tip.style.webkitTransform = 'translateY(-25px) scaleX(0)';
+					tip.style.khtmlTransform = 'translateY(-25px) scaleX(0)';
+					tip.style.msTransform = 'translateY(-25px) scaleX(0)';
+					tip.style.transform = 'translateY(-25px) scaleX(0)';
+				}
+			}, timeout);
+		}
+		// Keep a reference to the previous element for the display timeout, a different tooltip might be shown
+		tooltipLastElement = element;
+
+	} else {
+		// Hide the tooltip and set height to 1, hopefully the size will be animated when it's displayed again
+		tip.innerHTML = '';
+		tip.style.height = '1px'
+		tip.style.opacity = '0';
+
+		// Move the tooltip up 25 pixels so that when it's shown again it might look like it's dropping down
+		tip.style.webkitTransform = 'translateY(-25px) scaleX(0)';
+		tip.style.khtmlTransform = 'translateY(-25px) scaleX(0)';
+		tip.style.msTransform = 'translateY(-25px) scaleX(0)';
+		tip.style.transform = 'translateY(-25px) scaleX(0)';
+	}
+}
+</script>
+
+	
 
 
 	<style>
@@ -252,10 +625,6 @@ div.page_footer_wave {
 	z-index: 2;
 	top: 55vh;
 	top: calc(60vh - 50px);
-/*
-	left: -10px;
-	right: -20px;
-*/
 	width: 100vw;
 	overflow: hidden;
 	height:100px;
@@ -282,6 +651,13 @@ div.page_footer_wave {
 @media (max-width: 420px) { #name_box {font-size: 25pt;}}
 @media (max-width: 370px) { #name_box {font-size: 20pt;}}
 @media (max-width: 320px) { #name_box {font-size: 15pt;}}
+
+
+#signature {
+	width:380px;
+}
+@media (max-width: 380px) { #signature {width:100%}}
+
 
 	</style>
 	<script>
@@ -371,9 +747,41 @@ function pageLoaded() {
 	loadBackgroundStars();
 	updateStarmapOrientation();
 	setTimeout(() => {placeRocks();}, 0);
-	setTimeout(() => {redrawSvgWaves();}, 500);
+	setTimeout(() => {redrawSvgWaves();}, 0);
+
+	// Add callbacks to expiernece items
+	document.getElementById('my_java_experience_title').addEventListener('mouseenter', function(event) {
+		displayExperience('my_java_experience', event.target);
+	});
+	document.getElementById('my_php_experience_title').addEventListener('mouseenter', function(event) {
+		displayExperience('my_php_experience', event.target);
+	});
+	document.getElementById('my_mysql_experience_title').addEventListener('mouseenter', function(event) {
+		displayExperience('my_mysql_experience', event.target);
+	});
+	document.getElementById('my_html_experience_title').addEventListener('mouseenter', function(event) {
+		displayExperience('my_html_experience', event.target);
+	});
+	document.getElementById('my_javascript_experience_title').addEventListener('mouseenter', function(event) {
+		displayExperience('my_javascript_experience', event.target);
+	});
+	document.getElementById('my_c_sharp_experience_title').addEventListener('mouseenter', function(event) {
+		displayExperience('my_c_sharp_experience', event.target);
+	});
+	document.getElementById('my_c_plus_plus_experience_title').addEventListener('mouseenter', function(event) {
+		displayExperience('my_c_plus_plus_experience', event.target);
+	});
+
+	document.getElementById('my_java_experience_title').addEventListener('mouseleave', hideCalloutBox);
+	document.getElementById('my_php_experience_title').addEventListener('mouseleave', hideCalloutBox);
+	document.getElementById('my_mysql_experience_title').addEventListener('mouseleave', hideCalloutBox);
+	document.getElementById('my_html_experience_title').addEventListener('mouseleave', hideCalloutBox);
+	document.getElementById('my_javascript_experience_title').addEventListener('mouseleave', hideCalloutBox);
+	document.getElementById('my_c_sharp_experience_title').addEventListener('mouseleave', hideCalloutBox);
+	document.getElementById('my_c_plus_plus_experience_title').addEventListener('mouseleave', hideCalloutBox);
 
 }
+window.addEventListener('load', pageLoaded);
 
 function pageResized() {
 	redrawBackgroundMountains();
@@ -381,7 +789,10 @@ function pageResized() {
 	redrawSvgWaves();
 	setTimeout(() => {placeRocks();}, 0);
 }
+window.addEventListener('resize', pageResized);
 
+
+// Scroll the background stars, when they are in the background
 let previousScrollPosition = window.scrollY;
 function pageScrolled() {
 
@@ -402,11 +813,9 @@ function pageScrolled() {
 	previousScrollPosition = currentScrollPosition;
 
 }
-
-
-window.addEventListener('load', pageLoaded);
-window.addEventListener('resize', pageResized);
 window.addEventListener('scroll', pageScrolled);
+
+
 
 	</script>
 
@@ -414,73 +823,104 @@ window.addEventListener('scroll', pageScrolled);
 
 <body>
 
+<!-- a custom tooltip box. -->
+<div id="tooltip_box" class="tooltip_box"></div>
+<script>
+	// Make an offscren tooltip box to get the size of the animated tooltip box
+	const offscreenTooltipBox = document.getElementById('tooltip_box').cloneNode(true);
+	offscreenTooltipBox.id = 'offscreen_tooltip_box';
+	offscreenTooltipBox.style.height = 'auto';
+	offscreenTooltipBox.style.webkitTransform = 'translateY(0px) scaleX(1)';
+	offscreenTooltipBox.style.khtmlTransform = 'translateY(0px) scaleX(1)';
+	offscreenTooltipBox.style.msTransform = 'translateY(0px) scaleX(1)';
+	offscreenTooltipBox.style.transform = 'translateY(0px) scaleX(1)';
+	offscreenTooltipBox.style.transition = 'none';
+	offscreenTooltipBox.style.left = '-9999px';
+	offscreenTooltipBox.style.top = '-9999px';
+	document.body.appendChild(offscreenTooltipBox);
+</script>
+
+<!-- a custom callout box. -->
+<div id="callout_box" class="callout_box"></div>
+
+
+<!-- Hello -->
 <div id="name_box">
 	JOSHUA SHULLER<br />
 	<span style="font-size:0.825em">SOFTWARE ENGINEER</span><br />
 	<!--<i style="font-size:0.825em">OUT OF THIS WORLD!</i>-->
 </div>
 
-<!-- contains a repeating star map background which streches to the current field of view -->
+
+<!-- Contains the sky background -->
 <div id="sky_container">
 
+	<!-- contains a (possibly) repeating star map background which streches to the current field of view -->
 	<div id="star_map_bg_container" class="star_container"><img id="star_map_rotating_bg_image" src="img/galaxy_background.webp" /></div>
 	<div id="star_map_bg_blur_layer" class="star_container"></div>
 
 	<div id="star_map_sky_color_gradient" class="star_container"></div>
 
-	<div id="star_map_background_canvas_container" class="star_container" style="opacity:1"></div>
+	<div id="star_map_background_canvas_container" class="star_container"></div>
 
-	<div id="star_map_bright_star_container" class="star_container" style="opacity:1"></div>
-	<div id="earth" class="star_container" style="text-align:center"><img src="img/earth.svg" width="200" height="200"></div>
+	<div id="star_map_bright_star_container" class="star_container"></div>
+	<div id="earth"><img src="img/earth.svg" width="200" height="200"></div>
 
 </div>
 
+
+<!-- Contains the mountains on the horizon -->
 <div id="background_mountain_container">
 	<script>
 		document.write(getHorizonMountainsSvg(Math.max(window.innerWidth, document.body.scrollWidth) + 50));
 	</script>
 </div>
 
-<div id="rock_container">
-<div id="shadow_container" style="background-image:url('img/ground_shadows.svg');top:70vh;position:absolute;width:100%;height:15vh;background-opacity:0.5;background-position:-20px center;"></div>
-<svg id="rock_svg" x="0" y="0" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-	<defs>
-		<linearGradient id="rockGrad2" x1="20%" x2="0" y1="0" y2="100%">
-			<stop style="stop-color:#8f2015" offset="0" />
-			<stop style="stop-color:#5a0e0b" offset="1" />
-		</linearGradient>
-		<radialGradient id="rockGrad" cx="75%" cy="20%">
-			<stop style="stop-color:#ad332a" offset="0" />
-			<stop style="stop-color:#600c0b" offset="0.9" />
-			<stop style="stop-color:#5a0e0b" offset="1" />
-		</radialGradient>
-		<linearGradient id="shadowGrad" x1="30%" x2="0" y1="0" y2="100%">
-			<stop style="stop-color:#71150d" offset="0" />
-			<stop style="stop-color:#a62b1b" offset="1" />
-		</linearGradient>
 
-	</defs>
-	<!-- A couple of shading paths from the left, in addition to any other background shading is done for the ground -->
-	<g id="shadow_g">
-		<path
-			style="fill:url(#shadowGrad);fill-opacity:.25;stroke:none"
-			d="m -5,130 c 0,0 69.990768,0.81545 97.042868,1.49296 4.78336,0.1198 -11.94374,7.96248 -11.94374,7.96248 0,0 32.80282,3.37683 49.2679,3.98126 22.87736,0.83983 45.80445,-1.47125 68.67651,-0.49765 8.98798,0.38259 17.879882,2.27214 26.873412,2.48827 26.228,0.63031 52.4099,-2.57095 78.6296,-3.48358 13.1012,-0.45601 26.27077,-2.30013 39.3148,-0.99531 5.92615,0.5928 23.18609,2.49825 17.41795,3.98124 -18.97042,4.87732 -28.7743,5.03684 -43.29604,6.46951 -20.49435,2.02191 -41.14061,1.96891 -61.70931,2.98595 -16.42351,0.81208 -32.82482,2.36345 -49.267922,2.48828 -14.10862,0.10711 -28.21526,-0.67816 -42.30074,-1.49297 -14.45449,-0.83616 -28.865702,-2.30182 -43.29605,-3.48361 -21.89943,-1.79349 -43.74097,-4.46561 -65.69056,-5.4742 -19.057419,-0.8757 -57.230408,-0.49765 -57.230408,-0.49765 z"
-		/>
-		<path
-			style="fill:url(#shadowGrad);fill-opacity:.25;stroke:none"
-			d="m 55,111 c 7.254327,1.48743 34.453423,-3.12119 51.200816,-2.19935 11.77,0.64787 23.500805,-1.95266 35.27756,-2.46324 7.791124,-0.33778 15.605536,0.0362 23.391966,-0.3964 8.81736,-0.48989 17.56407,-1.90524 26.37576,-2.48827 8.69628,-0.57539 17.43117,-0.4121 26.12692,-0.99531 8.64639,-0.5799 17.2401,-1.79452 25.8781,-2.48828 10.27319,-0.82509 20.56681,-1.37457 30.85465,-1.99062 15.00863,-0.89873 30.16791,-0.26306 45.03785,-2.48827 24.05605,-3.59986 43.80879,-3.76089 77.88312,-4.97657 0.83303,-0.0297 0.58438,-2.46416 -0.24883,-2.48828 -11.03523,-0.31946 -20.00414,0.22279 -29.85935,0.49766 -10.63873,0.29673 -21.28677,0.93966 -31.84996,2.23946 -5.68438,0.69947 -11.2301,2.33557 -16.9203,2.98593 -12.46077,1.42421 -25.05606,1.19979 -37.573,1.99061 -9.04703,0.5716 -18.06326,1.65863 -27.12224,1.99062 -5.88498,0.21568 -11.78044,-0.17468 -17.66678,0 -8.38828,0.24894 -16.74333,1.24404 -25.13161,1.49297 -6.54958,0.19437 -13.10931,-0.23958 -19.6574,0 -19.28137,0.70549 -38.488525,2.77754 -57.728046,4.23008 -16.010637,1.20877 -32.050566,2.10208 -48.02378,3.73242 -9.039301,0.92262 -18.464606,1.79218 -27.122246,1.99062 -1.20533,0.0276 -4.30427,1.58206 -3.1232,1.82422 z"
-		/>
-	</g>
-	<g id="rock_g">
-	</g>
-</svg>
+<!-- Contains the rocks on the ground -->
+<div id="rock_container">
+	<div id="shadow_container" style="background-image:url('img/ground_shadows.svg');top:70vh;position:absolute;width:100%;height:15vh;background-opacity:0.5;background-position:-20px center;">
+	</div>
+	<svg id="rock_svg" x="0" y="0" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+		<defs>
+			<linearGradient id="rockGrad2" x1="20%" x2="0" y1="0" y2="100%">
+				<stop style="stop-color:#8f2015" offset="0" />
+				<stop style="stop-color:#5a0e0b" offset="1" />
+			</linearGradient>
+			<radialGradient id="rockGrad" cx="75%" cy="20%">
+				<stop style="stop-color:#ad332a" offset="0" />
+				<stop style="stop-color:#600c0b" offset="0.9" />
+				<stop style="stop-color:#5a0e0b" offset="1" />
+			</radialGradient>
+			<linearGradient id="shadowGrad" x1="30%" x2="0" y1="0" y2="100%">
+				<stop style="stop-color:#71150d" offset="0" />
+				<stop style="stop-color:#a62b1b" offset="1" />
+			</linearGradient>
+
+		</defs>
+		<!-- A couple of shading paths from the left, in addition to any other background shading is done for the ground -->
+		<g id="shadow_g">
+			<path
+				style="fill:url(#shadowGrad);fill-opacity:.25;stroke:none"
+				d="m -5,130 c 0,0 69.990768,0.81545 97.042868,1.49296 4.78336,0.1198 -11.94374,7.96248 -11.94374,7.96248 0,0 32.80282,3.37683 49.2679,3.98126 22.87736,0.83983 45.80445,-1.47125 68.67651,-0.49765 8.98798,0.38259 17.879882,2.27214 26.873412,2.48827 26.228,0.63031 52.4099,-2.57095 78.6296,-3.48358 13.1012,-0.45601 26.27077,-2.30013 39.3148,-0.99531 5.92615,0.5928 23.18609,2.49825 17.41795,3.98124 -18.97042,4.87732 -28.7743,5.03684 -43.29604,6.46951 -20.49435,2.02191 -41.14061,1.96891 -61.70931,2.98595 -16.42351,0.81208 -32.82482,2.36345 -49.267922,2.48828 -14.10862,0.10711 -28.21526,-0.67816 -42.30074,-1.49297 -14.45449,-0.83616 -28.865702,-2.30182 -43.29605,-3.48361 -21.89943,-1.79349 -43.74097,-4.46561 -65.69056,-5.4742 -19.057419,-0.8757 -57.230408,-0.49765 -57.230408,-0.49765 z"
+			/>
+			<path
+				style="fill:url(#shadowGrad);fill-opacity:.25;stroke:none"
+				d="m 55,111 c 7.254327,1.48743 34.453423,-3.12119 51.200816,-2.19935 11.77,0.64787 23.500805,-1.95266 35.27756,-2.46324 7.791124,-0.33778 15.605536,0.0362 23.391966,-0.3964 8.81736,-0.48989 17.56407,-1.90524 26.37576,-2.48827 8.69628,-0.57539 17.43117,-0.4121 26.12692,-0.99531 8.64639,-0.5799 17.2401,-1.79452 25.8781,-2.48828 10.27319,-0.82509 20.56681,-1.37457 30.85465,-1.99062 15.00863,-0.89873 30.16791,-0.26306 45.03785,-2.48827 24.05605,-3.59986 43.80879,-3.76089 77.88312,-4.97657 0.83303,-0.0297 0.58438,-2.46416 -0.24883,-2.48828 -11.03523,-0.31946 -20.00414,0.22279 -29.85935,0.49766 -10.63873,0.29673 -21.28677,0.93966 -31.84996,2.23946 -5.68438,0.69947 -11.2301,2.33557 -16.9203,2.98593 -12.46077,1.42421 -25.05606,1.19979 -37.573,1.99061 -9.04703,0.5716 -18.06326,1.65863 -27.12224,1.99062 -5.88498,0.21568 -11.78044,-0.17468 -17.66678,0 -8.38828,0.24894 -16.74333,1.24404 -25.13161,1.49297 -6.54958,0.19437 -13.10931,-0.23958 -19.6574,0 -19.28137,0.70549 -38.488525,2.77754 -57.728046,4.23008 -16.010637,1.20877 -32.050566,2.10208 -48.02378,3.73242 -9.039301,0.92262 -18.464606,1.79218 -27.122246,1.99062 -1.20533,0.0276 -4.30427,1.58206 -3.1232,1.82422 z"
+			/>
+		</g>
+		<g id="rock_g">
+		</g>
+	</svg>
 </div>
 
 
 
+
+
 <!-- FOREGROUND MOUNTAIN CONTAINER -->
-<div style="position:absolute;top:60vh;top:calc(60vh - 10px);left:20px;">
-	<img src="img/foothills1.svg" width="270.40414" height="32.605999" />
+<div style="position:absolute;z-index:3;top:60vh;top:calc(60vh - 10px);left:20px;">
+	<!-- <img src="img/foothills1.svg" width="270.40414" height="32.605999" /> -->
 </div>
 
 
@@ -565,7 +1005,7 @@ function placeRocks() {
 <div id="content">
 
 <style>
-h2 { font-family:"Bakbak One";}
+h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 #content_section_about {
 	border-left: 5px solid white;
 	padding-left: 1em;
@@ -604,6 +1044,10 @@ h2 { font-family:"Bakbak One";}
 		I'm not anti-social, but I'm also not extremely social. 
 		As a result, I haven't jumped onto the regular social media bandwagons.
 	</p>
+	<p>
+		Apologies if the website is sluggish.
+		I just thought it would be fun to use javascript to generate mountains, rocks and stars instead of generating static files for better performance.
+	</p>
 </section>
 
 <section id="content_section_background">
@@ -626,6 +1070,7 @@ h2 { font-family:"Bakbak One";}
 		That's where I fell in love with computer programming.  I started coding all the
 		time, and reading all the books I had time for.
 	</p>
+
 	<p>
 		By the time I found an office job, I had already started independant contracting.  
 		The independant contracting work actually paid about the same as the first 
@@ -650,16 +1095,180 @@ h2 { font-family:"Bakbak One";}
 		My passion lies in the intricate world of code, crafting solutions that bring ideas to fruition.
 	</p>
 	<p>
+		<style>
+			/* Initially hidden experience details text for a particular language or ... technology */
+			.experience_details {
+				position: absolute;
+				visibility: hidden;
+				overflow: hidden;
+				width: 0;
+				height: 0;
+			}
+
+			/* Going to try to put a logo in the upper-right of the callout box for displaying experience */
+			.experience_logo {
+				float: right;
+				width: 100px;
+				height: 100px;
+				width: 5em;
+				height: 5em;
+			}
+		</style>
 		My toolbelt mainly holds
-		<ul>
-			<li>C#,</li>
-			<li>Java,</li>
-			<li>PHP,</li>
-			<li>MySQL,</li>
-			<li>and JavaScript</li>
-		</ul>
+		<div>
+			<ul id="toolbelt">
+				<li><span id="my_java_experience_title">Java</span>
+					<span class="experience_details" id="my_java_experience">
+						<img src="img/logos/java_logo.svg" class="experience_logo" />
+						Java was my first programming love. 
+						It was the primary language taught in my university. 
+						I vividly recall the excitement of believing I had devised a novel sorting algorithm, 
+						only to discover in my subsequent data structures course that I had merely reinvented bucket sort. 
+						My experience with Java extends beyond the academic realm into both personal and professional domains. 
+						However, it is my personal projects that are more interesting to me. 
+						These projects span a wide array of fascinating endeavors, 
+						including robotics, image processing video input from cameras for 3D reconstruction, 
+						and creating applets with equally diverse functions such as text editing (better than the old notepad),
+						stock market graphing, etc.
+					</span>
+				</li>
+				<li><span id="my_php_experience_title">PHP</span>
+					<span class="experience_details" id="my_php_experience">
+						<img src="img/logos/php_logo.svg" class="experience_logo" />
+						I acquired proficiency in PHP when I started doing contract work.  Better than waiting tables!  With my dreams
+						of java development temporarily crushed, I was rescued by PHP.
+						The bulk of my professional experience revolves around PHP,  encompassing a wide range of web applications. 
+						These include online personality testing and evaluation, prescription drug certification systems 
+						for medical professionals, x-ray technician records management, questionnaire applications, 
+						bid, quote, and booking management systems, 
+						online stores, payment gateways for credit card processing, and more.
+					</span>
+				</li>
+				<li><span id="my_mysql_experience_title">MySQL</title>
+					<span class="experience_details" id="my_mysql_experience">
+						<img src="img/logos/mysql_logo.svg" class="experience_logo" />
+						I've gained proficiency in MySQL through my involvement in various projects where it served as
+						the primary backend database solution.  While my expertise lies predominantly in development, 
+						MySQL has been a fundamental component of many of my projects, providing robust storage and retrieval 
+						capabilities for a wide range of data-driven applications.  Whether managing user profiles and preferences, 
+						storing transactional data for e-commerce platforms,  or implementing complex data structures 
+						for healthcare records management systems,  MySQL has consistently proven its reliability and scalability 
+						in handling diverse data requirements (until one starts doing joins on tables containing more than a few thousand
+						rows of data, that is).  My experience with MySQL extends beyond mere database administration to encompass 
+						optimizing queries, ensuring data integrity, and implementing efficient indexing strategies to enhance application 
+						performance and user experience.
+						<!--
+						<br /><br />
+						In addition to my experience with MySQL, I have also worked with Microsoft SQL Server and am proficient 
+						in developing with it. My expertise extends to other relational database technologies as well, 
+						and I am confident in my ability to adapt to different database systems as needed.
+						-->
+					</span>
+				</li>
+				<li><span id="my_html_experience_title">HTML &amp; CSS</span>
+					<span class="experience_details" id="my_html_experience">
+						<img src="img/logos/html5_logo.svg" class="experience_logo" />
+						<img src="img/logos/css3_logo.svg" class="experience_logo" />
+						I possess strong skills in HTML and CSS, the foundational languages of web development. 
+						While HTML may seem straightforward, its role in structuring web content is essential for creating 
+						well-organized and accessible websites. 
+						As for CSS, while I may start with existing styles and templates, I excel in refining and customizing 
+						them to achieve visually appealing and user-friendly designs. 
+						While HTML and CSS may be considered foundational, their mastery is critical for crafting engaging 
+						and professional web experiences.
+					</span>
+				</li>
+				<li><span id="my_c_plus_plus_experience_title">C &amp; C++</span>
+					<span class="experience_details" id="my_c_plus_plus_experience">
+						<img src="img/logos/c_plus_plus_icon.svg" class="experience_logo" />
+						Honorable mention: I don't have any professional experience in C and C++, 
+						but I did get to utilize it quite a bit in university. It's not exactly like Java or C#, 
+						but you can make it almost the same as Java with pointers using wrappers. 
+						I did all sorts of fun projects in C and C++. One of them was a video streaming chat application; 
+						it didn't perform quite as well as I liked (compressing PNG frames one at a time), but it was a ton of fun to make. 
+						Another really fun project I did was with the OU robotics club, where we color-coded the robots and put a camera 
+						over the robot arena to make it easier to program the robots from a faster PC than the onboard controller could handle,
+						which never panned out, but it wasn't my fault, the hardware was lacking. 
+						Additionally, I wrote a server-side scripting language in C++, called "cgimorph." 
+						I used it on my personal linux website before I took a deep dive into PHP.
+					</span>
+				</li>
+				<li><span id="my_javascript_experience_title">JavaScript</span>
+					<span class="experience_details" id="my_javascript_experience">
+						<img src="img/logos/javascript_logo.svg" class="experience_logo" />
+						I've been immersed in JavaScript since my early days of creating websites during university. 
+						Initially, it was employed to enrich user experiences, adding interactive elements to web pages. 
+						However, as JavaScript became increasingly prevalent across web browsers and evolved into a powerful 
+						language in its own right, my appreciation for its capabilities deepened. 
+						Today, I rely on JavaScript extensively for numerous facets of web application development. 
+						Its versatility allows me to leverage my expertise in object-oriented programming, enabling me 
+						to tackle a wide array of tasks with confidence and efficiency.
+						<!--
+						<br /><br />
+						While I do not have professional experience in React, Angular, or Node.js, 
+						I feel confident in my ability to adapt to such technologies with minimal effort.  I took a couple of tutorials.
+						-->
+					</span>
+				</li>
+				<li><span id="my_c_sharp_experience_title">C#</span>
+					<span class="experience_details" id="my_c_sharp_experience">
+						<img src="img/logos/c_sharp_logo.svg" class="experience_logo" />
+						I didn't learn C# and .NET until around 2020.
+						Fortunately, it's very similar to Java, so adapting to it was quite easy for me. 
+						The most notable difference, in my experience, lies in the threading models. 
+						While there are certainly many other nuanced differences between the two languages, 
+						they can sometimes be easier to recognize than to recall and enumerate. 
+						Similar to my professional experience with Java, much of my professional experience 
+						with C# involves creating backend applications for performing scheduled or trigger-based 
+						data processing tasks, such as data scraping and scheduled rebuilding of data files. 
+						Additionally, I've embarked on personal projects using .NET to develop Windows applications, 
+						which has been super easy compared to the old C++ Windows API I used during my university days
+						— it's barely an inconvenience. 
+						Furthermore, I've utilized C# in various UiPath RPA projects.
+					</span>
+				</li>
+			</ul>
+		</div>
+
+		<script>
+
+			//
+			//
+			// CALLOUT FUNCTIONS
+			//
+			//
+
+			// Shows the callout box at the specified coordinates with the specified HTML contents
+			function showCalloutBox(x, y, html) {
+				const callout = document.getElementById('callout_box');
+				callout.innerHTML = html;
+				callout.style.visibility = "visible";
+				callout.style.opacity = 1;
+				callout.style.height = 'auto';
+				callout.style.left = x + 'px';
+				callout.style.top = y + 'px';
+				callout.style.pointerEvents = 'auto';
+			}
+
+			// Hides the callout box
+			function hideCalloutBox() {
+				const callout = document.getElementById('callout_box');
+				callout.style.opacity = 0;
+				callout.style.height = '1px';
+				callout.style.pointerEvents = 'none';
+			}
+
+			// Function to display experience for a 'toolbelt' item into the callout and position the callout to the right of the list
+			function displayExperience(id, listItem) {
+				const experienceText = document.getElementById(id).innerHTML;
+				const toolbeltRect = getBoundingRect(document.getElementById('toolbelt'));
+				const listItemRect = getBoundingRect(listItem);
+				showCalloutBox(listItemRect.x + listItemRect.w + 30, toolbeltRect.y - 10, experienceText);
+			}
+		</script>
+
 		I'm adept at both front-end and back-end development, 
-		ready to tackle any web development challenge. 
+		ready to tackle any development challenge.
 	</p>
 	<p>
 		While I enjoy the challenge of tackling complex projects head-on, I also recognize the value of teamwork. 
@@ -702,26 +1311,386 @@ h2 { font-family:"Bakbak One";}
 <section id="content_section_contact">
 	<h2>Contact</h2>
 	<p>
-		Please feel free to contact me.  Email is my preferred method.
-		<pre style="font-size:0.4em;font-family:courier, courier new;font-weight:bold">
-█████████████              ██                               ▄██████▄  ██               ██  ██
-      ██                   ██                              ██▀    ▀██ ██               ██  ██
-      ██   ▄████▄    ▄███  ██▄██▄  ██   ██   ▄████▄██      ██▄        ██▄██▄  ██   ██  ██  ██   ▄████▄   ██▄██▄
-      ██  ██▀  ▀██  ██     ██▀ ▀██ ██   ██  ██▀  ▀███       ▀██████▄  ██▀ ▀██ ██   ██  ██  ██  ██▀  ▀██  ██▀ ▀██
-      ██ ██      ██  ████  ██   ██ ██   ██ ██      ██             ▀██ ██   ██ ██   ██  ██  ██ ██████████ ██
-██▄  ▄██  ██▄  ▄██      ██ ██   ██ ██▄ ▄██  ██▄  ▄███      ██▄    ▄██ ██   ██ ██  ▄██  ██  ██  ██▄       ██
- ▀████▀    ▀████▀    ████  ██   ██  ▀██▀██   ▀████ ██       ▀██████▀  ██   ██  ▀██▀██  ██  ██   ▀█████   ██
-		</pre>
-		<br />
-		<script>
-			let email = 'shuller@gmail.com';
-			for (let i = 0; i < email.length; i++) {
-				document.write('[' + email[i].getCharCode() + ']');
+		Please feel free to contact me.  email is preferred.
+		<style>
+			/*
+			 *
+			 * CONTACT INFO
+			 *
+			 */
+
+
+			/* Contact info flex grid table */
+			.contact_info_container {
+				display: flex;
+				flex-direction: column;
+				width: min-content;
+				font-size: 1em;
 			}
 
+			/* Adjust font for browser size */
+			@media (max-width: 320px) { .contact_info_container {font-size: 0.9em;}}
+			@media (max-width: 295px) { .contact_info_container {font-size: 0.8em;}}
+			@media (max-width: 270px) { .contact_info_container {font-size: 0.7em;}}
+			@media (max-width: 245px) { .contact_info_container {font-size: 0.6em;}}
+			@media (max-width: 220px) { .contact_info_container {font-size: 0.5em;}}
+
+			/* Contact info row */
+			.contact_info_row {
+				display: flex;
+				align-items: center;
+				margin-bottom: 10px;
+				font-size: 1em;
+			}
+
+			/* Cell for an icon in the contact info flex grid */
+			.contact_info_icon, .contact_info_copy_icon {
+				margin-left: 10px;
+				white-space: nowrap;
+				fill: white;
+				color: white;
+				font-size: 1em;
+			}
+
+			/* Cell for the label, such as email or phone */
+			.contact_info_label {
+				margin-left: 10px;
+				white-space: nowrap;
+				font-size: 1em;
+			}
+
+			/* Cell for contact info value, which itself is a flex grid container of letter divs */
+			.contact_info {
+				flex: 1;
+				margin-left: 10px;
+				white-space: nowrap;
+				font-size: 1em;
+				display: flex;
+				flex-wrap: nowrap;
+				overflow-x: auto;
+			}
+
+			/* Separate divs for each letter in a contact info string, in a flex container */
+			.letter_div {
+				flex: 1;
+				border: none;
+				padding: 0px;
+				white-space: nowrap;
+			}
+
+
+		</style>
+		<br />
+		<!-- Contact info flex grid -->
+		<div class="contact_info_container">
+			<div class="contact_info_row">
+				<div class="contact_info_icon">
+					<svg style="height:1em;width:1em;fill:currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" focusable="false">
+					<path fill="currentColor" d="M15.5 4A2.5 2.5 0 0 1 18 6.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 2 14.5v-8A2.5 2.5 0 0 1 4.5 4h11ZM17 7.96l-6.75 3.97a.5.5 0 0 1-.42.04l-.08-.04L3 7.96v6.54c0 .83.67 1.5 1.5 1.5h11c.83 0 1.5-.67 1.5-1.5V7.96ZM15.5 5h-11C3.67 5 3 5.67 3 6.5v.3l7 4.12 7-4.12v-.3c0-.83-.67-1.5-1.5-1.5Z"></path>
+					</svg>
+				</div>
+				<div class="contact_info_label">Email:</div>
+				<div class="contact_info" id="contact_info_email">notme@fakemail.com</div>
+				<div class="contact_info_copy_icon">
+					<a href="javascript:void(0)" onclick="copyContactInfoEmail(this)" onmouseenter="tip(this, 'Copy email address', '#000033')" onmouseleave="tip()">
+						<svg style="height:1em;width:1em;fill:currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" id="copy_email_icon">
+						<path fill="currentColor" d="M8 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8ZM7 4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4ZM4 6a2 2 0 0 1 1-1.73V14.5A2.5 2.5 0 0 0 7.5 17h6.23A2 2 0 0 1 12 18H7.5A3.5 3.5 0 0 1 4 14.5V6Z"></path>
+						</svg>
+					</a>
+				</div>
+			</div>
+			<div class="contact_info_row">
+				<div class="contact_info_icon">
+					<svg style="height:1em;width:1em;fill:currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" focusable="false">
+						<path fill="currentColor" d="m6.99 2.07-.72.21a3.5 3.5 0 0 0-2.45 2.86c-.3 2.06.36 4.48 1.96 7.25 1.6 2.77 3.36 4.55 5.3 5.33a3.5 3.5 0 0 0 3.7-.7l.55-.52a2 2 0 0 0 .25-2.62L14.22 12a1.5 1.5 0 0 0-1.65-.56l-2.05.63-.06.01c-.22.04-.74-.45-1.4-1.58-.67-1.18-.82-1.87-.63-2.04l1.05-.98a2.5 2.5 0 0 0 .57-2.85l-.66-1.47a2 2 0 0 0-2.4-1.1Zm1.49 1.5.66 1.47a1.5 1.5 0 0 1-.35 1.71l-1.04.98c-.67.63-.45 1.71.45 3.27.85 1.47 1.62 2.19 2.45 2.06l.12-.02 2.09-.64a.5.5 0 0 1 .55.19l1.36 1.88a1 1 0 0 1-.13 1.3l-.54.52a2.5 2.5 0 0 1-2.65.5c-1.7-.68-3.3-2.3-4.8-4.9-1.5-2.59-2.1-4.8-1.84-6.61a2.5 2.5 0 0 1 1.75-2.04l.72-.22a1 1 0 0 1 1.2.55Z"></path>
+					</svg>
+				</div>
+				<div class="contact_info_label">Phone:</div>
+				<div class="contact_info" id="contact_info_phone">+555-376006-07734-</div>
+				<div class="contact_info_copy_icon">
+					<a href="javascript:void(0)" onclick="copyContactInfoPhone(this)" onmouseenter="tip(this, 'Copy phone number', '#000033')" onmouseleave="tip()">
+						<svg style="height:1em;width:1em;fill:currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" id="copy_phone_icon">
+						<path fill="currentColor" d="M8 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8ZM7 4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4ZM4 6a2 2 0 0 1 1-1.73V14.5A2.5 2.5 0 0 0 7.5 17h6.23A2 2 0 0 1 12 18H7.5A3.5 3.5 0 0 1 4 14.5V6Z"></path>
+						</svg>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			//
+			// Contact info function
+			//
+
+			// Writes contact info in divs, just trying to confuse spam crawlers
+			function writeInDivs(container, text) {
+				let divs = '';
+				for (let i = 0; i < text.length; i++) {
+					divs += '<div class="letter_div" style="width:0;opacity:0">.</div>';
+					divs += '<div class="letter_div">' + text[i] + '&#8203;</div>';
+				}
+				container.innerHTML = divs;
+			}
+
+			// Puts specified text into clipboard
+			function copyToClipboard(text) {
+				if (window.clipboardData && window.clipboardData.setData) {
+					// Internet Explorer-specific code path to prevent textarea being shown while dialog is visible.
+					return clipboardData.setData("Text", text);
+
+				} else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+					var textarea = document.createElement("textarea");
+					textarea.textContent = text;
+					textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in Microsoft Edge.
+					document.body.appendChild(textarea);
+					textarea.select();
+					try {
+						return document.execCommand("copy");  // Security exception may be thrown by some browsers.
+					} catch (ex) {
+						console.warn("copy to clipboard failed.", ex);
+						return false;
+					} finally {
+						document.body.removeChild(textarea);
+					}
+				}
+			}
+
+			// Using a Vigenère cipher and basic measures to hide email from basic spam crawlers
+			const vigenereAlphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-_+';
+			const superSecretKey = 'QhYb9JXLFkWZuX4QjbdCos9arVtmnbhoBhEQUOyx';
+
+			// Encodes the text with keyword using the Vigenère cipher
+			function vigenereCipher(text, keyword) {
+				let encodedText = '';
+				for (let i = 0; i < text.length; i++) {
+					const char = text[i];
+					const charIndex = vigenereAlphabet.indexOf(char);
+					if (charIndex < 0) {
+						// Character not found in the vigenereAlphabet, leave it unchanged
+						encodedText += char;
+					} else {
+						const keywordChar = keyword[i % keyword.length];
+						const keywordIndexShift = vigenereAlphabet.indexOf(keywordChar);
+						const newIndex = (charIndex + keywordIndexShift) % vigenereAlphabet.length;
+						encodedText += vigenereAlphabet[newIndex];
+					}
+				}
+				return encodedText;
+			}
+
+			// Decodes the text with keyword using the Vigenère cipher
+			function vigenereDecipher(text, keyword) {
+				let decodedText = '';
+				for (let i = 0; i < text.length; i++) {
+					const keywordChar = keyword[i % keyword.length];
+					const keywordIndexShift = vigenereAlphabet.indexOf(keywordChar);
+					let decodedIndex = vigenereAlphabet.indexOf(text[i]) - keywordIndexShift;
+					if (decodedIndex < 0) {
+						decodedIndex += vigenereAlphabet.length;
+					}
+					decodedText += vigenereAlphabet[decodedIndex];
+				}
+				return decodedText;
+			}
+
+
+			// Returns my email address
+			function getContactInfoEmail() {
+				return vigenereDecipher('9 D_fo GmHx8QTR5G', superSecretKey);
+			}
+
+			// Returns my phone number
+			function getContactInfoPhone() {
+				return vigenereDecipher('PYPY3GL_@dTLfKs', superSecretKey);
+			}
+
+			// Displays my email in the HTML page (as divs with single letters)
+			function writeContactInfoEmail() {
+				const email_div = document.getElementById('contact_info_email');
+				writeInDivs(email_div, getContactInfoEmail());
+			}
+
+			// Displays my phone in the HTML page
+			function writeContactInfoPhone() {
+				const phone_div = document.getElementById('contact_info_phone');
+				writeInDivs(phone_div, getContactInfoPhone());
+			}
+
+
+			// Checkmark is shown after 'copy' is clicked
+			const CHECKMARK_PATH = '<path fill="currentColor" d="M3.37 10.17a.5.5 0 0 0-.74.66l4 4.5c.19.22.52.23.72.02l10.5-10.5a.5.5 0 0 0-.7-.7L7.02 14.27l-3.65-4.1Z"></path>';
+
+			// The 'copy' icon is shown again 5 seconds after the checkmark is displayed
+			const COPY_TO_CLIPBOARD_PATH = '<path fill="currentColor" d="M8 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8ZM7 4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4ZM4 6a2 2 0 0 1 1-1.73V14.5A2.5 2.5 0 0 0 7.5 17h6.23A2 2 0 0 1 12 18H7.5A3.5 3.5 0 0 1 4 14.5V6Z"></path>';
+
+			// Copies my email to the clipboard, hopefully basic web crawlers won't click this
+			function copyContactInfoEmail(element) {
+				copyToClipboard(getContactInfoEmail());
+				const copy_icon = document.getElementById('copy_email_icon');
+				copy_icon.innerHTML = CHECKMARK_PATH;
+				tip(element, 'Copied', '#003300', 0, 0, 5000);
+				setTimeout(() => {document.getElementById('copy_email_icon').innerHTML=COPY_TO_CLIPBOARD_PATH;},5000);
+			}
+
+			// Copies my phone to the clipboard, female robots feel free to call
+			function copyContactInfoPhone(element) {
+				copyToClipboard(getContactInfoPhone());
+				const copy_icon = document.getElementById('copy_phone_icon');
+				copy_icon.innerHTML = CHECKMARK_PATH;
+				tip(element, 'Copied', '#003300', 0, 0, 5000);
+				setTimeout(() => {document.getElementById('copy_phone_icon').innerHTML=COPY_TO_CLIPBOARD_PATH;},5000);
+			}
+
+
+			// Load contact info only when it comes into view
+			function contactInfoCallback() {
+				setTimeout(() => {writeContactInfoEmail();},0);
+				setTimeout(() => {writeContactInfoPhone();},0);
+			}
+			const contactObserver = new IntersectionObserver(contactInfoCallback, {root:null,rootMargin:'0px',threshold:0});
+			contactObserver.observe(document.getElementById('contact_info_email'));
+			contactObserver.observe(document.getElementById('contact_info_phone'));
+
 		</script>
+
+
+		<br /><br />
+		Kind regards,<br />
+		<!-- Signature, must be inline to use animation -->
+		<svg id="signature" viewBox="0 0 470 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" style="opacity:0">
+		<style>
+			/* Dash array to create illusion of writing.  Using length of 1500 is too much, but timings are adjusted below */
+			.first, .last, .J {
+				stroke-dasharray: 1500;
+				stroke-dashoffset: 1500;
+				opacity: 0;
+				fill: none;
+				stroke: #ffffff;
+				stroke: currentColor;
+				stroke-width: 1.5;
+				stroke-linecap: round;
+				stroke-linejoin: round;
+				stroke-opacity: 1;
+			}
+			.J {		/* J in my first name */
+				animation: dash 1s 0s linear forwards;
+				-webkit-animation:  dash 5s 0s linear forwards;
+			}
+			.first {	/* The rest of my first name starts after .5 seconds */
+				animation: dash 5s 0.5s linear forwards;
+				-webkit-animation:  dash 5s 0.5s linear forwards;
+			}
+			.last {		/* My last name starts after 2.5 seconds */
+				animation: dash 5s 2.5s linear forwards;
+				-webkit-animation: dash 5s 2.5s linear forwards;
+			}
+			@keyframes dash {
+				to {
+					stroke-dashoffset: 0;
+				}
+				0% { opacity: 0; }
+				20% { opacity: 1.0; }
+				100% { opacity: 1.0; }
+			}
+			@-webkit-keyframes dash {
+				to {
+					stroke-dashoffset: 0;
+				}
+				0% { opacity: 0; }
+				20% { opacity: 1.0; }
+				100% { opacity: 1.0; }
+			}
+		</style>
+		<g>
+
+			<path class="J" d=" 
+				M 22.147074,58.468056 C 4.828262,57.926846 7.8342734,71.305686 23.762113,77.133184 38.538859,80.658495 54.849002,71.409347 55.843173,67.471776 58.909806,50.901095 42.076104,14.554177 33.595302,6.6971141 26.561516,8.6074081 23.748455,12.292538 25.998471,14.203511
+			" />
+			<path class="first" d=" 
+				M 61.697778,64.247029 c -2.380481,3.173975 1.773909,17.702158 15.393819,12.535371 3.153831,-1.196423 5.740777,-4.082534 5.344966,-9.310624 -0.391678,-5.173492 -7.06127,-10.92502 -12.11876,-9.76735 -1.23561,0.28284 -2.16126,2.28677 -1.62789,3.43666 2.07381,4.47096 9.36766,4.05878 14.28928,3.79842 5.22182,-0.27624 15.67422,-7.39778 15.67422,-7.39778 0,0 10.283027,12.75271 4.609927,18.5246 -4.500217,4.57858 -15.859507,-6.13917 -15.859507,-6.13917 0,0 15.424417,4.15617 23.277667,1.02319 27.36232,-10.91595 29.72352,-71.93001451 7.03447,-68.8098435 -3.61678,0.4973749 -24.458531,4.9024617 -14.36486,40.7748225 2.49021,8.85007 16.53915,35.069475 16.53915,35.069475 0.44153,-3.857976 4.11314,-21.214976 10.48774,-19.056994 5.29553,3.52935 1.40689,19.440695 1.40689,19.440695 4.48649,-0.64876 8.60066,-12.258945 11.12725,-19.440695 -1.06579,4.971717 -3.70375,17.743331 2.43008,19.056999 10.13716,1.116734 8.88597,-10.907871 10.61566,-19.056999 0,0 -2.94936,15.5417 1.40689,18.22566 2.3377,1.44029 4.13722,0.57402 5.24386,-1.08715 2.36512,-3.55026 2.31098,-9.01943 6.26706,-13.87707 2.15377,-2.64459 8.95297,-3.70908 8.95297,-3.70908 -1.09046,-0.54523 -5.41531,0.33514 -8.99303,3.90743 -6.91736,6.906855 -1.39532,19.715339 6.94664,14.19032 5.82273,-3.85648 6.54105,-17.513115 6.54105,-17.513115 0,0 -2.3274,12.562125 2.50876,16.926605 2.56033,2.31062 4.4594,2.031381 7.89606,1.742142 19.2549,-1.620547 28.4584,-11.579426 28.4584,-11.579426
+			" />
+			<path class="last" d="
+				M 279.55262,28.590262 c 0,0 14.74103,-4.58453 14.32473,-10.48774 -0.585,-8.2953696 -13.68524,-11.9715196 -21.99869,-11.7667396 -15.90504,0.39179 -37.62503,8.9933896 -40.92778,24.5566696 -1.01651,4.79002 4.13198,9.697279 8.44135,12.02254 11.32132,6.108782 21.73597,6.40194 29.92845,12.78993 3.89825,3.039612 6.38725,10.09015 3.83698,14.32473 -5.32495,8.84178 -21.55249,9.89231 -30.95164,5.62757 -3.43934,-1.56056 -6.71075,-5.56226 -4.60438,-8.69716 9.85179,-14.66236 31.51826,12.53557 48.34595,7.16237 16.0542,-5.12622 32.19383,-30.352133 37.08328,-41.950995 4.18127,-9.918882 4.49091,-26.2502188 -3.18087,-29.1096188 -22.46276,-8.37225 -22.58571,29.2205548 -20.95198,41.6597448 4.16344,31.7004 2.65329,33.109945 2.65329,33.109945 3.78607,-12.278201 9.47482,-22.138108 13.04573,-20.335996 5.9769,3.01633 -0.2558,20.336003 -0.2558,20.336003 5.00195,-0.9459 6.8399,-10.29734 11.51095,-19.18491 -2.95475,7.328985 -5.05057,20.139928 3.17021,19.849007 6.25884,-0.221491 9.95762,-12.616462 10.0473,-18.869697 -3.56623,17.706059 -0.28192,19.017683 2.69342,18.227547 16.76893,-4.45323 20.89185,-26.202818 23.32909,-43.299578 1.10217,-7.73149 4.33675,-22.763865 -3.19592,-24.8253284 -10.45262,-2.8605643 -18.07191,13.0597814 -19.28864,27.4187614 -0.98592,11.635043 11.37202,41.165503 15.65293,40.739833 15.89901,-1.580906 28.37357,-32.753431 29.51749,-40.617911 1.26984,-8.7302 1.66156,-30.3433237 -7.48245,-34.424658 -6.46865,-2.88721307 -14.3443,10.140097 -17.92189,26.649155 -3.3928,15.656376 5.07417,39.839791 14.34825,42.5588 5.97551,1.751923 22.14916,-1.301214 23.90588,-6.415356 0.81798,-2.381299 -2.3473,-6.142491 -4.7141,-7.001541 -4.31621,-1.56661 -9.56965,1.372372 -11.82882,5.369882 -2.25161,3.98416 -2.31576,9.147784 0.79688,11.607814 3.3913,2.68027 7.65792,3.304893 11.61689,1.56959 8.55106,-3.748115 12.64942,-18.320642 12.64942,-18.320642 0.40339,5.19503 7.39573,5.340699 11.48595,5.927199 0,0 -3.09196,5.271472 -1.98963,8.139462 0.81627,2.12372 3.34538,4.456342 5.60718,4.702802 8.9682,0.97724 29.43071,-0.616585 37.44153,-10.852615 
+			" />
+
+		</g>
+		</svg>
+		<br />
+		Joshua Shuller
+
+		<script>
+			//
+			// Animated signature functions
+			//
+
+			// Returns the SVG content using a timeout, because javascript
+			// won't update if the same content is simple replaced in one step
+			function getInnerSVG(element, timeout) {
+				if (!timeout) timeout = 0;
+				return new Promise((resolve, reject) => {
+					// Get the inner SVG content of the element
+					const innerSVG = element.innerHTML;
+					// Simulate asynchronous operation (e.g., fetching SVG content from a server)
+					setTimeout(() => {
+						// Resolve the Promise with the inner SVG content
+						resolve(innerSVG);
+					}, timeout); // Adjust the delay as needed
+				});
+			}
+
+			// Sets the SVG content using a timeout, because javascript
+			// won't update if the same content is simple replaced in one step
+			function putInnerSVG(element, svgContent, timeout) {
+				if (!timeout) timeout = 0;
+				return new Promise((resolve, reject) => {
+					// Put the SVG content back into the element
+					element.innerHTML = svgContent;
+					// Simulate asynchronous operation (e.g., applying animations or transformations)
+					setTimeout(() => {
+						// Resolve the Promise after the operation is complete
+						resolve();
+					}, timeout); // Adjust the delay as needed
+				});
+			}
+
+			// Callback function to start drawing signature when it scrolls into view
+			const signatureCallback = (entries, observer) => {
+				entries.forEach(entry => {
+					// If the target element is intersecting
+					if (entry.isIntersecting) {
+						// Stop observing once it's shown
+						observer.unobserve(entry.target);
+
+						// This is silly, but we got to get the animation to restart somehow
+						getInnerSVG(entry.target).then(svgContent => {
+							// Put the SVG content back into the element
+							putInnerSVG(entry.target, svgContent);
+						}).then(() => {
+							// Callback function after putting the SVG content back into the element
+						});
+
+						// Show the SVG element by changing its opacity
+						entry.target.style.opacity = 1;
+
+					}
+				});
+			};
+
+
+			// Signature observer
+			const signatureObserver = new IntersectionObserver(signatureCallback, {root: null, rootMargin: '0px', threshold: 0.5});
+			const signatureSVG = document.getElementById('signature');
+			signatureObserver.observe(signatureSVG);
+
+
+		</script>
+
 	</p>
 </section>
+
+
+
+
 </div>
 
 
