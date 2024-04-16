@@ -772,13 +772,26 @@ function pageLoaded() {
 		displayExperience('my_c_plus_plus_experience', event.target);
 	});
 
-	document.getElementById('my_java_experience_title').addEventListener('mouseleave', hideCalloutBox);
-	document.getElementById('my_php_experience_title').addEventListener('mouseleave', hideCalloutBox);
-	document.getElementById('my_mysql_experience_title').addEventListener('mouseleave', hideCalloutBox);
-	document.getElementById('my_html_experience_title').addEventListener('mouseleave', hideCalloutBox);
-	document.getElementById('my_javascript_experience_title').addEventListener('mouseleave', hideCalloutBox);
-	document.getElementById('my_c_sharp_experience_title').addEventListener('mouseleave', hideCalloutBox);
-	document.getElementById('my_c_plus_plus_experience_title').addEventListener('mouseleave', hideCalloutBox);
+	document.getElementById('my_java_experience_title').addEventListener('mouseleave', function(event) { hideExperience('my_java_experience', event.target) });
+	document.getElementById('my_java_experience_title').addEventListener('click', function(event) { togglePinExperience('my_java_experience', event.target) });
+
+	document.getElementById('my_php_experience_title').addEventListener('mouseleave', function(event) { hideExperience('my_php_experience', event.target) });
+	document.getElementById('my_php_experience_title').addEventListener('click', function(event) { togglePinExperience('my_php_experience', event.target) });
+
+	document.getElementById('my_mysql_experience_title').addEventListener('mouseleave', function(event) { hideExperience('my_mysql_experience', event.target) });
+	document.getElementById('my_mysql_experience_title').addEventListener('click', function(event) { togglePinExperience('my_mysql_experience', event.target) });
+
+	document.getElementById('my_html_experience_title').addEventListener('mouseleave', function(event) { hideExperience('my_html_experience', event.target) });
+	document.getElementById('my_html_experience_title').addEventListener('click', function(event) { togglePinExperience('my_html_experience', event.target) });
+
+	document.getElementById('my_javascript_experience_title').addEventListener('mouseleave', function(event) { hideExperience('my_javascript_experience', event.target) });
+	document.getElementById('my_javascript_experience_title').addEventListener('click', function(event) { togglePinExperience('my_javascript_experience', event.target) });
+
+	document.getElementById('my_c_sharp_experience_title').addEventListener('mouseleave', function(event) { hideExperience('my_c_sharp_experience', event.target) });
+	document.getElementById('my_c_sharp_experience_title').addEventListener('click', function(event) { togglePinExperience('my_c_sharp_experience', event.target) });
+
+	document.getElementById('my_c_plus_plus_experience_title').addEventListener('mouseleave', function(event) { hideExperience('my_c_plus_plus_experience', event.target) });
+	document.getElementById('my_c_plus_plus_experience_title').addEventListener('click', function(event) { togglePinExperience('my_c_plus_plus_experience', event.target) });
 
 }
 window.addEventListener('load', pageLoaded);
@@ -842,6 +855,9 @@ window.addEventListener('scroll', pageScrolled);
 
 <!-- a custom callout box. -->
 <div id="callout_box" class="callout_box"></div>
+
+<!-- special callout box for displaying experience with particular language in toolbelt -->
+<div id="experience_callout_box" class="callout_box"></div>
 
 
 <!-- Hello -->
@@ -1117,7 +1133,15 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 		My toolbelt mainly holds
 		<div>
 			<ul id="toolbelt">
-				<li><span id="my_java_experience_title">Java</span>
+				<li>
+					<span id="my_java_experience_title">
+						Java
+						<span>
+							<svg id="my_java_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+							</svg>
+						</span>
+					</span>
 					<span class="experience_details" id="my_java_experience">
 						<img src="img/logos/java_logo.svg" class="experience_logo" />
 						Java was my first programming love. 
@@ -1132,7 +1156,15 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 						stock market graphing, etc.
 					</span>
 				</li>
-				<li><span id="my_php_experience_title">PHP</span>
+				<li>
+					<span id="my_php_experience_title">
+						PHP
+						<span>
+							<svg id="my_php_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+							</svg>
+						</span>
+					</span>
 					<span class="experience_details" id="my_php_experience">
 						<img src="img/logos/php_logo.svg" class="experience_logo" />
 						I acquired proficiency in PHP when I started doing contract work.  Better than waiting tables!  With my dreams
@@ -1144,7 +1176,15 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 						online stores, payment gateways for credit card processing, and more.
 					</span>
 				</li>
-				<li><span id="my_mysql_experience_title">MySQL</title>
+				<li>
+					<span id="my_mysql_experience_title">
+						MySQL
+						<span>
+							<svg id="my_mysql_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+							</svg>
+						</span>
+					</span>
 					<span class="experience_details" id="my_mysql_experience">
 						<img src="img/logos/mysql_logo.svg" class="experience_logo" />
 						I've gained proficiency in MySQL through my involvement in various projects where it served as
@@ -1165,7 +1205,15 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 						-->
 					</span>
 				</li>
-				<li><span id="my_html_experience_title">HTML &amp; CSS</span>
+				<li>
+					<span id="my_html_experience_title">
+						HTML &amp; CSS
+						<span>
+							<svg id="my_html_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+							</svg>
+						</span>
+					</span>
 					<span class="experience_details" id="my_html_experience">
 						<img src="img/logos/html5_logo.svg" class="experience_logo" />
 						<img src="img/logos/css3_logo.svg" class="experience_logo" />
@@ -1178,7 +1226,15 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 						and professional web experiences.
 					</span>
 				</li>
-				<li><span id="my_c_plus_plus_experience_title">C &amp; C++</span>
+				<li>
+					<span id="my_c_plus_plus_experience_title">
+						C &amp; C++
+						<span>
+							<svg id="my_c_plus_plus_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+							</svg>
+						</span>
+					</span>
 					<span class="experience_details" id="my_c_plus_plus_experience">
 						<img src="img/logos/c_plus_plus_icon.svg" class="experience_logo" />
 						Honorable mention: I don't have any professional experience in C and C++, 
@@ -1193,7 +1249,15 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 						I used it on my personal linux website before I took a deep dive into PHP.
 					</span>
 				</li>
-				<li><span id="my_javascript_experience_title">JavaScript</span>
+				<li>
+					<span id="my_javascript_experience_title">
+						JavaScript
+						<span>
+							<svg id="my_javascript_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+							</svg>
+						</span>
+					</span>
 					<span class="experience_details" id="my_javascript_experience">
 						<img src="img/logos/javascript_logo.svg" class="experience_logo" />
 						I've been immersed in JavaScript since my early days of creating websites during university. 
@@ -1210,7 +1274,15 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 						-->
 					</span>
 				</li>
-				<li><span id="my_c_sharp_experience_title">C#</span>
+				<li>
+					<span id="my_c_sharp_experience_title">
+						C#
+						<span>
+							<svg id="my_c_sharp_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+							</svg>
+						</span>
+					</span>
 					<span class="experience_details" id="my_c_sharp_experience">
 						<img src="img/logos/c_sharp_logo.svg" class="experience_logo" />
 						I didn't learn C# and .NET until around 2020.
@@ -1239,8 +1311,11 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 			//
 
 			// Shows the callout box at the specified coordinates with the specified HTML contents
-			function showCalloutBox(x, y, html) {
-				const callout = document.getElementById('callout_box');
+			function showCalloutBox(x, y, html, callout_id) {
+				if (!callout_id) {
+					callout_id = 'callout_box';
+				}
+				const callout = document.getElementById(callout_id);
 				callout.innerHTML = html;
 				callout.style.visibility = "visible";
 				callout.style.opacity = 1;
@@ -1251,20 +1326,123 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 			}
 
 			// Hides the callout box
-			function hideCalloutBox() {
-				const callout = document.getElementById('callout_box');
+			function hideCalloutBox(callout_id) {
+				if (!callout_id) {
+					callout_id = 'callout_box';
+				}
+				const callout = document.getElementById(callout_id);
 				callout.style.opacity = 0;
 				callout.style.height = '1px';
 				callout.style.pointerEvents = 'none';
 			}
 
+
+			//
+			//
+			// TOOLBELT FUNCTIONS
+			//
+			//
+
+			// Variable used to keep track of if and which experience item is pinned.
+			let pinned_toolbelt_experience_item = null;
+			let hovered_toolbelt_experience_item = null;
+
 			// Function to display experience for a 'toolbelt' item into the callout and position the callout to the right of the list
 			function displayExperience(id, listItem) {
+				if (window.innerWidth < 300) {
+					return;
+				}
+				if (pinned_toolbelt_experience_item) {
+					return;
+				}
 				const experienceText = document.getElementById(id).innerHTML;
 				const toolbeltRect = getBoundingRect(document.getElementById('toolbelt'));
 				const listItemRect = getBoundingRect(listItem);
-				showCalloutBox(listItemRect.x + listItemRect.w + 30, toolbeltRect.y - 10, experienceText);
+				showCalloutBox(listItemRect.x + listItemRect.w + 30, toolbeltRect.y - 10, experienceText, 'experience_callout_box');
+
+				let pin = document.getElementById(id + '_pin');
+				if (pin) {
+					pin.style.opacity = 1;
+					pin.style.transformOrigin = "center";
+					pin.style.transform = "rotate(0deg)";
+				}
+				if (hovered_toolbelt_experience_item && hovered_toolbelt_experience_item != id) {
+					// Hide it just to be safe
+					pin = document.getElementById(hovered_toolbelt_experience_item + '_pin');
+					if (pin) {
+						pin.style.transformOrigin = "center";
+						pin.style.transform = "rotate(0deg)";
+						pinned_toolbelt_experience_item = null;
+					}
+				}
+				hovered_toolbelt_experience_item = id;
 			}
+
+			// Toggles and pins/unpins the callout box with the details of my experience.
+			// Should probably use a dedicated callout box but don't plan on using it elsewhere at current time.
+			function togglePinExperience(id, listItem) {
+				if (window.innerWidth < 300) {
+					return;
+				}
+				const pin = document.getElementById(id + '_pin');
+				if (pin) {
+					pin.style.opacity=1;
+					if (pinned_toolbelt_experience_item) {
+						if (pinned_toolbelt_experience_item == id) {
+							// Unpin it...
+							pin.style.transformOrigin = "center";
+							pin.style.transform = "rotate(0deg)";
+							pinned_toolbelt_experience_item = null;
+						} else {
+							// A different one is being pinned...
+
+							// Hide the old one
+							const oldPin = document.getElementById(pinned_toolbelt_experience_item + '_pin');
+							oldPin.style.transformOrigin = "center";
+							oldPin.style.transform = "rotate(0deg)";
+							oldPin.style.opacity = 0;
+
+							// Set to null so that displayExperience doesn't quit
+							pinned_toolbelt_experience_item = null;
+
+							// Show the experience of this one
+							displayExperience(id, listItem);
+
+							// Show the current one first...
+							pin.style.opacity = 1;
+							pin.style.transformOrigin = "center";
+							pin.style.transform = "rotate(-90deg)";
+							pinned_toolbelt_experience_item = id;
+
+							// Keep track of the new one
+							pinned_toolbelt_experience_item = id;
+						}
+					} else {
+						pin.style.opacity = 1;
+						pin.style.transformOrigin = "center";
+						pin.style.transform = "rotate(-90deg)";
+						pinned_toolbelt_experience_item = id;
+					}
+				}
+			}
+
+			function hideExperience(id, listItem) {
+				if (pinned_toolbelt_experience_item) {
+					return;
+				}
+				hideCalloutBox('experience_callout_box');
+
+				// Hide the toggle pin
+				if (hovered_toolbelt_experience_item) {
+					const pin = document.getElementById(hovered_toolbelt_experience_item + '_pin');
+					if (pin) {
+						pin.style.opacity = 0;
+						pin.style.transformOrigin = "center";
+						pin.style.transform = "rotate(0deg)";
+					}
+				}
+			}
+
 		</script>
 
 		I'm adept at both front-end and back-end development, 
@@ -1311,7 +1489,7 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 <section id="content_section_contact">
 	<h2>Contact</h2>
 	<p>
-		Please feel free to contact me.  email is preferred.
+		Please feel free to contact me.  Email is preferred.
 		<style>
 			/*
 			 *
@@ -1394,7 +1572,7 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 				<div class="contact_info_copy_icon">
 					<a href="javascript:void(0)" onclick="copyContactInfoEmail(this)" onmouseenter="tip(this, 'Copy email address', '#000033')" onmouseleave="tip()">
 						<svg style="height:1em;width:1em;fill:currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" id="copy_email_icon">
-						<path fill="currentColor" d="M8 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8ZM7 4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4ZM4 6a2 2 0 0 1 1-1.73V14.5A2.5 2.5 0 0 0 7.5 17h6.23A2 2 0 0 1 12 18H7.5A3.5 3.5 0 0 1 4 14.5V6Z"></path>
+						<path fill="currentColor" d="M8 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8ZM7 4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4ZM4 6a2 2 0 0 1 1-1.73V14.5A2.5 2.5 0 0 0 7.5 17h6.23A2 2 0 0 1 12 18H7.5A3.5 3.5 0 0 1 4 14.5V6Z" />
 						</svg>
 					</a>
 				</div>
@@ -1406,11 +1584,46 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 					</svg>
 				</div>
 				<div class="contact_info_label">Phone:</div>
-				<div class="contact_info" id="contact_info_phone">+555-376006-07734-</div>
+				<div class="contact_info" id="contact_info_phone">+555-376006-07734</div>
 				<div class="contact_info_copy_icon">
 					<a href="javascript:void(0)" onclick="copyContactInfoPhone(this)" onmouseenter="tip(this, 'Copy phone number', '#000033')" onmouseleave="tip()">
 						<svg style="height:1em;width:1em;fill:currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" id="copy_phone_icon">
-						<path fill="currentColor" d="M8 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8ZM7 4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4ZM4 6a2 2 0 0 1 1-1.73V14.5A2.5 2.5 0 0 0 7.5 17h6.23A2 2 0 0 1 12 18H7.5A3.5 3.5 0 0 1 4 14.5V6Z"></path>
+						<path fill="currentColor" d="M8 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8ZM7 4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4ZM4 6a2 2 0 0 1 1-1.73V14.5A2.5 2.5 0 0 0 7.5 17h6.23A2 2 0 0 1 12 18H7.5A3.5 3.5 0 0 1 4 14.5V6Z" />
+						</svg>
+					</a>
+				</div>
+			</div>
+
+			<div class="contact_info_row">
+				<div class="contact_info_icon">
+					<svg style="height:1em;width:1em;stroke:currentColor;fill:none" viewBox="-1 -1 18 18" xmlns="http://www.w3.org/2000/svg" version="1.1" focusable="false">
+						<path stroke="#ffffff" fill="none" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z" />
+					</svg>
+				</div>
+				<div class="contact_info_label">Github:</div>
+				<div class="contact_info" id="contact_info_github"><a href="https://github.com/er-or">github.com/er-or</a></div>
+				<div class="contact_info_copy_icon">
+					<a href="javascript:void(0)" onclick="copyContactInfoGithub(this)" onmouseenter="tip(this, 'Copy github URL', '#000033')" onmouseleave="tip()">
+						<svg style="height:1em;width:1em;fill:currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" id="copy_github_icon">
+						<path fill="currentColor" d="M8 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8ZM7 4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4ZM4 6a2 2 0 0 1 1-1.73V14.5A2.5 2.5 0 0 0 7.5 17h6.23A2 2 0 0 1 12 18H7.5A3.5 3.5 0 0 1 4 14.5V6Z" />
+						</svg>
+					</a>
+				</div>
+			</div>
+
+			<div class="contact_info_row">
+				<div class="contact_info_icon">
+					<svg style="height:1em;width:1em;stroke:currentColor" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" focusable="false">
+						<path fill="none" stroke-width="4" stroke="#ffffff" d="M8,72 L64,72 C68.418278,72 72,68.418278 72,64 L72,8 C72,3.581722 68.418278,-8.11624501e-16 64,0 L8,0 C3.581722,8.11624501e-16 -5.41083001e-16,3.581722 0,8 L0,64 C5.41083001e-16,68.418278 3.581722,72 8,72 Z" />
+						<path fill="none" stroke-width="4" stroke="#ffffff" d="M62,62 L51.315625,62 L51.315625,43.8021149 C51.315625,38.8127542 49.4197917,36.0245323 45.4707031,36.0245323 C41.1746094,36.0245323 38.9300781,38.9261103 38.9300781,43.8021149 L38.9300781,62 L28.6333333,62 L28.6333333,27.3333333 L38.9300781,27.3333333 L38.9300781,32.0029283 C38.9300781,32.0029283 42.0260417,26.2742151 49.3825521,26.2742151 C56.7356771,26.2742151 62,30.7644705 62,40.051212 L62,62 Z M16.349349,22.7940133 C12.8420573,22.7940133 10,19.9296567 10,16.3970067 C10,12.8643566 12.8420573,10 16.349349,10 C19.8566406,10 22.6970052,12.8643566 22.6970052,16.3970067 C22.6970052,19.9296567 19.8566406,22.7940133 16.349349,22.7940133 Z M11.0325521,62 L21.769401,62 L21.769401,27.3333333 L11.0325521,27.3333333 L11.0325521,62 Z" />
+					</svg>
+				</div>
+				<div class="contact_info_label">Linkedin:</div>
+				<div class="contact_info" id="contact_info_linkedin"><a href="https://www.linkedin.com/in/joshua-shuller">joshua-shuller</a></div>
+				<div class="contact_info_copy_icon">
+					<a href="javascript:void(0)" onclick="copyContactInfoLinkedin(this)" onmouseenter="tip(this, 'Copy linkedin URL', '#000033')" onmouseleave="tip()">
+						<svg style="height:1em;width:1em;fill:currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" id="copy_linkedin_icon">
+						<path fill="currentColor" d="M8 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8ZM7 4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4ZM4 6a2 2 0 0 1 1-1.73V14.5A2.5 2.5 0 0 0 7.5 17h6.23A2 2 0 0 1 12 18H7.5A3.5 3.5 0 0 1 4 14.5V6Z" />
 						</svg>
 					</a>
 				</div>
@@ -1504,6 +1717,17 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 				return vigenereDecipher('PYPY3GL_@dTLfKs', superSecretKey);
 			}
 
+
+			// Returns my github url, marketing bots are welcome
+			function getContactInfoGithub() {
+				return 'https://github.com/er-or';
+			}
+
+			// Returns my linkedin url, maybe I can get some more bots
+			function getContactInfoLinkedin() {
+				return 'https://www.linkedin.com/in/joshua-shuller';
+			}
+
 			// Displays my email in the HTML page (as divs with single letters)
 			function writeContactInfoEmail() {
 				const email_div = document.getElementById('contact_info_email');
@@ -1539,6 +1763,24 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 				copy_icon.innerHTML = CHECKMARK_PATH;
 				tip(element, 'Copied', '#003300', 0, 0, 5000);
 				setTimeout(() => {document.getElementById('copy_phone_icon').innerHTML=COPY_TO_CLIPBOARD_PATH;},5000);
+			}
+
+			// Copies my github URL to the clipboard
+			function copyContactInfoGithub(element) {
+				copyToClipboard(getContactInfoGithub());
+				const copy_icon = document.getElementById('copy_github_icon');
+				copy_icon.innerHTML = CHECKMARK_PATH;
+				tip(element, 'Copied', '#003300', 0, 0, 5000);
+				setTimeout(() => {document.getElementById('copy_github_icon').innerHTML=COPY_TO_CLIPBOARD_PATH;},5000);
+			}
+
+			// Copies my linked URL to the clipboard
+			function copyContactInfoLinkedin(element) {
+				copyToClipboard(getContactInfoLinkedin());
+				const copy_icon = document.getElementById('copy_linkedin_icon');
+				copy_icon.innerHTML = CHECKMARK_PATH;
+				tip(element, 'Copied', '#003300', 0, 0, 5000);
+				setTimeout(() => {document.getElementById('copy_linkedin_icon').innerHTML=COPY_TO_CLIPBOARD_PATH;},5000);
 			}
 
 
