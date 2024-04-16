@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!--
 
@@ -17,13 +19,13 @@
 
 
 To do:
+	- add link to resume? /docs/resume.pdf
+	- add some type of link to portfolio, maybe a dynamically generated ajax list tree in the same page, or a separate page
+
 	- finish mountain to put on horizon, using some sort of curve-fitting algorithm to get a good svg
 	- include photo in 'background' section
 	- put underground martian colony design in right margin
 
-	- add link to resume? /docs/resume.pdf
-	- add link to github? https://github.com/er-or
-	- add link to linkedin?
 
 	- fix rock positioning on resize, but not so important
 
@@ -32,9 +34,8 @@ To do:
 
 	- move javascript and css to separate files
 
-	- add some type of link to portfolio, maybe a dynamically generated ajax list tree in the same page, or a separate page
-
 	- add some comments
+
 
 -->
 
@@ -43,9 +44,6 @@ To do:
 	https://issuu.com/hochbau2/docs/mars_part2
 	https://issuu.com/hochbau2/docs/mars_part3
 	-->
-
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -390,7 +388,23 @@ To do:
 	box-shadow: 0px 2px var(--callout-shadow-width) 1px var(--callout-shadow-color-inner);
 
 	max-width: 500px;
+}
 
+/* Make the callout 100% width if it's on a phone or somebody just likes a browser with a really small window */
+@media (max-width: 400px) {
+	.callout_box {
+		left: 0;
+		right: 0;
+		margin-left: 0;
+		margin-right: 0;
+		border-left: none;
+		border-right: none;
+		border-radius: 0;
+		width: 100%;
+		width: 100vw;
+		padding: 1em;
+		width: calc(100% - (100% - 100vw) - 3em);
+	}
 }
 
 	</style>
@@ -575,7 +589,6 @@ div.page_header_wave {
 	position: absolute;
 	width: 100%;
 	width: 100vw;
-/*	width: calc(100vw + 10px);*/
 	left: 0;
 	right: 0;
 }
@@ -656,7 +669,7 @@ div.page_footer_wave {
 #signature {
 	width:380px;
 }
-@media (max-width: 380px) { #signature {width:100%}}
+@media (max-width: 380px) { #signature {width:100%} }
 
 
 	</style>
@@ -1021,7 +1034,12 @@ function placeRocks() {
 <div id="content">
 
 <style>
-h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
+h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:font-size ease .5s; }
+@media (max-width: 410px) { h2 { font-size: 1.9em; } }
+@media (max-width: 395px) { h2 { font-size: 1.8em; } }
+@media (max-width: 380px) { h2 { font-size: 1.7em; } }
+@media (max-width: 360px) { h2 { font-size: 1.6em; } }
+
 #content_section_about {
 	border-left: 5px solid white;
 	padding-left: 1em;
@@ -1128,6 +1146,9 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 				height: 100px;
 				width: 5em;
 				height: 5em;
+			}
+			#toolbelt > li {
+				cursor: pointer;
 			}
 		</style>
 		My toolbelt mainly holds
@@ -1310,8 +1331,15 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 			//
 			//
 
+
+			// This constant is also used in CSS, to make the callout 100% of view width
+			const CALLOUT_MIN_WIDTH_TO_FLUSH_LEFT = 400;
+
 			// Shows the callout box at the specified coordinates with the specified HTML contents
 			function showCalloutBox(x, y, html, callout_id) {
+				if (window.innerWidth <= CALLOUT_MIN_WIDTH_TO_FLUSH_LEFT) {
+					x = 0;
+				}
 				if (!callout_id) {
 					callout_id = 'callout_box';
 				}
@@ -1343,23 +1371,26 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 			//
 			//
 
+			// Place toolbelt callout right if the view width is at least this much
+			const TOOLBELT_MIN_WIDTH_FOR_DISPLAY_TO_RIGHT = 500;
+
 			// Variable used to keep track of if and which experience item is pinned.
 			let pinned_toolbelt_experience_item = null;
 			let hovered_toolbelt_experience_item = null;
 
 			// Function to display experience for a 'toolbelt' item into the callout and position the callout to the right of the list
 			function displayExperience(id, listItem) {
-				if (window.innerWidth < 300) {
-					return;
-				}
 				if (pinned_toolbelt_experience_item) {
 					return;
 				}
 				const experienceText = document.getElementById(id).innerHTML;
 				const toolbeltRect = getBoundingRect(document.getElementById('toolbelt'));
 				const listItemRect = getBoundingRect(listItem);
-				showCalloutBox(listItemRect.x + listItemRect.w + 30, toolbeltRect.y - 10, experienceText, 'experience_callout_box');
-
+				if (window.innerWidth >= TOOLBELT_MIN_WIDTH_FOR_DISPLAY_TO_RIGHT) {
+					showCalloutBox(listItemRect.x + listItemRect.w + 30, toolbeltRect.y - 10, experienceText, 'experience_callout_box');
+				} else {
+					showCalloutBox(listItemRect.x - 10, listItemRect.y + 30, experienceText, 'experience_callout_box');
+				}
 				let pin = document.getElementById(id + '_pin');
 				if (pin) {
 					pin.style.opacity = 1;
@@ -1381,9 +1412,6 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps}
 			// Toggles and pins/unpins the callout box with the details of my experience.
 			// Should probably use a dedicated callout box but don't plan on using it elsewhere at current time.
 			function togglePinExperience(id, listItem) {
-				if (window.innerWidth < 300) {
-					return;
-				}
 				const pin = document.getElementById(id + '_pin');
 				if (pin) {
 					pin.style.opacity=1;
