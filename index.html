@@ -19,15 +19,16 @@
 
 
 To do:
-	- add link to resume? /docs/resume.pdf
-	- add some type of link to portfolio, maybe a dynamically generated ajax list tree in the same page, or a separate page
+
+	- fix rock positioning on resize, but not so important
 
 	- finish mountain to put on horizon, using some sort of curve-fitting algorithm to get a good svg
 	- include photo in 'background' section
 	- put underground martian colony design in right margin
 
+	- add some type of link to portfolio, maybe a dynamically generated ajax list tree in the same page, or a separate page
 
-	- fix rock positioning on resize, but not so important
+
 
 	- possibly create a brightness control bar, using :root variables to adjust the colors dynamically
 		but keeping so many variables might not be so much fun
@@ -36,14 +37,14 @@ To do:
 
 	- add some comments
 
-
--->
-
-	<!-- REF FOR MYSELF - MARTIAN SCIENCE STATION HABITAT
+	REF FOR MYSELF - MARTIAN SCIENCE STATION HABITAT
 	https://issuu.com/hochbau2/docs/mars_part1
 	https://issuu.com/hochbau2/docs/mars_part2
 	https://issuu.com/hochbau2/docs/mars_part3
-	-->
+
+-->
+
+
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -130,9 +131,12 @@ To do:
 
 		}
 
-		a { color: white }
-		a:hover {color: RoyalBlue }
-
+		a {
+			color: white;
+		}
+		a:hover {
+			color: CornflowerBlue;
+		}
 
 #content {
 	left: 0;
@@ -598,7 +602,6 @@ div.page_footer_wave {
 	margin: 0;
 	overflow: hidden;
 	position: absolute;
-	float: bottom;
 	width: 100vw;
 	left:0;
 	right: 0;
@@ -671,6 +674,17 @@ div.page_footer_wave {
 }
 @media (max-width: 380px) { #signature {width:100%} }
 
+
+
+#shadow_container {
+	background-image: url('img/ground_shadows.svg');
+	top: 70vh;
+	position: absolute;
+	width: 100%;
+	height: 15vh;
+	opacity: 0.5;
+	background-position: -20px center;
+}
 
 	</style>
 	<script>
@@ -908,7 +922,7 @@ window.addEventListener('scroll', pageScrolled);
 
 <!-- Contains the rocks on the ground -->
 <div id="rock_container">
-	<div id="shadow_container" style="background-image:url('img/ground_shadows.svg');top:70vh;position:absolute;width:100%;height:15vh;background-opacity:0.5;background-position:-20px center;">
+	<div id="shadow_container">
 	</div>
 	<svg id="rock_svg" x="0" y="0" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
 		<defs>
@@ -1029,10 +1043,6 @@ function placeRocks() {
 }
 </script>
 
-
-
-<div id="content">
-
 <style>
 h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:font-size ease .5s; }
 @media (max-width: 410px) { h2 { font-size: 1.9em; } }
@@ -1044,13 +1054,13 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 	border-left: 5px solid white;
 	padding-left: 1em;
 }
-#content_section_about h2 { color: white; }
+#content_section_about h2 { color: White; }
 
 #content_section_background {
 	border-left: 5px solid orange;
     padding-left: 1em;
 }
-#content_section_background h2 { color: orange; }
+#content_section_background h2 { color: Orange; }
 
 #content_section_programming {
 	border-left: 5px solid SteelBlue;
@@ -1063,8 +1073,38 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 	border-left: 5px solid green;
     padding-left: 1em;
 }
-#content_section_contact h2 { color: green };
+#content_section_contact h2 { color: Green; }
+
+
+
+
+
+
+/* Initially hidden experience details text for a particular language or ... technology */
+.experience_details {
+	position: absolute;
+	visibility: hidden;
+	overflow: hidden;
+	width: 0;
+	height: 0;
+}
+
+/* Going to try to put a logo in the upper-right of the callout box for displaying experience */
+.experience_logo {
+	float: right;
+	width: 100px;
+	height: 100px;
+	width: 5em;
+	height: 5em;
+}
+#toolbelt > li {
+	cursor: pointer;
+}
 </style>
+
+
+<div id="content">
+
 
 <section id="content_section_about">
 	<h2>About Website</h2>
@@ -1075,7 +1115,7 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 		This is a static website that I have mainly to toy around with, but really because
 		my other hosting plan has reached it's CPU limit.  I wanted to
 		also provide some info about myself, just in case.  
-		I'm not anti-social, but I'm also not extremely social. 
+		I'm not anti-social, but am a bit introverted.
 		As a result, I haven't jumped onto the regular social media bandwagons.
 	</p>
 	<p>
@@ -1129,199 +1169,175 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 		My passion lies in the intricate world of code, crafting solutions that bring ideas to fruition.
 	</p>
 	<p>
-		<style>
-			/* Initially hidden experience details text for a particular language or ... technology */
-			.experience_details {
-				position: absolute;
-				visibility: hidden;
-				overflow: hidden;
-				width: 0;
-				height: 0;
-			}
-
-			/* Going to try to put a logo in the upper-right of the callout box for displaying experience */
-			.experience_logo {
-				float: right;
-				width: 100px;
-				height: 100px;
-				width: 5em;
-				height: 5em;
-			}
-			#toolbelt > li {
-				cursor: pointer;
-			}
-		</style>
 		My toolbelt mainly holds
-		<div>
-			<ul id="toolbelt">
-				<li>
-					<span id="my_java_experience_title">
-						Java
-						<span>
-							<svg id="my_java_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
-								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
-							</svg>
-						</span>
+		<ul id="toolbelt">
+			<li>
+				<span id="my_java_experience_title">
+					Java
+					<span>
+						<svg id="my_java_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+							<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+						</svg>
 					</span>
-					<span class="experience_details" id="my_java_experience">
-						<img src="img/logos/java_logo.svg" class="experience_logo" />
-						Java was my first programming love. 
-						It was the primary language taught in my university. 
-						I vividly recall the excitement of believing I had devised a novel sorting algorithm, 
-						only to discover in my subsequent data structures course that I had merely reinvented bucket sort. 
-						My experience with Java extends beyond the academic realm into both personal and professional domains. 
-						However, it is my personal projects that are more interesting to me. 
-						These projects span a wide array of fascinating endeavors, 
-						including robotics, image processing video input from cameras for 3D reconstruction, 
-						and creating applets with equally diverse functions such as text editing (better than the old notepad),
-						stock market graphing, etc.
+				</span>
+				<span class="experience_details" id="my_java_experience">
+					<img src="img/logos/java_logo.svg" class="experience_logo" alt="Java">
+					Java was my first programming love. 
+					It was the primary language taught in my university. 
+					I vividly recall the excitement of believing I had devised a novel sorting algorithm, 
+					only to discover in my subsequent data structures course that I had merely reinvented bucket sort. 
+					My experience with Java extends beyond the academic realm into both personal and professional domains. 
+					However, it is my personal projects that are more interesting to me. 
+					These projects span a wide array of fascinating endeavors, 
+					including robotics, image processing video input from cameras for 3D reconstruction, 
+					and creating applets with equally diverse functions such as text editing (better than the old notepad),
+					stock market graphing, etc.
+				</span>
+			</li>
+			<li>
+				<span id="my_php_experience_title">
+					PHP
+					<span>
+						<svg id="my_php_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+							<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+						</svg>
 					</span>
-				</li>
-				<li>
-					<span id="my_php_experience_title">
-						PHP
-						<span>
-							<svg id="my_php_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
-								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
-							</svg>
-						</span>
+				</span>
+				<span class="experience_details" id="my_php_experience">
+					<img src="img/logos/php_logo.svg" class="experience_logo" alt="PHP">
+					I acquired proficiency in PHP when I started doing contract work.  Better than waiting tables!  With my dreams
+					of java development temporarily crushed, I was rescued by PHP.
+					The bulk of my professional experience revolves around PHP,  encompassing a wide range of web applications. 
+					These include online personality testing and evaluation, prescription drug certification systems 
+					for medical professionals, x-ray technician records management, questionnaire applications, 
+					bid, quote, and booking management systems, 
+					online stores, payment gateways for credit card processing, and more.
+				</span>
+			</li>
+			<li>
+				<span id="my_mysql_experience_title">
+					MySQL
+					<span>
+						<svg id="my_mysql_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+							<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+						</svg>
 					</span>
-					<span class="experience_details" id="my_php_experience">
-						<img src="img/logos/php_logo.svg" class="experience_logo" />
-						I acquired proficiency in PHP when I started doing contract work.  Better than waiting tables!  With my dreams
-						of java development temporarily crushed, I was rescued by PHP.
-						The bulk of my professional experience revolves around PHP,  encompassing a wide range of web applications. 
-						These include online personality testing and evaluation, prescription drug certification systems 
-						for medical professionals, x-ray technician records management, questionnaire applications, 
-						bid, quote, and booking management systems, 
-						online stores, payment gateways for credit card processing, and more.
+				</span>
+				<span class="experience_details" id="my_mysql_experience">
+					<img src="img/logos/mysql_logo.svg" class="experience_logo" alt="MySQL">
+					I've gained proficiency in MySQL through my involvement in various projects where it served as
+					the primary backend database solution.  While my expertise lies predominantly in development, 
+					MySQL has been a fundamental component of many of my projects, providing robust storage and retrieval 
+					capabilities for a wide range of data-driven applications.  Whether managing user profiles and preferences, 
+					storing transactional data for e-commerce platforms,  or implementing complex data structures 
+					for healthcare records management systems,  MySQL has consistently proven its reliability and scalability 
+					in handling diverse data requirements (until one starts doing joins on tables containing more than a few thousand
+					rows of data, that is).  My experience with MySQL extends beyond mere database administration to encompass 
+					optimizing queries, ensuring data integrity, and implementing efficient indexing strategies to enhance application 
+					performance and user experience.
+					<!--
+					<br /><br />
+					In addition to my experience with MySQL, I have also worked with Microsoft SQL Server and am proficient 
+					in developing with it. My expertise extends to other relational database technologies as well, 
+					and I am confident in my ability to adapt to different database systems as needed.
+					-->
+				</span>
+			</li>
+			<li>
+				<span id="my_html_experience_title">
+					HTML &amp; CSS
+					<span>
+						<svg id="my_html_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+							<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+						</svg>
 					</span>
-				</li>
-				<li>
-					<span id="my_mysql_experience_title">
-						MySQL
-						<span>
-							<svg id="my_mysql_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
-								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
-							</svg>
-						</span>
+				</span>
+				<span class="experience_details" id="my_html_experience">
+					<img src="img/logos/html5_logo.svg" class="experience_logo" alt="HTML">
+					<img src="img/logos/css3_logo.svg" class="experience_logo" alt="CSS">
+					The foundational languages of web development. 
+					While HTML may seem straightforward, its role in structuring web content is essential for creating 
+					well-organized and accessible websites, so I feel I must include it in this list. 
+					As for CSS, while I usually start with existing styles and templates, I excel in refining and customizing 
+					them to achieve visually appealing and user-friendly designs.
+					While HTML and CSS may be considered foundational, their mastery is critical for crafting engaging 
+					and professional web experiences.
+				</span>
+			</li>
+			<li>
+				<span id="my_c_plus_plus_experience_title">
+					C &amp; C++
+					<span>
+						<svg id="my_c_plus_plus_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+							<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+						</svg>
 					</span>
-					<span class="experience_details" id="my_mysql_experience">
-						<img src="img/logos/mysql_logo.svg" class="experience_logo" />
-						I've gained proficiency in MySQL through my involvement in various projects where it served as
-						the primary backend database solution.  While my expertise lies predominantly in development, 
-						MySQL has been a fundamental component of many of my projects, providing robust storage and retrieval 
-						capabilities for a wide range of data-driven applications.  Whether managing user profiles and preferences, 
-						storing transactional data for e-commerce platforms,  or implementing complex data structures 
-						for healthcare records management systems,  MySQL has consistently proven its reliability and scalability 
-						in handling diverse data requirements (until one starts doing joins on tables containing more than a few thousand
-						rows of data, that is).  My experience with MySQL extends beyond mere database administration to encompass 
-						optimizing queries, ensuring data integrity, and implementing efficient indexing strategies to enhance application 
-						performance and user experience.
-						<!--
-						<br /><br />
-						In addition to my experience with MySQL, I have also worked with Microsoft SQL Server and am proficient 
-						in developing with it. My expertise extends to other relational database technologies as well, 
-						and I am confident in my ability to adapt to different database systems as needed.
-						-->
+				</span>
+				<span class="experience_details" id="my_c_plus_plus_experience">
+					<img src="img/logos/c_plus_plus_icon.svg" class="experience_logo" alt="C++">
+					Honorable mention: I don't have any professional experience in C and C++, 
+					but I did get to utilize it quite a bit in university. It's not exactly like Java or C#, 
+					but you can make it almost the same as Java with pointers using wrappers. 
+					I did all sorts of fun projects in C and C++. One of them was a video streaming chat application; 
+					it didn't perform quite as well as I liked (compressing PNG frames one at a time), but it was a ton of fun to make. 
+					Another really fun project I did was with the OU robotics club, where we color-coded the robots and put a camera 
+					over the robot arena to make it easier to program the robots from a faster PC than the onboard controller could handle,
+					which never panned out, but it wasn't my fault, the hardware was lacking. 
+					Additionally, I wrote a server-side scripting language in C++, called "cgimorph." 
+					I used it on my personal linux website before I took a deep dive into PHP.
+				</span>
+			</li>
+			<li>
+				<span id="my_javascript_experience_title">
+					JavaScript
+					<span>
+						<svg id="my_javascript_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+							<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+						</svg>
 					</span>
-				</li>
-				<li>
-					<span id="my_html_experience_title">
-						HTML &amp; CSS
-						<span>
-							<svg id="my_html_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
-								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
-							</svg>
-						</span>
+				</span>
+				<span class="experience_details" id="my_javascript_experience">
+					<img src="img/logos/javascript_logo.svg" class="experience_logo" alt="JavaScript">
+					I've been immersed in JavaScript since my early days of creating websites during university. 
+					Initially, it was employed to enrich user experiences, adding interactive elements to web pages. 
+					However, as JavaScript became increasingly prevalent across web browsers and evolved into a powerful 
+					language in its own right, my appreciation for its capabilities deepened. 
+					Today, I rely on JavaScript extensively for numerous facets of web application development. 
+					Its versatility allows me to leverage my expertise in object-oriented programming, enabling me 
+					to tackle a wide array of tasks with confidence and efficiency.
+					<!--
+					<br /><br />
+					While I do not have professional experience in React, Angular, or Node.js, 
+					I feel confident in my ability to adapt to such technologies with minimal effort.  I took a couple of tutorials.
+					-->
+				</span>
+			</li>
+			<li>
+				<span id="my_c_sharp_experience_title">
+					C#
+					<span>
+						<svg id="my_c_sharp_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+							<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
+						</svg>
 					</span>
-					<span class="experience_details" id="my_html_experience">
-						<img src="img/logos/html5_logo.svg" class="experience_logo" />
-						<img src="img/logos/css3_logo.svg" class="experience_logo" />
-						I possess strong skills in HTML and CSS, the foundational languages of web development. 
-						While HTML may seem straightforward, its role in structuring web content is essential for creating 
-						well-organized and accessible websites. 
-						As for CSS, while I may start with existing styles and templates, I excel in refining and customizing 
-						them to achieve visually appealing and user-friendly designs. 
-						While HTML and CSS may be considered foundational, their mastery is critical for crafting engaging 
-						and professional web experiences.
-					</span>
-				</li>
-				<li>
-					<span id="my_c_plus_plus_experience_title">
-						C &amp; C++
-						<span>
-							<svg id="my_c_plus_plus_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
-								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
-							</svg>
-						</span>
-					</span>
-					<span class="experience_details" id="my_c_plus_plus_experience">
-						<img src="img/logos/c_plus_plus_icon.svg" class="experience_logo" />
-						Honorable mention: I don't have any professional experience in C and C++, 
-						but I did get to utilize it quite a bit in university. It's not exactly like Java or C#, 
-						but you can make it almost the same as Java with pointers using wrappers. 
-						I did all sorts of fun projects in C and C++. One of them was a video streaming chat application; 
-						it didn't perform quite as well as I liked (compressing PNG frames one at a time), but it was a ton of fun to make. 
-						Another really fun project I did was with the OU robotics club, where we color-coded the robots and put a camera 
-						over the robot arena to make it easier to program the robots from a faster PC than the onboard controller could handle,
-						which never panned out, but it wasn't my fault, the hardware was lacking. 
-						Additionally, I wrote a server-side scripting language in C++, called "cgimorph." 
-						I used it on my personal linux website before I took a deep dive into PHP.
-					</span>
-				</li>
-				<li>
-					<span id="my_javascript_experience_title">
-						JavaScript
-						<span>
-							<svg id="my_javascript_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
-								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
-							</svg>
-						</span>
-					</span>
-					<span class="experience_details" id="my_javascript_experience">
-						<img src="img/logos/javascript_logo.svg" class="experience_logo" />
-						I've been immersed in JavaScript since my early days of creating websites during university. 
-						Initially, it was employed to enrich user experiences, adding interactive elements to web pages. 
-						However, as JavaScript became increasingly prevalent across web browsers and evolved into a powerful 
-						language in its own right, my appreciation for its capabilities deepened. 
-						Today, I rely on JavaScript extensively for numerous facets of web application development. 
-						Its versatility allows me to leverage my expertise in object-oriented programming, enabling me 
-						to tackle a wide array of tasks with confidence and efficiency.
-						<!--
-						<br /><br />
-						While I do not have professional experience in React, Angular, or Node.js, 
-						I feel confident in my ability to adapt to such technologies with minimal effort.  I took a couple of tutorials.
-						-->
-					</span>
-				</li>
-				<li>
-					<span id="my_c_sharp_experience_title">
-						C#
-						<span>
-							<svg id="my_c_sharp_experience_pin" style="opacity:0;width:1em;height:1em;vertical-align:middle;fill:currentColor" x="0" y="0" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
-								<path stroke-width="1" d="m 39.714985,524.95506 a 17.296503,17.294897 0 0 1 12.16141,-29.54008 l 443.256245,-0.69561 -0.25476,-168.22661 a 51.924105,51.919285 0 0 1 51.80305,-51.95536 l 24.46093,-0.037 a 51.543582,51.538797 0 0 1 36.71441,15.15774 l 77.70754,77.46536 a 17.192725,17.191129 0 0 0 12.21368,5.04443 l 205.81419,-0.31165 a 7.1261593,7.1254978 0 0 0 7.1562,-7.17722 41.857539,41.853653 0 0 1 41.69157,-41.81415 l 38.79502,-0.0588 a 51.474397,51.469619 0 0 1 36.69003,15.18228 c 9.8237,9.79307 15.2493,22.82136 15.2947,36.64045 l 0.4138,273.25205 a 51.924105,51.919285 0 0 1 -51.80308,51.95537 l -38.79502,0.0588 a 41.442424,41.438577 0 0 1 -29.5184,-12.1847 c -7.91285,-7.88818 -12.28274,-18.3499 -12.29963,-29.50304 a 7.0915669,7.0909086 0 0 0 -2.11127,-5.03531 7.0915669,7.0909086 0 0 0 -5.04213,-2.09579 l -205.81421,0.31163 a 17.227318,17.225719 0 0 0 -12.22274,5.10592 l -77.47257,77.70032 c -9.79398,9.82277 -22.79904,15.22337 -36.66835,15.26883 l -24.46092,0.037 c -13.84487,0.021 -26.84182,-5.36473 -36.68999,-15.18221 -9.84819,-9.8175 -15.24931,-22.82135 -15.29468,-36.64045 l -0.25477,-168.22662 -443.256245,0.69562 a 17.919177,17.917514 0 0 1 -12.21401,-5.19121 z M 583.45681,314.1293 a 17.331098,17.329489 0 0 0 -12.23817,-5.06889 l -24.46091,0.037 a 17.296503,17.294897 0 0 0 -17.26769,17.31844 l 0.56199,371.08668 a 17.296503,17.294897 0 0 0 17.34455,17.29051 l 24.46092,-0.037 a 17.434876,17.433258 0 0 0 12.22277,-5.10592 l 77.47255,-77.70033 c 9.79397,-9.82276 22.79904,-15.22337 36.66835,-15.26883 l 205.8142,-0.31164 a 41.511609,41.507755 0 0 1 29.54281,12.16018 41.511609,41.507755 0 0 1 12.2752,29.52753 c 0.003,1.9567 0.73946,3.71661 2.11135,5.08422 a 6.9186015,6.9179592 0 0 0 5.06657,2.07132 l 38.79502,-0.0588 a 17.296503,17.294897 0 0 0 17.26768,-17.31842 l -0.4138,-273.25206 a 17.296503,17.294897 0 0 0 -17.34458,-17.2905 l -38.79502,0.0588 a 7.1607527,7.160088 0 0 0 -7.1562,7.17721 c 0.0348,22.99115 -18.6494,41.77926 -41.66706,41.83858 l -205.83856,0.38504 a 51.543582,51.538797 0 0 1 -36.68992,-15.1333 z" />
-							</svg>
-						</span>
-					</span>
-					<span class="experience_details" id="my_c_sharp_experience">
-						<img src="img/logos/c_sharp_logo.svg" class="experience_logo" />
-						I didn't learn C# and .NET until around 2020.
-						Fortunately, it's very similar to Java, so adapting to it was quite easy for me. 
-						The most notable difference, in my experience, lies in the threading models. 
-						While there are certainly many other nuanced differences between the two languages, 
-						they can sometimes be easier to recognize than to recall and enumerate. 
-						Similar to my professional experience with Java, much of my professional experience 
-						with C# involves creating backend applications for performing scheduled or trigger-based 
-						data processing tasks, such as data scraping and scheduled rebuilding of data files. 
-						Additionally, I've embarked on personal projects using .NET to develop Windows applications, 
-						which has been super easy compared to the old C++ Windows API I used during my university days
-						— it's barely an inconvenience. 
-						Furthermore, I've utilized C# in various UiPath RPA projects.
-					</span>
-				</li>
-			</ul>
-		</div>
+				</span>
+				<span class="experience_details" id="my_c_sharp_experience">
+					<img src="img/logos/c_sharp_logo.svg" class="experience_logo" alt="C#">
+					I didn't learn C# and .NET until around 2020.
+					Fortunately, it's very similar to Java, so adapting to it was quite easy for me. 
+					The most notable difference, in my experience, lies in the threading models. 
+					While there are certainly many other nuanced differences between the two languages, 
+					they can sometimes be easier to recognize than to recall and enumerate. 
+					Similar to my professional experience with Java, much of my professional experience 
+					with C# involves creating backend applications for performing scheduled or trigger-based 
+					data processing tasks, such as data scraping and scheduled rebuilding of data files. 
+					Additionally, I've embarked on personal projects using .NET to develop Windows applications, 
+					which has been super easy compared to the old C++ Windows API I used during my university days
+					— it's barely an inconvenience. 
+					Furthermore, I've utilized C# in various UiPath RPA projects.
+				</span>
+			</li>
+		</ul>
 
 		<script>
 
@@ -1476,11 +1492,26 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 		I'm adept at both front-end and back-end development, 
 		ready to tackle any development challenge.
 	</p>
+
 	<p>
 		While I enjoy the challenge of tackling complex projects head-on, I also recognize the value of teamwork. 
 		I'm constantly working on refining my communication skills to collaborate more effectively.
 		My ideal work environment blends independent initiative with open communication and collaboration. 
 		I can seamlessly navigate between these modes, ensuring efficient progress while remaining open to valuable input and feedback. 
+
+		<br /><br />
+		<a href="resume/Joshua_Shuller_Resume.pdf">
+			<svg  style="stroke:currentColor;width:1em;height:1em" x="0" y="0" viewBox="-4 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path stroke-width="1.5" d="M25.6686 26.0962C25.1812 26.2401 24.4656 26.2563 23.6984 26.145C22.875 26.0256 22.0351 25.7739 21.2096 25.403C22.6817 25.1888 23.8237 25.2548 24.8005 25.6009C25.0319 25.6829 25.412 25.9021 25.6686 26.0962ZM17.4552 24.7459C17.3953 24.7622 17.3363 24.7776 17.2776 24.7939C16.8815 24.9017 16.4961 25.0069 16.1247 25.1005L15.6239 25.2275C14.6165 25.4824 13.5865 25.7428 12.5692 26.0529C12.9558 25.1206 13.315 24.178 13.6667 23.2564C13.9271 22.5742 14.193 21.8773 14.468 21.1894C14.6075 21.4198 14.7531 21.6503 14.9046 21.8814C15.5948 22.9326 16.4624 23.9045 17.4552 24.7459ZM14.8927 14.2326C14.958 15.383 14.7098 16.4897 14.3457 17.5514C13.8972 16.2386 13.6882 14.7889 14.2489 13.6185C14.3927 13.3185 14.5105 13.1581 14.5869 13.0744C14.7049 13.2566 14.8601 13.6642 14.8927 14.2326ZM9.63347 28.8054C9.38148 29.2562 9.12426 29.6782 8.86063 30.0767C8.22442 31.0355 7.18393 32.0621 6.64941 32.0621C6.59681 32.0621 6.53316 32.0536 6.44015 31.9554C6.38028 31.8926 6.37069 31.8476 6.37359 31.7862C6.39161 31.4337 6.85867 30.8059 7.53527 30.2238C8.14939 29.6957 8.84352 29.2262 9.63347 28.8054ZM27.3706 26.1461C27.2889 24.9719 25.3123 24.2186 25.2928 24.2116C24.5287 23.9407 23.6986 23.8091 22.7552 23.8091C21.7453 23.8091 20.6565 23.9552 19.2582 24.2819C18.014 23.3999 16.9392 22.2957 16.1362 21.0733C15.7816 20.5332 15.4628 19.9941 15.1849 19.4675C15.8633 17.8454 16.4742 16.1013 16.3632 14.1479C16.2737 12.5816 15.5674 11.5295 14.6069 11.5295C13.948 11.5295 13.3807 12.0175 12.9194 12.9813C12.0965 14.6987 12.3128 16.8962 13.562 19.5184C13.1121 20.5751 12.6941 21.6706 12.2895 22.7311C11.7861 24.0498 11.2674 25.4103 10.6828 26.7045C9.04334 27.3532 7.69648 28.1399 6.57402 29.1057C5.8387 29.7373 4.95223 30.7028 4.90163 31.7107C4.87693 32.1854 5.03969 32.6207 5.37044 32.9695C5.72183 33.3398 6.16329 33.5348 6.6487 33.5354C8.25189 33.5354 9.79489 31.3327 10.0876 30.8909C10.6767 30.0029 11.2281 29.0124 11.7684 27.8699C13.1292 27.3781 14.5794 27.011 15.985 26.6562L16.4884 26.5283C16.8668 26.4321 17.2601 26.3257 17.6635 26.2153C18.0904 26.0999 18.5296 25.9802 18.976 25.8665C20.4193 26.7844 21.9714 27.3831 23.4851 27.6028C24.7601 27.7883 25.8924 27.6807 26.6589 27.2811C27.3486 26.9219 27.3866 26.3676 27.3706 26.1461ZM30.4755 36.2428C30.4755 38.3932 28.5802 38.5258 28.1978 38.5301H3.74486C1.60224 38.5301 1.47322 36.6218 1.46913 36.2428L1.46884 3.75642C1.46884 1.6039 3.36763 1.4734 3.74457 1.46908H20.263L20.2718 1.4778V7.92396C20.2718 9.21763 21.0539 11.6669 24.0158 11.6669H30.4203L30.4753 11.7218L30.4755 36.2428ZM28.9572 10.1976H24.0169C21.8749 10.1976 21.7453 8.29969 21.7424 7.92417V2.95307L28.9572 10.1976ZM31.9447 36.2428V11.1157L21.7424 0.871022V0.823357H21.6936L20.8742 0H3.74491C2.44954 0 0 0.785336 0 3.75711V36.2435C0 37.5427 0.782956 40 3.74491 40H28.2001C29.4952 39.9997 31.9447 39.2143 31.9447 36.2428Z" />
+			</svg>
+			My resume
+		</a>
+		<a href="resume/Joshua_Shuller_Resume.pdf" download="resume/Joshua_Shuller_Resume.pdf">
+			<svg style="stroke:currentColor;width:1em;height:1em" x="0" y="0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M12,1 V22 M12,23 L19,16 M12,23 L5,16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>
+		</a>
+
 	</p>
 
 	<p>
@@ -1827,7 +1858,7 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 		<br /><br />
 		Kind regards,<br />
 		<!-- Signature, must be inline to use animation -->
-		<svg id="signature" viewBox="0 0 470 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" style="opacity:0">
+		<svg id="signature" viewBox="0 0 470 80" version="1.1" xmlns="http://www.w3.org/2000/svg"  style="opacity:0">
 		<style>
 			/* Dash array to create illusion of writing.  Using length of 1500 is too much, but timings are adjusted below */
 			.first, .last, .J {
