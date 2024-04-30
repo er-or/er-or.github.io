@@ -20,8 +20,6 @@
 
 To do:
 
-	- fix rock positioning on resize, but not so important
-
 	- finish mountain to put on horizon, using some sort of curve-fitting algorithm to get a good svg
 	- include photo in 'background' section
 	- put underground martian colony design in right margin
@@ -174,7 +172,6 @@ To do:
 
 		.star {
 			position: absolute;
-			/*transition: left 0.1s, top 0.1s; /* would have been nice, but it's weird */
 		}
 
 		.star_container {
@@ -572,6 +569,9 @@ function tip(element, message, bgcolor, adjustX, adjustY, timeout) {
 
 	<style>
 
+/*
+ * The heavens are in a box
+ */
 #sky_container {
 	width: 100vw;
 	height: 60vh;
@@ -579,13 +579,15 @@ function tip(element, message, bgcolor, adjustX, adjustY, timeout) {
 }
 
 
+
+/*
+ * Header, or top of content, waves
+ */
 #header_wave_container {
 	height: 100px;
 	width: 100vw;
 	overflow: hidden;
 }
-
-
 div.page_header_wave {
 	padding: 0;
 	margin: 0;
@@ -596,7 +598,39 @@ div.page_header_wave {
 	left: 0;
 	right: 0;
 }
+.page_header_lvl_1 {
+	stroke: white;
+	stroke-width: 1;
+	fill: #ad2817;
+}
+.page_header_lvl_2 {
+	stroke: white;
+	stroke-width: 1;
+	fill: rgb(142, 31, 19);
+	background-color: rgb(142, 31, 19);
+}
+.page_header_lvl_3 {
+	stroke: white;
+	stroke-width: 1;
+	fill: rgb(112, 21, 15);
+	background-color: rgb(112, 21, 15);
+}
+.page_header_lvl_4 {
+	stroke: white;
+	stroke-width: 1;
+	fill: rgb(81, 11, 11);
+	background-color: rgb(81, 11, 11);
+}
 
+
+/*
+ * Footer waves
+ */
+#footer_wave_container {
+	height: 100px;
+	width: 100vw;
+	overflow: hidden;
+}
 div.page_footer_wave {
 	padding: 0;
 	margin: 0;
@@ -608,34 +642,43 @@ div.page_footer_wave {
 	border: 0;
 }
 
-.page_header_lvl_1 {
-	stroke: white;
-	stroke-width: 1;
-	background-color: #ad2817;
-	fill: #ad2817;
-}
-.page_header_lvl_2 {
+.page_footer_lvl_1 {
 	stroke: white;
 	stroke-width: 1;
 	transition: background-color .5s;
-	fill: rgb(142, 31, 19);
-	background-color: rgb(142, 31, 19);
+	fill: rgb(74, 140, 152);
+	fill: rgb(16, 11, 25);
+	background-color: rgb(74, 140, 152);
 }
-.page_header_lvl_3 {
+.page_footer_lvl_2 {
 	stroke: white;
 	stroke-width: 1;
 	transition: background-color .5s;
-	fill: rgb(112, 21, 15);
-	background-color: rgb(112, 21, 15);
+	fill: rgb(101, 178, 184);
+	fill: rgb(10, 24, 45);
+	background-color: rgb(101, 178, 184);
 }
-.page_header_lvl_4 {
+.page_footer_lvl_3 {
 	stroke: white;
 	stroke-width: 1;
 	transition: background-color .5s;
-	fill: rgb(81, 11, 11);
-	background-color: rgb(81, 11, 11);
+	fill: rgb(161, 215, 217);
+	fill: rgb(6, 38, 65);
+	background-color: rgb(161, 215, 217);
+}
+.page_footer_lvl_4 {
+	stroke: white;
+	stroke-width: 1;
+	transition: background-color .5s;
+	fill: rgb(199, 229, 229);
+	fill:  rgb(11, 72, 107);
+	background-color: rgb(199, 229, 229);
 }
 
+
+/*
+ * The javascript-generated mountains on the horizon
+ */
 #background_mountain_container {
 	position: absolute;
 	z-index: 2;
@@ -647,7 +690,9 @@ div.page_footer_wave {
 }
 
 
-
+/*
+ * A box to put my name in as the page title
+ */
 #name_box {
 	padding-left: 0.5em;
 	position: absolute;
@@ -669,6 +714,9 @@ div.page_footer_wave {
 @media (max-width: 320px) { #name_box {font-size: 15pt;}}
 
 
+/*
+ * SVG which displays my name, like a signature but not really, my signature is uglier.
+ */
 #signature {
 	width:380px;
 }
@@ -676,6 +724,9 @@ div.page_footer_wave {
 
 
 
+/*
+ * Shadows on the ground to give it a bit of a more 3d look.
+ */
 #shadow_container {
 	background-image: url('img/ground_shadows.svg');
 	top: 70vh;
@@ -703,6 +754,10 @@ div.page_footer_wave {
 		// Waves right below 100vh
 		//
 		function getSvgWave(cls, y1, y2, h = 200, z = 1002, is_footer = false) {
+			//const fbm = new FBM(3231, false);
+
+			if (!is_footer) is_footer = false;
+
 			let dropshadow =
 				'<filter id="sha' + z + '" height="130%">'
 					+ '<feGaussianBlur in="SourceAlpha" stdDeviation="2" />'
@@ -752,7 +807,11 @@ div.page_footer_wave {
 			;
 		}
 
-		function redrawSvgWaves() {
+		//
+		// Draws the header waves, transition from ground to "underground" content.
+		// Box is at 100vh
+		//
+		function redrawSvgHeaderWaves() {
 			let waves = ''
 				+ getSvgWave('page_header_lvl_4', 77, 100, 100, 13)
 				+ getSvgWave('page_header_lvl_3', 57, 73, 100, 14)
@@ -763,6 +822,17 @@ div.page_footer_wave {
 			if (box) box.innerHTML = waves;
 		}
 
+		// Draws the footer waves - underground water table!
+		function redrawSvgFooterWaves() {
+			let waves = ''
+				+ getSvgWave('page_footer_lvl_1', 0, 25, 100, 13, true)
+				+ getSvgWave('page_footer_lvl_2', 25, 50, 100, 14, true)
+				+ getSvgWave('page_footer_lvl_3', 50, 70, 100, 15, true)
+				+ getSvgWave('page_footer_lvl_4', 70, 90, 100, 20, true)
+			;
+			let box = document.getElementById('footer_wave_container');
+			if (box) box.innerHTML = waves;
+		}
 
 
 
@@ -774,7 +844,7 @@ function pageLoaded() {
 	loadBackgroundStars();
 	updateStarmapOrientation();
 	setTimeout(() => {placeRocks();}, 0);
-	setTimeout(() => {redrawSvgWaves();}, 0);
+	setTimeout(() => {redrawSvgHeaderWaves();}, 0);
 
 	// Add callbacks to expiernece items
 	document.getElementById('my_java_experience_title').addEventListener('mouseenter', function(event) {
@@ -820,14 +890,28 @@ function pageLoaded() {
 	document.getElementById('my_c_plus_plus_experience_title').addEventListener('mouseleave', function(event) { hideExperience('my_c_plus_plus_experience', event.target) });
 	document.getElementById('my_c_plus_plus_experience_title').addEventListener('click', function(event) { togglePinExperience('my_c_plus_plus_experience', event.target) });
 
+
+	// Email and phone observer
+	const contactObserver = new IntersectionObserver(contactInfoCallback, {root:null,rootMargin:'0px',threshold:0});
+	contactObserver.observe(document.getElementById('contact_info_email'));
+	contactObserver.observe(document.getElementById('contact_info_phone'));
+
+	// Signature observer
+	const signatureObserver = new IntersectionObserver(signatureCallback, {root: null, rootMargin: '0px', threshold: 0.5});
+	const signatureSVG = document.getElementById('signature');
+	signatureObserver.observe(signatureSVG);
+
+
+
 }
 window.addEventListener('load', pageLoaded);
 
 function pageResized() {
 	redrawBackgroundMountains();
 	updateStarmapOrientation();
-	redrawSvgWaves();
+	redrawSvgHeaderWaves();
 	setTimeout(() => {placeRocks();}, 0);
+	setTimeout(() => {redrawSvgFooterWaves();}, 0);
 }
 window.addEventListener('resize', pageResized);
 
@@ -889,8 +973,8 @@ window.addEventListener('scroll', pageScrolled);
 
 <!-- Hello -->
 <div id="name_box">
-	JOSHUA SHULLER<br />
-	<span style="font-size:0.825em">SOFTWARE ENGINEER</span><br />
+	JOSHUA SHULLER<br>
+	<span style="font-size:0.825em">SOFTWARE ENGINEER</span><br>
 	<!--<i style="font-size:0.825em">OUT OF THIS WORLD!</i>-->
 </div>
 
@@ -899,7 +983,7 @@ window.addEventListener('scroll', pageScrolled);
 <div id="sky_container">
 
 	<!-- contains a (possibly) repeating star map background which streches to the current field of view -->
-	<div id="star_map_bg_container" class="star_container"><img id="star_map_rotating_bg_image" src="img/galaxy_background.webp" /></div>
+	<div id="star_map_bg_container" class="star_container"><img id="star_map_rotating_bg_image" src="img/galaxy_background.webp" alt="galaxy background texture"></div>
 	<div id="star_map_bg_blur_layer" class="star_container"></div>
 
 	<div id="star_map_sky_color_gradient" class="star_container"></div>
@@ -907,7 +991,7 @@ window.addEventListener('scroll', pageScrolled);
 	<div id="star_map_background_canvas_container" class="star_container"></div>
 
 	<div id="star_map_bright_star_container" class="star_container"></div>
-	<div id="earth"><img src="img/earth.svg" width="200" height="200"></div>
+	<div id="earth"><img src="img/earth.svg" width="200" height="200" alt="Earth"></div>
 
 </div>
 
@@ -961,11 +1045,15 @@ window.addEventListener('scroll', pageScrolled);
 
 
 
-<!-- FOREGROUND MOUNTAIN CONTAINER -->
-<div style="position:absolute;z-index:3;top:60vh;top:calc(60vh - 10px);left:20px;">
-	<!-- <img src="img/foothills1.svg" width="270.40414" height="32.605999" /> -->
+<!-- FOREGROUND MOUNTAIN CONTAINERS -->
+<div style="position:absolute;z-index:1;top:60vh;top:calc(50vh - 25px);left:20px;">
+<!--
+	<img style="position:absolute" src="dev/Uluru.webp" width="750" />
+-->
 </div>
-
+<div style="position:absolute;z-index:3;top:60vh;left:20px;">
+	<img src="img/foothills1.svg" width="270.40414" height="32.605999" />
+</div>
 
 <div id="header_wave_container"></div>
 
@@ -976,8 +1064,8 @@ window.addEventListener('scroll', pageScrolled);
 
 // Need to check if resize is width-only, in which case we do not really need to replace the rocks.
 // But if the resize is also in height, we need to clear the rocks and replace them.
+let last_rock_container_height = -1;
 function placeRocks() {
-
 
 	const container = document.getElementById('rock_container');
 	if (!container) {
@@ -990,16 +1078,23 @@ function placeRocks() {
 
 	const rockSize = 30;
 	const spacing = 150;
-	const fbm = new FBM(spacing, false);
+	const fbm = new FBM(1234, false);
 
 	const rockSvg = document.getElementById('rock_svg');
 	const rockG = rockSvg.getElementById('rock_g');
 
+	if (containerH != last_rock_container_height) {
+		// Clear rockG
+		while (rockG.firstChild) {
+			rockG.removeChild(rockG.firstChild);
+		}
+		last_rock_container_height = containerH;
+	}
+
 	rockSvg.width = containerW;
 	rockSvg.height = containerH;
 
-	let xSpacing = 	Math.ceil(spacing / containerH) * 8;
-	let ySpacing = Math.ceil(spacing / containerH) * 8;
+	const ySpacing = Math.ceil(spacing / containerH) * 8;
 	for (let y = 0; y <= containerH; y += ySpacing) {
 
 		// Skip over a part of the gradient that is just a little too dark.
@@ -1010,7 +1105,7 @@ function placeRocks() {
 
 
 
-		xSpacing = Math.ceil((y + 1) * spacing / containerH) * 8;
+		const xSpacing = Math.ceil((y + 1) * spacing / containerH) * 8;
 		for (let x = 0; x <= containerW; x += xSpacing) {
 
 			const rockId = 'rock_' + Math.floor(x % spacing) + '_' + Math.floor(y % spacing);
@@ -1026,7 +1121,7 @@ function placeRocks() {
 				continue;
 			}
 
-			let scale = 3 * rockY / containerH;
+			const scale = Math.max(2 * rockY / containerH, 0.01);
 //console.log(rockX + ' x ' + rockY + ' [' + containerR.left + ' x ' + containerR.top + ', ' + containerR.width + ' x ' + containerR.height + ']');
 
 			// Create rock path
@@ -1038,9 +1133,386 @@ function placeRocks() {
 			rockG.appendChild(rock);
 //console.log('created rock at ' + rockX + ' x ' + rockY);
 		}
-		//xSpacing = Math.ceil((y + 1) * spacing / containerH) * 8;
 	}
 }
+
+
+</script>
+<script>
+
+	//
+	//
+	// CALLOUT FUNCTIONS
+	//
+	//
+
+
+	// This constant is also used in CSS, to make the callout 100% of view width
+	const CALLOUT_MIN_WIDTH_TO_FLUSH_LEFT = 400;
+
+	// Shows the callout box at the specified coordinates with the specified HTML contents
+	function showCalloutBox(x, y, html, callout_id) {
+		if (window.innerWidth <= CALLOUT_MIN_WIDTH_TO_FLUSH_LEFT) {
+			x = 0;
+		}
+		if (!callout_id) {
+			callout_id = 'callout_box';
+		}
+		const callout = document.getElementById(callout_id);
+		callout.innerHTML = html;
+		callout.style.visibility = "visible";
+		callout.style.opacity = 1;
+		callout.style.height = 'auto';
+		callout.style.left = x + 'px';
+		callout.style.top = y + 'px';
+		callout.style.pointerEvents = 'auto';
+	}
+
+	// Hides the callout box
+	function hideCalloutBox(callout_id) {
+		if (!callout_id) {
+			callout_id = 'callout_box';
+		}
+		const callout = document.getElementById(callout_id);
+		callout.style.opacity = 0;
+		callout.style.height = '1px';
+		callout.style.pointerEvents = 'none';
+	}
+
+
+	//
+	//
+	// TOOLBELT FUNCTIONS
+	//
+	//
+
+	// Place toolbelt callout right if the view width is at least this much
+	const TOOLBELT_MIN_WIDTH_FOR_DISPLAY_TO_RIGHT = 500;
+
+	// Variable used to keep track of if and which experience item is pinned.
+	let pinned_toolbelt_experience_item = null;
+	let hovered_toolbelt_experience_item = null;
+
+	// Function to display experience for a 'toolbelt' item into the callout and position the callout to the right of the list
+	function displayExperience(id, listItem) {
+		if (pinned_toolbelt_experience_item) {
+			return;
+		}
+		const experienceText = document.getElementById(id).innerHTML;
+		const toolbeltRect = getBoundingRect(document.getElementById('toolbelt'));
+		const listItemRect = getBoundingRect(listItem);
+		if (window.innerWidth >= TOOLBELT_MIN_WIDTH_FOR_DISPLAY_TO_RIGHT) {
+			showCalloutBox(listItemRect.x + listItemRect.w + 30, toolbeltRect.y - 10, experienceText, 'experience_callout_box');
+		} else {
+			showCalloutBox(listItemRect.x - 10, listItemRect.y + 30, experienceText, 'experience_callout_box');
+		}
+		let pin = document.getElementById(id + '_pin');
+		if (pin) {
+			pin.style.opacity = 1;
+			pin.style.transformOrigin = "center";
+			pin.style.transform = "rotate(0deg)";
+		}
+		if (hovered_toolbelt_experience_item && hovered_toolbelt_experience_item != id) {
+			// Hide it just to be safe
+			pin = document.getElementById(hovered_toolbelt_experience_item + '_pin');
+			if (pin) {
+				pin.style.transformOrigin = "center";
+				pin.style.transform = "rotate(0deg)";
+				pinned_toolbelt_experience_item = null;
+			}
+		}
+		hovered_toolbelt_experience_item = id;
+	}
+
+	// Toggles and pins/unpins the callout box with the details of my experience.
+	// Should probably use a dedicated callout box but don't plan on using it elsewhere at current time.
+	function togglePinExperience(id, listItem) {
+		const pin = document.getElementById(id + '_pin');
+		if (pin) {
+			pin.style.opacity=1;
+			if (pinned_toolbelt_experience_item) {
+				if (pinned_toolbelt_experience_item == id) {
+					// Unpin it...
+					pin.style.transformOrigin = "center";
+					pin.style.transform = "rotate(0deg)";
+					pinned_toolbelt_experience_item = null;
+				} else {
+					// A different one is being pinned...
+
+					// Hide the old one
+					const oldPin = document.getElementById(pinned_toolbelt_experience_item + '_pin');
+					oldPin.style.transformOrigin = "center";
+					oldPin.style.transform = "rotate(0deg)";
+					oldPin.style.opacity = 0;
+
+					// Set to null so that displayExperience doesn't quit
+					pinned_toolbelt_experience_item = null;
+
+					// Show the experience of this one
+					displayExperience(id, listItem);
+
+					// Show the current one first...
+					pin.style.opacity = 1;
+					pin.style.transformOrigin = "center";
+					pin.style.transform = "rotate(-90deg)";
+					pinned_toolbelt_experience_item = id;
+
+					// Keep track of the new one
+					pinned_toolbelt_experience_item = id;
+				}
+			} else {
+				pin.style.opacity = 1;
+				pin.style.transformOrigin = "center";
+				pin.style.transform = "rotate(-90deg)";
+				pinned_toolbelt_experience_item = id;
+			}
+		}
+	}
+
+	// Hides the experience callout box
+	function hideExperience(id, listItem) {
+		if (pinned_toolbelt_experience_item) {
+			return;
+		}
+		hideCalloutBox('experience_callout_box');
+
+		// Hide the toggle pin
+		if (hovered_toolbelt_experience_item) {
+			const pin = document.getElementById(hovered_toolbelt_experience_item + '_pin');
+			if (pin) {
+				pin.style.opacity = 0;
+				pin.style.transformOrigin = "center";
+				pin.style.transform = "rotate(0deg)";
+			}
+		}
+	}
+
+</script>
+<script>
+	//
+	// Contact info function
+	//
+
+	// Writes contact info in divs, just trying to confuse spam crawlers
+	function writeInDivs(container, text) {
+		let divs = '';
+		for (let i = 0; i < text.length; i++) {
+			divs += '<div class="letter_div" style="width:0;opacity:0">.</div>';
+			divs += '<div class="letter_div">' + text[i] + '&#8203;</div>';
+		}
+		container.innerHTML = divs;
+	}
+
+	// Puts specified text into clipboard
+	function copyToClipboard(text) {
+		if (window.clipboardData && window.clipboardData.setData) {
+			// Internet Explorer-specific code path to prevent textarea being shown while dialog is visible.
+			return clipboardData.setData("Text", text);
+
+		} else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+			var textarea = document.createElement("textarea");
+			textarea.textContent = text;
+			textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in Microsoft Edge.
+			document.body.appendChild(textarea);
+			textarea.select();
+			try {
+				return document.execCommand("copy");  // Security exception may be thrown by some browsers.
+			} catch (ex) {
+				console.warn("copy to clipboard failed.", ex);
+				return false;
+			} finally {
+				document.body.removeChild(textarea);
+			}
+		}
+	}
+
+	// Using a Vigenère cipher and basic measures to hide email from basic spam crawlers
+	const vigenereAlphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-_+';
+	const superSecretKey = 'QhYb9JXLFkWZuX4QjbdCos9arVtmnbhoBhEQUOyx';
+
+	// Encodes the text with keyword using the Vigenère cipher
+	function vigenereCipher(text, keyword) {
+		let encodedText = '';
+		for (let i = 0; i < text.length; i++) {
+			const char = text[i];
+			const charIndex = vigenereAlphabet.indexOf(char);
+			if (charIndex < 0) {
+				// Character not found in the vigenereAlphabet, leave it unchanged
+				encodedText += char;
+			} else {
+				const keywordChar = keyword[i % keyword.length];
+				const keywordIndexShift = vigenereAlphabet.indexOf(keywordChar);
+				const newIndex = (charIndex + keywordIndexShift) % vigenereAlphabet.length;
+				encodedText += vigenereAlphabet[newIndex];
+			}
+		}
+		return encodedText;
+	}
+
+	// Decodes the text with keyword using the Vigenère cipher
+	function vigenereDecipher(text, keyword) {
+		let decodedText = '';
+		for (let i = 0; i < text.length; i++) {
+			const keywordChar = keyword[i % keyword.length];
+			const keywordIndexShift = vigenereAlphabet.indexOf(keywordChar);
+			let decodedIndex = vigenereAlphabet.indexOf(text[i]) - keywordIndexShift;
+			if (decodedIndex < 0) {
+				decodedIndex += vigenereAlphabet.length;
+			}
+			decodedText += vigenereAlphabet[decodedIndex];
+		}
+		return decodedText;
+	}
+
+
+	// Returns my email address
+	function getContactInfoEmail() {
+		return vigenereDecipher('9 D_fo GmHx8QTR5G', superSecretKey);
+	}
+
+	// Returns my phone number
+	function getContactInfoPhone() {
+		return vigenereDecipher('PYPY3GL_@dTLfKs', superSecretKey);
+	}
+
+
+	// Returns my github url, marketing bots are welcome
+	function getContactInfoGithub() {
+		return 'https://github.com/er-or';
+	}
+
+	// Returns my linkedin url, maybe I can get some more bots
+	function getContactInfoLinkedin() {
+		return 'https://www.linkedin.com/in/joshua-shuller';
+	}
+
+	// Displays my email in the HTML page (as divs with single letters)
+	function writeContactInfoEmail() {
+		const email_div = document.getElementById('contact_info_email');
+		writeInDivs(email_div, getContactInfoEmail());
+	}
+
+	// Displays my phone in the HTML page
+	function writeContactInfoPhone() {
+		const phone_div = document.getElementById('contact_info_phone');
+		writeInDivs(phone_div, getContactInfoPhone());
+	}
+
+
+	// Checkmark is shown after 'copy' is clicked
+	const CHECKMARK_PATH = '<path fill="currentColor" d="M3.37 10.17a.5.5 0 0 0-.74.66l4 4.5c.19.22.52.23.72.02l10.5-10.5a.5.5 0 0 0-.7-.7L7.02 14.27l-3.65-4.1Z"></path>';
+
+	// The 'copy' icon is shown again 5 seconds after the checkmark is displayed
+	const COPY_TO_CLIPBOARD_PATH = '<path fill="currentColor" d="M8 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8ZM7 4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4ZM4 6a2 2 0 0 1 1-1.73V14.5A2.5 2.5 0 0 0 7.5 17h6.23A2 2 0 0 1 12 18H7.5A3.5 3.5 0 0 1 4 14.5V6Z"></path>';
+
+	// Copies my email to the clipboard, hopefully basic web crawlers won't click this
+	function copyContactInfoEmail(element) {
+		copyToClipboard(getContactInfoEmail());
+		const copy_icon = document.getElementById('copy_email_icon');
+		copy_icon.innerHTML = CHECKMARK_PATH;
+		tip(element, 'Copied', '#003300', 0, 0, 5000);
+		setTimeout(() => {document.getElementById('copy_email_icon').innerHTML=COPY_TO_CLIPBOARD_PATH;},5000);
+	}
+
+	// Copies my phone to the clipboard, female robots feel free to call
+	function copyContactInfoPhone(element) {
+		copyToClipboard(getContactInfoPhone());
+		const copy_icon = document.getElementById('copy_phone_icon');
+		copy_icon.innerHTML = CHECKMARK_PATH;
+		tip(element, 'Copied', '#003300', 0, 0, 5000);
+		setTimeout(() => {document.getElementById('copy_phone_icon').innerHTML=COPY_TO_CLIPBOARD_PATH;},5000);
+	}
+
+	// Copies my github URL to the clipboard
+	function copyContactInfoGithub(element) {
+		copyToClipboard(getContactInfoGithub());
+		const copy_icon = document.getElementById('copy_github_icon');
+		copy_icon.innerHTML = CHECKMARK_PATH;
+		tip(element, 'Copied', '#003300', 0, 0, 5000);
+		setTimeout(() => {document.getElementById('copy_github_icon').innerHTML=COPY_TO_CLIPBOARD_PATH;},5000);
+	}
+
+	// Copies my linked URL to the clipboard
+	function copyContactInfoLinkedin(element) {
+		copyToClipboard(getContactInfoLinkedin());
+		const copy_icon = document.getElementById('copy_linkedin_icon');
+		copy_icon.innerHTML = CHECKMARK_PATH;
+		tip(element, 'Copied', '#003300', 0, 0, 5000);
+		setTimeout(() => {document.getElementById('copy_linkedin_icon').innerHTML=COPY_TO_CLIPBOARD_PATH;},5000);
+	}
+
+
+	// Load contact info only when it comes into view
+	function contactInfoCallback() {
+		setTimeout(() => {writeContactInfoEmail();},0);
+		setTimeout(() => {writeContactInfoPhone();},0);
+	}
+
+
+
+	//
+	//
+	// Animated signature functions
+	//
+	//
+
+	// Returns the SVG content using a timeout, because javascript
+	// won't update if the same content is simple replaced in one step
+	function getInnerSVG(element, timeout) {
+		if (!timeout) timeout = 0;
+		return new Promise((resolve, reject) => {
+			// Get the inner SVG content of the element
+			const innerSVG = element.innerHTML;
+			// Simulate asynchronous operation (e.g., fetching SVG content from a server)
+			setTimeout(() => {
+				// Resolve the Promise with the inner SVG content
+				resolve(innerSVG);
+			}, timeout); // Adjust the delay as needed
+		});
+	}
+
+	// Sets the SVG content using a timeout, because javascript
+	// won't update if the same content is simple replaced in one step
+	function putInnerSVG(element, svgContent, timeout) {
+		if (!timeout) timeout = 0;
+		return new Promise((resolve, reject) => {
+			// Put the SVG content back into the element
+			element.innerHTML = svgContent;
+			// Simulate asynchronous operation (e.g., applying animations or transformations)
+			setTimeout(() => {
+				// Resolve the Promise after the operation is complete
+				resolve();
+			}, timeout); // Adjust the delay as needed
+		});
+	}
+
+	// Callback function to start drawing signature when it scrolls into view
+	const signatureCallback = (entries, observer) => {
+		entries.forEach(entry => {
+			// If the target element is intersecting
+			if (entry.isIntersecting) {
+				// Stop observing once it's shown
+				observer.unobserve(entry.target);
+
+				// This is silly, but we got to get the animation to restart somehow
+				getInnerSVG(entry.target).then(svgContent => {
+					// Put the SVG content back into the element
+					putInnerSVG(entry.target, svgContent);
+				}).then(() => {
+					// Callback function after putting the SVG content back into the element
+				});
+
+				// Show the SVG element by changing its opacity
+				entry.target.style.opacity = 1;
+
+				// We're going to draw the footer waves here, too
+				redrawSvgFooterWaves();
+			}
+		});
+
+	};
+
+
 </script>
 
 <style>
@@ -1100,6 +1572,75 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 #toolbelt > li {
 	cursor: pointer;
 }
+
+
+
+
+/*
+ *
+ * CONTACT INFO
+ *
+ */
+
+/* Contact info flex grid table */
+.contact_info_container {
+	display: flex;
+	flex-direction: column;
+	width: min-content;
+	font-size: 1em;
+}
+
+/* Adjust font for browser size */
+@media (max-width: 320px) { .contact_info_container {font-size: 0.9em;}}
+@media (max-width: 295px) { .contact_info_container {font-size: 0.8em;}}
+@media (max-width: 270px) { .contact_info_container {font-size: 0.7em;}}
+@media (max-width: 245px) { .contact_info_container {font-size: 0.6em;}}
+@media (max-width: 220px) { .contact_info_container {font-size: 0.5em;}}
+
+/* Contact info row */
+.contact_info_row {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+	font-size: 1em;
+}
+
+/* Cell for an icon in the contact info flex grid */
+.contact_info_icon, .contact_info_copy_icon {
+	margin-left: 10px;
+	white-space: nowrap;
+	fill: white;
+	color: white;
+	font-size: 1em;
+}
+
+/* Cell for the label, such as email or phone */
+.contact_info_label {
+	margin-left: 10px;
+	white-space: nowrap;
+	font-size: 1em;
+}
+
+/* Cell for contact info value, which itself is a flex grid container of letter divs */
+.contact_info {
+	flex: 1;
+	margin-left: 10px;
+	white-space: nowrap;
+	font-size: 1em;
+	display: flex;
+	flex-wrap: nowrap;
+	overflow-x: auto;
+}
+
+/* Separate divs for each letter in a contact info string, in a flex container */
+.letter_div {
+	flex: 1;
+	border: none;
+	padding: 0px;
+	white-space: nowrap;
+}
+
+
 </style>
 
 
@@ -1159,6 +1700,7 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 		But nowadays, I'm mostly around the house, working on something or the other, or watering the plants.
 	</p>
 </section>
+
 
 
 <section id="content_section_programming">
@@ -1236,7 +1778,7 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 					optimizing queries, ensuring data integrity, and implementing efficient indexing strategies to enhance application 
 					performance and user experience.
 					<!--
-					<br /><br />
+					<br><br>
 					In addition to my experience with MySQL, I have also worked with Microsoft SQL Server and am proficient 
 					in developing with it. My expertise extends to other relational database technologies as well, 
 					and I am confident in my ability to adapt to different database systems as needed.
@@ -1306,7 +1848,7 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 					Its versatility allows me to leverage my expertise in object-oriented programming, enabling me 
 					to tackle a wide array of tasks with confidence and efficiency.
 					<!--
-					<br /><br />
+					<br><br>
 					While I do not have professional experience in React, Angular, or Node.js, 
 					I feel confident in my ability to adapt to such technologies with minimal effort.  I took a couple of tutorials.
 					-->
@@ -1339,155 +1881,6 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 			</li>
 		</ul>
 
-		<script>
-
-			//
-			//
-			// CALLOUT FUNCTIONS
-			//
-			//
-
-
-			// This constant is also used in CSS, to make the callout 100% of view width
-			const CALLOUT_MIN_WIDTH_TO_FLUSH_LEFT = 400;
-
-			// Shows the callout box at the specified coordinates with the specified HTML contents
-			function showCalloutBox(x, y, html, callout_id) {
-				if (window.innerWidth <= CALLOUT_MIN_WIDTH_TO_FLUSH_LEFT) {
-					x = 0;
-				}
-				if (!callout_id) {
-					callout_id = 'callout_box';
-				}
-				const callout = document.getElementById(callout_id);
-				callout.innerHTML = html;
-				callout.style.visibility = "visible";
-				callout.style.opacity = 1;
-				callout.style.height = 'auto';
-				callout.style.left = x + 'px';
-				callout.style.top = y + 'px';
-				callout.style.pointerEvents = 'auto';
-			}
-
-			// Hides the callout box
-			function hideCalloutBox(callout_id) {
-				if (!callout_id) {
-					callout_id = 'callout_box';
-				}
-				const callout = document.getElementById(callout_id);
-				callout.style.opacity = 0;
-				callout.style.height = '1px';
-				callout.style.pointerEvents = 'none';
-			}
-
-
-			//
-			//
-			// TOOLBELT FUNCTIONS
-			//
-			//
-
-			// Place toolbelt callout right if the view width is at least this much
-			const TOOLBELT_MIN_WIDTH_FOR_DISPLAY_TO_RIGHT = 500;
-
-			// Variable used to keep track of if and which experience item is pinned.
-			let pinned_toolbelt_experience_item = null;
-			let hovered_toolbelt_experience_item = null;
-
-			// Function to display experience for a 'toolbelt' item into the callout and position the callout to the right of the list
-			function displayExperience(id, listItem) {
-				if (pinned_toolbelt_experience_item) {
-					return;
-				}
-				const experienceText = document.getElementById(id).innerHTML;
-				const toolbeltRect = getBoundingRect(document.getElementById('toolbelt'));
-				const listItemRect = getBoundingRect(listItem);
-				if (window.innerWidth >= TOOLBELT_MIN_WIDTH_FOR_DISPLAY_TO_RIGHT) {
-					showCalloutBox(listItemRect.x + listItemRect.w + 30, toolbeltRect.y - 10, experienceText, 'experience_callout_box');
-				} else {
-					showCalloutBox(listItemRect.x - 10, listItemRect.y + 30, experienceText, 'experience_callout_box');
-				}
-				let pin = document.getElementById(id + '_pin');
-				if (pin) {
-					pin.style.opacity = 1;
-					pin.style.transformOrigin = "center";
-					pin.style.transform = "rotate(0deg)";
-				}
-				if (hovered_toolbelt_experience_item && hovered_toolbelt_experience_item != id) {
-					// Hide it just to be safe
-					pin = document.getElementById(hovered_toolbelt_experience_item + '_pin');
-					if (pin) {
-						pin.style.transformOrigin = "center";
-						pin.style.transform = "rotate(0deg)";
-						pinned_toolbelt_experience_item = null;
-					}
-				}
-				hovered_toolbelt_experience_item = id;
-			}
-
-			// Toggles and pins/unpins the callout box with the details of my experience.
-			// Should probably use a dedicated callout box but don't plan on using it elsewhere at current time.
-			function togglePinExperience(id, listItem) {
-				const pin = document.getElementById(id + '_pin');
-				if (pin) {
-					pin.style.opacity=1;
-					if (pinned_toolbelt_experience_item) {
-						if (pinned_toolbelt_experience_item == id) {
-							// Unpin it...
-							pin.style.transformOrigin = "center";
-							pin.style.transform = "rotate(0deg)";
-							pinned_toolbelt_experience_item = null;
-						} else {
-							// A different one is being pinned...
-
-							// Hide the old one
-							const oldPin = document.getElementById(pinned_toolbelt_experience_item + '_pin');
-							oldPin.style.transformOrigin = "center";
-							oldPin.style.transform = "rotate(0deg)";
-							oldPin.style.opacity = 0;
-
-							// Set to null so that displayExperience doesn't quit
-							pinned_toolbelt_experience_item = null;
-
-							// Show the experience of this one
-							displayExperience(id, listItem);
-
-							// Show the current one first...
-							pin.style.opacity = 1;
-							pin.style.transformOrigin = "center";
-							pin.style.transform = "rotate(-90deg)";
-							pinned_toolbelt_experience_item = id;
-
-							// Keep track of the new one
-							pinned_toolbelt_experience_item = id;
-						}
-					} else {
-						pin.style.opacity = 1;
-						pin.style.transformOrigin = "center";
-						pin.style.transform = "rotate(-90deg)";
-						pinned_toolbelt_experience_item = id;
-					}
-				}
-			}
-
-			function hideExperience(id, listItem) {
-				if (pinned_toolbelt_experience_item) {
-					return;
-				}
-				hideCalloutBox('experience_callout_box');
-
-				// Hide the toggle pin
-				if (hovered_toolbelt_experience_item) {
-					const pin = document.getElementById(hovered_toolbelt_experience_item + '_pin');
-					if (pin) {
-						pin.style.opacity = 0;
-						pin.style.transformOrigin = "center";
-						pin.style.transform = "rotate(0deg)";
-					}
-				}
-			}
-
-		</script>
 
 		I'm adept at both front-end and back-end development, 
 		ready to tackle any development challenge.
@@ -1499,7 +1892,7 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 		My ideal work environment blends independent initiative with open communication and collaboration. 
 		I can seamlessly navigate between these modes, ensuring efficient progress while remaining open to valuable input and feedback. 
 
-		<br /><br />
+		<br><br>
 		<a href="resume/Joshua_Shuller_Resume.pdf">
 			<svg  style="stroke:currentColor;width:1em;height:1em" x="0" y="0" viewBox="-4 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path stroke-width="1.5" d="M25.6686 26.0962C25.1812 26.2401 24.4656 26.2563 23.6984 26.145C22.875 26.0256 22.0351 25.7739 21.2096 25.403C22.6817 25.1888 23.8237 25.2548 24.8005 25.6009C25.0319 25.6829 25.412 25.9021 25.6686 26.0962ZM17.4552 24.7459C17.3953 24.7622 17.3363 24.7776 17.2776 24.7939C16.8815 24.9017 16.4961 25.0069 16.1247 25.1005L15.6239 25.2275C14.6165 25.4824 13.5865 25.7428 12.5692 26.0529C12.9558 25.1206 13.315 24.178 13.6667 23.2564C13.9271 22.5742 14.193 21.8773 14.468 21.1894C14.6075 21.4198 14.7531 21.6503 14.9046 21.8814C15.5948 22.9326 16.4624 23.9045 17.4552 24.7459ZM14.8927 14.2326C14.958 15.383 14.7098 16.4897 14.3457 17.5514C13.8972 16.2386 13.6882 14.7889 14.2489 13.6185C14.3927 13.3185 14.5105 13.1581 14.5869 13.0744C14.7049 13.2566 14.8601 13.6642 14.8927 14.2326ZM9.63347 28.8054C9.38148 29.2562 9.12426 29.6782 8.86063 30.0767C8.22442 31.0355 7.18393 32.0621 6.64941 32.0621C6.59681 32.0621 6.53316 32.0536 6.44015 31.9554C6.38028 31.8926 6.37069 31.8476 6.37359 31.7862C6.39161 31.4337 6.85867 30.8059 7.53527 30.2238C8.14939 29.6957 8.84352 29.2262 9.63347 28.8054ZM27.3706 26.1461C27.2889 24.9719 25.3123 24.2186 25.2928 24.2116C24.5287 23.9407 23.6986 23.8091 22.7552 23.8091C21.7453 23.8091 20.6565 23.9552 19.2582 24.2819C18.014 23.3999 16.9392 22.2957 16.1362 21.0733C15.7816 20.5332 15.4628 19.9941 15.1849 19.4675C15.8633 17.8454 16.4742 16.1013 16.3632 14.1479C16.2737 12.5816 15.5674 11.5295 14.6069 11.5295C13.948 11.5295 13.3807 12.0175 12.9194 12.9813C12.0965 14.6987 12.3128 16.8962 13.562 19.5184C13.1121 20.5751 12.6941 21.6706 12.2895 22.7311C11.7861 24.0498 11.2674 25.4103 10.6828 26.7045C9.04334 27.3532 7.69648 28.1399 6.57402 29.1057C5.8387 29.7373 4.95223 30.7028 4.90163 31.7107C4.87693 32.1854 5.03969 32.6207 5.37044 32.9695C5.72183 33.3398 6.16329 33.5348 6.6487 33.5354C8.25189 33.5354 9.79489 31.3327 10.0876 30.8909C10.6767 30.0029 11.2281 29.0124 11.7684 27.8699C13.1292 27.3781 14.5794 27.011 15.985 26.6562L16.4884 26.5283C16.8668 26.4321 17.2601 26.3257 17.6635 26.2153C18.0904 26.0999 18.5296 25.9802 18.976 25.8665C20.4193 26.7844 21.9714 27.3831 23.4851 27.6028C24.7601 27.7883 25.8924 27.6807 26.6589 27.2811C27.3486 26.9219 27.3866 26.3676 27.3706 26.1461ZM30.4755 36.2428C30.4755 38.3932 28.5802 38.5258 28.1978 38.5301H3.74486C1.60224 38.5301 1.47322 36.6218 1.46913 36.2428L1.46884 3.75642C1.46884 1.6039 3.36763 1.4734 3.74457 1.46908H20.263L20.2718 1.4778V7.92396C20.2718 9.21763 21.0539 11.6669 24.0158 11.6669H30.4203L30.4753 11.7218L30.4755 36.2428ZM28.9572 10.1976H24.0169C21.8749 10.1976 21.7453 8.29969 21.7424 7.92417V2.95307L28.9572 10.1976ZM31.9447 36.2428V11.1157L21.7424 0.871022V0.823357H21.6936L20.8742 0H3.74491C2.44954 0 0 0.785336 0 3.75711V36.2435C0 37.5427 0.782956 40 3.74491 40H28.2001C29.4952 39.9997 31.9447 39.2143 31.9447 36.2428Z" />
@@ -1549,75 +1942,7 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 	<h2>Contact</h2>
 	<p>
 		Please feel free to contact me.  Email is preferred.
-		<style>
-			/*
-			 *
-			 * CONTACT INFO
-			 *
-			 */
-
-
-			/* Contact info flex grid table */
-			.contact_info_container {
-				display: flex;
-				flex-direction: column;
-				width: min-content;
-				font-size: 1em;
-			}
-
-			/* Adjust font for browser size */
-			@media (max-width: 320px) { .contact_info_container {font-size: 0.9em;}}
-			@media (max-width: 295px) { .contact_info_container {font-size: 0.8em;}}
-			@media (max-width: 270px) { .contact_info_container {font-size: 0.7em;}}
-			@media (max-width: 245px) { .contact_info_container {font-size: 0.6em;}}
-			@media (max-width: 220px) { .contact_info_container {font-size: 0.5em;}}
-
-			/* Contact info row */
-			.contact_info_row {
-				display: flex;
-				align-items: center;
-				margin-bottom: 10px;
-				font-size: 1em;
-			}
-
-			/* Cell for an icon in the contact info flex grid */
-			.contact_info_icon, .contact_info_copy_icon {
-				margin-left: 10px;
-				white-space: nowrap;
-				fill: white;
-				color: white;
-				font-size: 1em;
-			}
-
-			/* Cell for the label, such as email or phone */
-			.contact_info_label {
-				margin-left: 10px;
-				white-space: nowrap;
-				font-size: 1em;
-			}
-
-			/* Cell for contact info value, which itself is a flex grid container of letter divs */
-			.contact_info {
-				flex: 1;
-				margin-left: 10px;
-				white-space: nowrap;
-				font-size: 1em;
-				display: flex;
-				flex-wrap: nowrap;
-				overflow-x: auto;
-			}
-
-			/* Separate divs for each letter in a contact info string, in a flex container */
-			.letter_div {
-				flex: 1;
-				border: none;
-				padding: 0px;
-				white-space: nowrap;
-			}
-
-
-		</style>
-		<br />
+		<br>
 		<!-- Contact info flex grid -->
 		<div class="contact_info_container">
 			<div class="contact_info_row">
@@ -1673,7 +1998,9 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 			<div class="contact_info_row">
 				<div class="contact_info_icon">
 					<svg style="height:1em;width:1em;stroke:currentColor" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" focusable="false">
+						<!--
 						<path fill="none" stroke-width="4" stroke="#ffffff" d="M8,72 L64,72 C68.418278,72 72,68.418278 72,64 L72,8 C72,3.581722 68.418278,-8.11624501e-16 64,0 L8,0 C3.581722,8.11624501e-16 -5.41083001e-16,3.581722 0,8 L0,64 C5.41083001e-16,68.418278 3.581722,72 8,72 Z" />
+						-->
 						<path fill="none" stroke-width="4" stroke="#ffffff" d="M62,62 L51.315625,62 L51.315625,43.8021149 C51.315625,38.8127542 49.4197917,36.0245323 45.4707031,36.0245323 C41.1746094,36.0245323 38.9300781,38.9261103 38.9300781,43.8021149 L38.9300781,62 L28.6333333,62 L28.6333333,27.3333333 L38.9300781,27.3333333 L38.9300781,32.0029283 C38.9300781,32.0029283 42.0260417,26.2742151 49.3825521,26.2742151 C56.7356771,26.2742151 62,30.7644705 62,40.051212 L62,62 Z M16.349349,22.7940133 C12.8420573,22.7940133 10,19.9296567 10,16.3970067 C10,12.8643566 12.8420573,10 16.349349,10 C19.8566406,10 22.6970052,12.8643566 22.6970052,16.3970067 C22.6970052,19.9296567 19.8566406,22.7940133 16.349349,22.7940133 Z M11.0325521,62 L21.769401,62 L21.769401,27.3333333 L11.0325521,27.3333333 L11.0325521,62 Z" />
 					</svg>
 				</div>
@@ -1689,179 +2016,15 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 			</div>
 		</div>
 
-		<script>
-			//
-			// Contact info function
-			//
-
-			// Writes contact info in divs, just trying to confuse spam crawlers
-			function writeInDivs(container, text) {
-				let divs = '';
-				for (let i = 0; i < text.length; i++) {
-					divs += '<div class="letter_div" style="width:0;opacity:0">.</div>';
-					divs += '<div class="letter_div">' + text[i] + '&#8203;</div>';
-				}
-				container.innerHTML = divs;
-			}
-
-			// Puts specified text into clipboard
-			function copyToClipboard(text) {
-				if (window.clipboardData && window.clipboardData.setData) {
-					// Internet Explorer-specific code path to prevent textarea being shown while dialog is visible.
-					return clipboardData.setData("Text", text);
-
-				} else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
-					var textarea = document.createElement("textarea");
-					textarea.textContent = text;
-					textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in Microsoft Edge.
-					document.body.appendChild(textarea);
-					textarea.select();
-					try {
-						return document.execCommand("copy");  // Security exception may be thrown by some browsers.
-					} catch (ex) {
-						console.warn("copy to clipboard failed.", ex);
-						return false;
-					} finally {
-						document.body.removeChild(textarea);
-					}
-				}
-			}
-
-			// Using a Vigenère cipher and basic measures to hide email from basic spam crawlers
-			const vigenereAlphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-_+';
-			const superSecretKey = 'QhYb9JXLFkWZuX4QjbdCos9arVtmnbhoBhEQUOyx';
-
-			// Encodes the text with keyword using the Vigenère cipher
-			function vigenereCipher(text, keyword) {
-				let encodedText = '';
-				for (let i = 0; i < text.length; i++) {
-					const char = text[i];
-					const charIndex = vigenereAlphabet.indexOf(char);
-					if (charIndex < 0) {
-						// Character not found in the vigenereAlphabet, leave it unchanged
-						encodedText += char;
-					} else {
-						const keywordChar = keyword[i % keyword.length];
-						const keywordIndexShift = vigenereAlphabet.indexOf(keywordChar);
-						const newIndex = (charIndex + keywordIndexShift) % vigenereAlphabet.length;
-						encodedText += vigenereAlphabet[newIndex];
-					}
-				}
-				return encodedText;
-			}
-
-			// Decodes the text with keyword using the Vigenère cipher
-			function vigenereDecipher(text, keyword) {
-				let decodedText = '';
-				for (let i = 0; i < text.length; i++) {
-					const keywordChar = keyword[i % keyword.length];
-					const keywordIndexShift = vigenereAlphabet.indexOf(keywordChar);
-					let decodedIndex = vigenereAlphabet.indexOf(text[i]) - keywordIndexShift;
-					if (decodedIndex < 0) {
-						decodedIndex += vigenereAlphabet.length;
-					}
-					decodedText += vigenereAlphabet[decodedIndex];
-				}
-				return decodedText;
-			}
 
 
-			// Returns my email address
-			function getContactInfoEmail() {
-				return vigenereDecipher('9 D_fo GmHx8QTR5G', superSecretKey);
-			}
-
-			// Returns my phone number
-			function getContactInfoPhone() {
-				return vigenereDecipher('PYPY3GL_@dTLfKs', superSecretKey);
-			}
-
-
-			// Returns my github url, marketing bots are welcome
-			function getContactInfoGithub() {
-				return 'https://github.com/er-or';
-			}
-
-			// Returns my linkedin url, maybe I can get some more bots
-			function getContactInfoLinkedin() {
-				return 'https://www.linkedin.com/in/joshua-shuller';
-			}
-
-			// Displays my email in the HTML page (as divs with single letters)
-			function writeContactInfoEmail() {
-				const email_div = document.getElementById('contact_info_email');
-				writeInDivs(email_div, getContactInfoEmail());
-			}
-
-			// Displays my phone in the HTML page
-			function writeContactInfoPhone() {
-				const phone_div = document.getElementById('contact_info_phone');
-				writeInDivs(phone_div, getContactInfoPhone());
-			}
-
-
-			// Checkmark is shown after 'copy' is clicked
-			const CHECKMARK_PATH = '<path fill="currentColor" d="M3.37 10.17a.5.5 0 0 0-.74.66l4 4.5c.19.22.52.23.72.02l10.5-10.5a.5.5 0 0 0-.7-.7L7.02 14.27l-3.65-4.1Z"></path>';
-
-			// The 'copy' icon is shown again 5 seconds after the checkmark is displayed
-			const COPY_TO_CLIPBOARD_PATH = '<path fill="currentColor" d="M8 2a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8ZM7 4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4ZM4 6a2 2 0 0 1 1-1.73V14.5A2.5 2.5 0 0 0 7.5 17h6.23A2 2 0 0 1 12 18H7.5A3.5 3.5 0 0 1 4 14.5V6Z"></path>';
-
-			// Copies my email to the clipboard, hopefully basic web crawlers won't click this
-			function copyContactInfoEmail(element) {
-				copyToClipboard(getContactInfoEmail());
-				const copy_icon = document.getElementById('copy_email_icon');
-				copy_icon.innerHTML = CHECKMARK_PATH;
-				tip(element, 'Copied', '#003300', 0, 0, 5000);
-				setTimeout(() => {document.getElementById('copy_email_icon').innerHTML=COPY_TO_CLIPBOARD_PATH;},5000);
-			}
-
-			// Copies my phone to the clipboard, female robots feel free to call
-			function copyContactInfoPhone(element) {
-				copyToClipboard(getContactInfoPhone());
-				const copy_icon = document.getElementById('copy_phone_icon');
-				copy_icon.innerHTML = CHECKMARK_PATH;
-				tip(element, 'Copied', '#003300', 0, 0, 5000);
-				setTimeout(() => {document.getElementById('copy_phone_icon').innerHTML=COPY_TO_CLIPBOARD_PATH;},5000);
-			}
-
-			// Copies my github URL to the clipboard
-			function copyContactInfoGithub(element) {
-				copyToClipboard(getContactInfoGithub());
-				const copy_icon = document.getElementById('copy_github_icon');
-				copy_icon.innerHTML = CHECKMARK_PATH;
-				tip(element, 'Copied', '#003300', 0, 0, 5000);
-				setTimeout(() => {document.getElementById('copy_github_icon').innerHTML=COPY_TO_CLIPBOARD_PATH;},5000);
-			}
-
-			// Copies my linked URL to the clipboard
-			function copyContactInfoLinkedin(element) {
-				copyToClipboard(getContactInfoLinkedin());
-				const copy_icon = document.getElementById('copy_linkedin_icon');
-				copy_icon.innerHTML = CHECKMARK_PATH;
-				tip(element, 'Copied', '#003300', 0, 0, 5000);
-				setTimeout(() => {document.getElementById('copy_linkedin_icon').innerHTML=COPY_TO_CLIPBOARD_PATH;},5000);
-			}
-
-
-			// Load contact info only when it comes into view
-			function contactInfoCallback() {
-				setTimeout(() => {writeContactInfoEmail();},0);
-				setTimeout(() => {writeContactInfoPhone();},0);
-			}
-			const contactObserver = new IntersectionObserver(contactInfoCallback, {root:null,rootMargin:'0px',threshold:0});
-			contactObserver.observe(document.getElementById('contact_info_email'));
-			contactObserver.observe(document.getElementById('contact_info_phone'));
-
-		</script>
-
-
-		<br /><br />
-		Kind regards,<br />
+		<br><br>
+		Kind regards,<br>
 		<!-- Signature, must be inline to use animation -->
 		<svg id="signature" viewBox="0 0 470 80" version="1.1" xmlns="http://www.w3.org/2000/svg"  style="opacity:0">
 		<style>
 			/* Dash array to create illusion of writing.  Using length of 1500 is too much, but timings are adjusted below */
-			.first, .last, .J {
+			.J, .oshua, .Shuller {
 				stroke-dasharray: 1500;
 				stroke-dashoffset: 1500;
 				opacity: 0;
@@ -1877,11 +2040,11 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 				animation: dash 1s 0s linear forwards;
 				-webkit-animation:  dash 5s 0s linear forwards;
 			}
-			.first {	/* The rest of my first name starts after .5 seconds */
+			.oshua {	/* The rest of my first name starts after .5 seconds */
 				animation: dash 5s 0.5s linear forwards;
 				-webkit-animation:  dash 5s 0.5s linear forwards;
 			}
-			.last {		/* My last name starts after 2.5 seconds */
+			.Shuller {	/* My last name starts after 2.5 seconds */
 				animation: dash 5s 2.5s linear forwards;
 				-webkit-animation: dash 5s 2.5s linear forwards;
 			}
@@ -1903,89 +2066,13 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 			}
 		</style>
 		<g>
-
-			<path class="J" d=" 
-				M 22.147074,58.468056 C 4.828262,57.926846 7.8342734,71.305686 23.762113,77.133184 38.538859,80.658495 54.849002,71.409347 55.843173,67.471776 58.909806,50.901095 42.076104,14.554177 33.595302,6.6971141 26.561516,8.6074081 23.748455,12.292538 25.998471,14.203511
-			" />
-			<path class="first" d=" 
-				M 61.697778,64.247029 c -2.380481,3.173975 1.773909,17.702158 15.393819,12.535371 3.153831,-1.196423 5.740777,-4.082534 5.344966,-9.310624 -0.391678,-5.173492 -7.06127,-10.92502 -12.11876,-9.76735 -1.23561,0.28284 -2.16126,2.28677 -1.62789,3.43666 2.07381,4.47096 9.36766,4.05878 14.28928,3.79842 5.22182,-0.27624 15.67422,-7.39778 15.67422,-7.39778 0,0 10.283027,12.75271 4.609927,18.5246 -4.500217,4.57858 -15.859507,-6.13917 -15.859507,-6.13917 0,0 15.424417,4.15617 23.277667,1.02319 27.36232,-10.91595 29.72352,-71.93001451 7.03447,-68.8098435 -3.61678,0.4973749 -24.458531,4.9024617 -14.36486,40.7748225 2.49021,8.85007 16.53915,35.069475 16.53915,35.069475 0.44153,-3.857976 4.11314,-21.214976 10.48774,-19.056994 5.29553,3.52935 1.40689,19.440695 1.40689,19.440695 4.48649,-0.64876 8.60066,-12.258945 11.12725,-19.440695 -1.06579,4.971717 -3.70375,17.743331 2.43008,19.056999 10.13716,1.116734 8.88597,-10.907871 10.61566,-19.056999 0,0 -2.94936,15.5417 1.40689,18.22566 2.3377,1.44029 4.13722,0.57402 5.24386,-1.08715 2.36512,-3.55026 2.31098,-9.01943 6.26706,-13.87707 2.15377,-2.64459 8.95297,-3.70908 8.95297,-3.70908 -1.09046,-0.54523 -5.41531,0.33514 -8.99303,3.90743 -6.91736,6.906855 -1.39532,19.715339 6.94664,14.19032 5.82273,-3.85648 6.54105,-17.513115 6.54105,-17.513115 0,0 -2.3274,12.562125 2.50876,16.926605 2.56033,2.31062 4.4594,2.031381 7.89606,1.742142 19.2549,-1.620547 28.4584,-11.579426 28.4584,-11.579426
-			" />
-			<path class="last" d="
-				M 279.55262,28.590262 c 0,0 14.74103,-4.58453 14.32473,-10.48774 -0.585,-8.2953696 -13.68524,-11.9715196 -21.99869,-11.7667396 -15.90504,0.39179 -37.62503,8.9933896 -40.92778,24.5566696 -1.01651,4.79002 4.13198,9.697279 8.44135,12.02254 11.32132,6.108782 21.73597,6.40194 29.92845,12.78993 3.89825,3.039612 6.38725,10.09015 3.83698,14.32473 -5.32495,8.84178 -21.55249,9.89231 -30.95164,5.62757 -3.43934,-1.56056 -6.71075,-5.56226 -4.60438,-8.69716 9.85179,-14.66236 31.51826,12.53557 48.34595,7.16237 16.0542,-5.12622 32.19383,-30.352133 37.08328,-41.950995 4.18127,-9.918882 4.49091,-26.2502188 -3.18087,-29.1096188 -22.46276,-8.37225 -22.58571,29.2205548 -20.95198,41.6597448 4.16344,31.7004 2.65329,33.109945 2.65329,33.109945 3.78607,-12.278201 9.47482,-22.138108 13.04573,-20.335996 5.9769,3.01633 -0.2558,20.336003 -0.2558,20.336003 5.00195,-0.9459 6.8399,-10.29734 11.51095,-19.18491 -2.95475,7.328985 -5.05057,20.139928 3.17021,19.849007 6.25884,-0.221491 9.95762,-12.616462 10.0473,-18.869697 -3.56623,17.706059 -0.28192,19.017683 2.69342,18.227547 16.76893,-4.45323 20.89185,-26.202818 23.32909,-43.299578 1.10217,-7.73149 4.33675,-22.763865 -3.19592,-24.8253284 -10.45262,-2.8605643 -18.07191,13.0597814 -19.28864,27.4187614 -0.98592,11.635043 11.37202,41.165503 15.65293,40.739833 15.89901,-1.580906 28.37357,-32.753431 29.51749,-40.617911 1.26984,-8.7302 1.66156,-30.3433237 -7.48245,-34.424658 -6.46865,-2.88721307 -14.3443,10.140097 -17.92189,26.649155 -3.3928,15.656376 5.07417,39.839791 14.34825,42.5588 5.97551,1.751923 22.14916,-1.301214 23.90588,-6.415356 0.81798,-2.381299 -2.3473,-6.142491 -4.7141,-7.001541 -4.31621,-1.56661 -9.56965,1.372372 -11.82882,5.369882 -2.25161,3.98416 -2.31576,9.147784 0.79688,11.607814 3.3913,2.68027 7.65792,3.304893 11.61689,1.56959 8.55106,-3.748115 12.64942,-18.320642 12.64942,-18.320642 0.40339,5.19503 7.39573,5.340699 11.48595,5.927199 0,0 -3.09196,5.271472 -1.98963,8.139462 0.81627,2.12372 3.34538,4.456342 5.60718,4.702802 8.9682,0.97724 29.43071,-0.616585 37.44153,-10.852615 
-			" />
-
+			<path class="J" d="M 22.147074,58.468056 C 4.828262,57.926846 7.8342734,71.305686 23.762113,77.133184 38.538859,80.658495 54.849002,71.409347 55.843173,67.471776 58.909806,50.901095 42.076104,14.554177 33.595302,6.6971141 26.561516,8.6074081 23.748455,12.292538 25.998471,14.203511" />
+			<path class="oshua" d=" M 61.697778,64.247029 c -2.380481,3.173975 1.773909,17.702158 15.393819,12.535371 3.153831,-1.196423 5.740777,-4.082534 5.344966,-9.310624 -0.391678,-5.173492 -7.06127,-10.92502 -12.11876,-9.76735 -1.23561,0.28284 -2.16126,2.28677 -1.62789,3.43666 2.07381,4.47096 9.36766,4.05878 14.28928,3.79842 5.22182,-0.27624 15.67422,-7.39778 15.67422,-7.39778 0,0 10.283027,12.75271 4.609927,18.5246 -4.500217,4.57858 -15.859507,-6.13917 -15.859507,-6.13917 0,0 15.424417,4.15617 23.277667,1.02319 27.36232,-10.91595 29.72352,-71.93001451 7.03447,-68.8098435 -3.61678,0.4973749 -24.458531,4.9024617 -14.36486,40.7748225 2.49021,8.85007 16.53915,35.069475 16.53915,35.069475 0.44153,-3.857976 4.11314,-21.214976 10.48774,-19.056994 5.29553,3.52935 1.40689,19.440695 1.40689,19.440695 4.48649,-0.64876 8.60066,-12.258945 11.12725,-19.440695 -1.06579,4.971717 -3.70375,17.743331 2.43008,19.056999 10.13716,1.116734 8.88597,-10.907871 10.61566,-19.056999 0,0 -2.94936,15.5417 1.40689,18.22566 2.3377,1.44029 4.13722,0.57402 5.24386,-1.08715 2.36512,-3.55026 2.31098,-9.01943 6.26706,-13.87707 2.15377,-2.64459 8.95297,-3.70908 8.95297,-3.70908 -1.09046,-0.54523 -5.41531,0.33514 -8.99303,3.90743 -6.91736,6.906855 -1.39532,19.715339 6.94664,14.19032 5.82273,-3.85648 6.54105,-17.513115 6.54105,-17.513115 0,0 -2.3274,12.562125 2.50876,16.926605 2.56033,2.31062 4.4594,2.031381 7.89606,1.742142 19.2549,-1.620547 28.4584,-11.579426 28.4584,-11.579426" />
+			<path class="Shuller" d="M 279.55262,28.590262 c 0,0 14.74103,-4.58453 14.32473,-10.48774 -0.585,-8.2953696 -13.68524,-11.9715196 -21.99869,-11.7667396 -15.90504,0.39179 -37.62503,8.9933896 -40.92778,24.5566696 -1.01651,4.79002 4.13198,9.697279 8.44135,12.02254 11.32132,6.108782 21.73597,6.40194 29.92845,12.78993 3.89825,3.039612 6.38725,10.09015 3.83698,14.32473 -5.32495,8.84178 -21.55249,9.89231 -30.95164,5.62757 -3.43934,-1.56056 -6.71075,-5.56226 -4.60438,-8.69716 9.85179,-14.66236 31.51826,12.53557 48.34595,7.16237 16.0542,-5.12622 32.19383,-30.352133 37.08328,-41.950995 4.18127,-9.918882 4.49091,-26.2502188 -3.18087,-29.1096188 -22.46276,-8.37225 -22.58571,29.2205548 -20.95198,41.6597448 4.16344,31.7004 2.65329,33.109945 2.65329,33.109945 3.78607,-12.278201 9.47482,-22.138108 13.04573,-20.335996 5.9769,3.01633 -0.2558,20.336003 -0.2558,20.336003 5.00195,-0.9459 6.8399,-10.29734 11.51095,-19.18491 -2.95475,7.328985 -5.05057,20.139928 3.17021,19.849007 6.25884,-0.221491 9.95762,-12.616462 10.0473,-18.869697 -3.56623,17.706059 -0.28192,19.017683 2.69342,18.227547 16.76893,-4.45323 20.89185,-26.202818 23.32909,-43.299578 1.10217,-7.73149 4.33675,-22.763865 -3.19592,-24.8253284 -10.45262,-2.8605643 -18.07191,13.0597814 -19.28864,27.4187614 -0.98592,11.635043 11.37202,41.165503 15.65293,40.739833 15.89901,-1.580906 28.37357,-32.753431 29.51749,-40.617911 1.26984,-8.7302 1.66156,-30.3433237 -7.48245,-34.424658 -6.46865,-2.88721307 -14.3443,10.140097 -17.92189,26.649155 -3.3928,15.656376 5.07417,39.839791 14.34825,42.5588 5.97551,1.751923 22.14916,-1.301214 23.90588,-6.415356 0.81798,-2.381299 -2.3473,-6.142491 -4.7141,-7.001541 -4.31621,-1.56661 -9.56965,1.372372 -11.82882,5.369882 -2.25161,3.98416 -2.31576,9.147784 0.79688,11.607814 3.3913,2.68027 7.65792,3.304893 11.61689,1.56959 8.55106,-3.748115 12.64942,-18.320642 12.64942,-18.320642 0.40339,5.19503 7.39573,5.340699 11.48595,5.927199 0,0 -3.09196,5.271472 -1.98963,8.139462 0.81627,2.12372 3.34538,4.456342 5.60718,4.702802 8.9682,0.97724 29.43071,-0.616585 37.44153,-10.852615 " />
 		</g>
 		</svg>
-		<br />
+		<br>
 		Joshua Shuller
-
-		<script>
-			//
-			// Animated signature functions
-			//
-
-			// Returns the SVG content using a timeout, because javascript
-			// won't update if the same content is simple replaced in one step
-			function getInnerSVG(element, timeout) {
-				if (!timeout) timeout = 0;
-				return new Promise((resolve, reject) => {
-					// Get the inner SVG content of the element
-					const innerSVG = element.innerHTML;
-					// Simulate asynchronous operation (e.g., fetching SVG content from a server)
-					setTimeout(() => {
-						// Resolve the Promise with the inner SVG content
-						resolve(innerSVG);
-					}, timeout); // Adjust the delay as needed
-				});
-			}
-
-			// Sets the SVG content using a timeout, because javascript
-			// won't update if the same content is simple replaced in one step
-			function putInnerSVG(element, svgContent, timeout) {
-				if (!timeout) timeout = 0;
-				return new Promise((resolve, reject) => {
-					// Put the SVG content back into the element
-					element.innerHTML = svgContent;
-					// Simulate asynchronous operation (e.g., applying animations or transformations)
-					setTimeout(() => {
-						// Resolve the Promise after the operation is complete
-						resolve();
-					}, timeout); // Adjust the delay as needed
-				});
-			}
-
-			// Callback function to start drawing signature when it scrolls into view
-			const signatureCallback = (entries, observer) => {
-				entries.forEach(entry => {
-					// If the target element is intersecting
-					if (entry.isIntersecting) {
-						// Stop observing once it's shown
-						observer.unobserve(entry.target);
-
-						// This is silly, but we got to get the animation to restart somehow
-						getInnerSVG(entry.target).then(svgContent => {
-							// Put the SVG content back into the element
-							putInnerSVG(entry.target, svgContent);
-						}).then(() => {
-							// Callback function after putting the SVG content back into the element
-						});
-
-						// Show the SVG element by changing its opacity
-						entry.target.style.opacity = 1;
-
-					}
-				});
-			};
-
-
-			// Signature observer
-			const signatureObserver = new IntersectionObserver(signatureCallback, {root: null, rootMargin: '0px', threshold: 0.5});
-			const signatureSVG = document.getElementById('signature');
-			signatureObserver.observe(signatureSVG);
-
-
-		</script>
-
 	</p>
 </section>
 
@@ -1993,6 +2080,8 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 
 
 </div>
+
+<div id="footer_wave_container"></div>
 
 
 </body>
