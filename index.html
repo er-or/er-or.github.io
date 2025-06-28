@@ -35,6 +35,8 @@ To do:
 
 	- add some comments
 
+	- make game for top level with animated mountains and rocks, maybe austronaught shooting martians
+
 	REF FOR MYSELF - MARTIAN SCIENCE STATION HABITAT
 	https://issuu.com/hochbau2/docs/mars_part1
 	https://issuu.com/hochbau2/docs/mars_part2
@@ -192,6 +194,14 @@ To do:
 			position: absolute;
 			left: 50%;
 			transform: translateX(-50%);
+		}
+		#earth > img {
+			width: 200px;
+			height: 200px;
+			max-height: 200px;
+			max-width: 200px;
+			height: min(50vh, 200px);
+			width: min(50vh, 200px);
 		}
 
 		#star_map_rotating_bg_image {
@@ -714,6 +724,31 @@ div.page_footer_wave {
 @media (max-width: 320px) { #name_box {font-size: 15pt;}}
 
 
+
+/*
+ * Background martian red Mount Fuji centered behind my name/title
+ * width is 3.7440323172970987881013587954462 * height
+ */
+#red_fuji {
+	position:absolute;
+	z-index: 1;
+
+	top: 30vh;
+	left: 290px;
+	transform: translateX(-50%);
+	height: 32vh;
+	width: 112.3209695vh;
+
+	transition: left ease .5s;
+}
+@media (max-width: 570px) { #red_fuji {left:270px;top:34vh;height:28vh;width:104.83290488431876606683804627249vh;} }
+@media (max-width: 520px) { #red_fuji {left:230px;top:36vh;height:26vh;width:97.344840249724568490635328681601vh;} }
+@media (max-width: 470px) { #red_fuji {left:210px;top:38vh;height:24vh;width:89.856775615130370914432611090709vh;} }
+@media (max-width: 420px) { #red_fuji {left:170px;top:40vh;height:22vh;width:82.368710980536173338229893499816vh;} }
+@media (max-width: 370px) { #red_fuji {left:140px;top:42vh;height:20vh;width:74.880646345941975762027175908924vh;} }
+@media (max-width: 320px) { #red_fuji {left:110px;top:44vh;height:18vh;width:67.392581711347778185824458318032vh} }
+
+
 /*
  * SVG which displays my name, like a signature but not really, my signature is uglier.
  */
@@ -1042,14 +1077,19 @@ window.addEventListener('scroll', pageScrolled);
 </div>
 
 
+<img id="red_fuji" src="img/red_fuji.svg" />
 
-
+<!--
+<img style="position:absolute;z-index:1;top:20vh;height:45vh" src="fired_on_mars/fired_on_mars_mountain_3.png" />
+<img style="position:absolute;z-index:1;top:15vh;left:-15vh;height:70vh" src="fired_on_mars/red_mount_fuji_test_4.1.png" />
+-->
 
 <!-- FOREGROUND MOUNTAIN CONTAINERS -->
 <div style="position:absolute;z-index:1;top:60vh;top:calc(50vh - 25px);left:20px;">
 <!--
 	<img style="position:absolute" src="dev/Uluru.webp" width="750" />
 -->
+
 </div>
 <div style="position:absolute;z-index:3;top:60vh;left:20px;">
 	<img src="img/foothills1.svg" width="270.40414" height="32.605999" />
