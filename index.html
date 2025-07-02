@@ -20,7 +20,6 @@
 
 To do:
 
-	- finish mountain to put on horizon, using some sort of curve-fitting algorithm to get a good svg
 	- include photo in 'background' section
 	- put underground martian colony design in right margin
 
@@ -33,14 +32,9 @@ To do:
 
 	- move javascript and css to separate files
 
-	- add some comments
+	- add some comments to code
 
 	- make game for top level with animated mountains and rocks, maybe austronaught shooting martians
-
-	REF FOR MYSELF - MARTIAN SCIENCE STATION HABITAT
-	https://issuu.com/hochbau2/docs/mars_part1
-	https://issuu.com/hochbau2/docs/mars_part2
-	https://issuu.com/hochbau2/docs/mars_part3
 
 -->
 
@@ -100,21 +94,6 @@ To do:
 			font-family: arial, helvetica, sans-serif;
 
 			color: white;
-
-/*
-			background: rgb(254,43,20);
-			background: rgb(185,53,40);
-			background: rgb(76,10,12);
-			background: rgb(91,12,15);
-			background: rgb(98,14,14);
-			background: rgb(87,11,13);
-			background: rgb(70,4,6);
-			background: rgb(93,2,2);
-			background: rgb(76,7,10);
-			background: rgb(90,8,12);
-			background: rgb(85,27,29);
-			background: rgb(102,12,11);
-*/
 
 			background: linear-gradient(
 				to bottom, 
@@ -716,14 +695,45 @@ div.page_footer_wave {
 	color: white;
 	white-space: nowrap;
 }
-@media (max-width: 570px) { #name_box {font-size: 40pt;}}
-@media (max-width: 520px) { #name_box {font-size: 35pt;}}
-@media (max-width: 470px) { #name_box {font-size: 30pt;}}
-@media (max-width: 420px) { #name_box {font-size: 25pt;}}
-@media (max-width: 370px) { #name_box {font-size: 20pt;}}
-@media (max-width: 320px) { #name_box {font-size: 15pt;}}
+@media (max-width: 570px) { #name_box {font-size: 40pt;top:38vh;}}
+@media (max-width: 520px) { #name_box {font-size: 35pt;top:40vh;}}
+@media (max-width: 470px) { #name_box {font-size: 30pt;top:42vh;}}
+@media (max-width: 420px) { #name_box {font-size: 25pt;top:44vh;}}
+@media (max-width: 370px) { #name_box {font-size: 20pt;top:46vh;}}
+@media (max-width: 320px) { #name_box {font-size: 15pt;top:48vh;}}
 
 
+/*
+ * Need to put a little TOC (table of contents) box so people know there's more below first screen.
+ * Even though the cool part about the site is that there's more below the top part, I think many people won't like it.
+ */
+#toc_box {
+	font-size: 11pt;
+	font-weight: 400;
+	color: white;
+	white-space: nowrap;
+	text-shadow:
+		-1px -1px 0 rgba(56,13,13,.5),
+		 1px -1px 0 rgba(56,13,13,.5),
+		-1px  1px 0 rgba(56,13,13,.5),
+		 1px  1px 0 rgba(56,13,13,.5)
+	;
+}
+/* Normally TOC box links should be, like, you know, white */
+#toc_box > ul > li > a, #toc_box > ul > li > a:active {
+	color: white;
+	text-decoration: none;
+}
+/* Yellow probably the best color here */
+#toc_box > ul > li > a:hover {
+	color: yellow;
+	text-decoration: underline;
+}
+
+/* Hide the TOC box if the height is less than 450................ */
+@media (max-height: 449px) {
+	#toc_box { display:none;}
+}
 
 /*
  * Background martian red Mount Fuji centered behind my name/title
@@ -733,7 +743,7 @@ div.page_footer_wave {
 	position:absolute;
 	z-index: 1;
 
-	top: 30vh;
+	top: 32vh;
 	left: 290px;
 	transform: translateX(-50%);
 	height: 32vh;
@@ -1011,7 +1021,18 @@ window.addEventListener('scroll', pageScrolled);
 	JOSHUA SHULLER<br>
 	<span style="font-size:0.825em">SOFTWARE ENGINEER</span><br>
 	<!--<i style="font-size:0.825em">OUT OF THIS WORLD!</i>-->
+
+	<div id="toc_box">
+		<ul>
+			<li><a href="#content_section_about">About</a></li>
+			<li><a href="#content_section_background">Background</a></li>
+			<li><a href="#content_section_programming">Programming</a></li>
+			<li><a href="#content_section_contact">Contact</a></li>
+		</ul>
+	</div>
+
 </div>
+
 
 
 <!-- Contains the sky background -->
@@ -1681,27 +1702,94 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 }
 
 
+
+#my_profile_photo {
+	float:right;
+	border-radius: 50%;
+	width: 200px;
+	height: 200px;
+	margin-left: 5px;
+}
+#my_profile_photo > img:first-of-type {
+	position:absolute;
+	border-radius:50%;
+	margin:25px;
+	width: 150px;
+	height: 150px;
+}
+@media (max-width: 570px) { 
+	#my_profile_photo {width:190px;height:190px}
+	#my_profile_photo > img:nth-of-type(1) { width: 140px;height:140px; }
+	#my_profile_photo > img:nth-of-type(2) { width: 190px;height:190px; }
+}
+@media (max-width: 520px) { 
+	#my_profile_photo {width:180px;height:180px}
+	#my_profile_photo > img:nth-of-type(1) { width: 130px;height:130px; }
+	#my_profile_photo > img:nth-of-type(2) { width: 180px;height:180px; }
+}
+
+@media (max-width: 470px) { 
+	#my_profile_photo {width:170px;height:170px}
+	#my_profile_photo > img:nth-of-type(1) { width: 120px;height:120px; }
+	#my_profile_photo > img:nth-of-type(2) { width: 170px;height:170px; }
+}
+
+
+@media (max-width: 420px) { 
+	#my_profile_photo {width:160px;height:160px}
+	#my_profile_photo > img:nth-of-type(1) { width: 110px;height:110px; }
+	#my_profile_photo > img:nth-of-type(2) { width: 160px;height:160px; }
+}
+
+@media (max-width: 370px) { 
+	#my_profile_photo {width:150px;height:150px}
+	#my_profile_photo > img:nth-of-type(1) { width: 110px;height:110px;margin:20px; }
+	#my_profile_photo > img:nth-of-type(2) { width: 150px;height:150px; }
+}
+
+@media (max-width: 320px) { 
+	#my_profile_photo {width:140px;height:140px}
+	#my_profile_photo > img:nth-of-type(1) { width: 100px;height:100px;margin:20px; }
+	#my_profile_photo > img:nth-of-type(2) { width: 140px;height:140px; }
+}
+
 </style>
 
 
 <div id="content">
 
 
+
+
 <section id="content_section_about">
 	<h2>About Website</h2>
+
+
+<div id="my_profile_photo">
+	<img src="img/me4.png" width="150" height="150" alt="Me" />
+<!--
+	Ever feel like existence is empty?
+	Sometimes, you just have to dig a little deeper.
+
+	<img src="img/porthole.svg" width="200" height="200" alt="Porthole" style="position:absolute;border-radius:50%" />
+	<img src="dev/img_viewport/porthole_test_2.png" width="200" height="200" alt="Porthole" style="position:absolute;border-radius:50%" />
+-->
+	<img src="img/porthole_test_3.png" width="200" height="200" alt="Porthole photo border" style="position:absolute;border-radius:50%" />
+</div>
+
 	<p>
 		Welcome to my homepage! I'm Joshua Shuller.
 	</p>
 	<p>
-		This is a static website that I have mainly to toy around with, but really because
-		my other hosting plan has reached it's CPU limit.  I wanted to
+		This is a static website that I have mainly to toy around with, but also because
+		my other hosting plan keeps reaching it's CPU limit.  I wanted to
 		also provide some info about myself, just in case.  
 		I'm not anti-social, but am a bit introverted.
 		As a result, I haven't jumped onto the regular social media bandwagons.
 	</p>
 	<p>
 		Apologies if the website is sluggish.
-		I just thought it would be fun to use javascript to generate mountains, rocks and stars instead of generating static files for better performance.
+		I just thought it would be fun to use javascript to generate mountains, rocks and stars instead of gearing everything for performance.
 	</p>
 </section>
 
