@@ -1,21 +1,4 @@
-/*
- * index.css - All page styles for Joshua Shuller's portfolio site
- *
- * Sections:
- *   1. CSS variables and base reset
- *   2. Star map / sky background
- *   3. Ground (rock field, shadows)
- *   4. Tooltip and callout UI components
- *   5. Sky and wave containers
- *   6. Header elements (name, TOC, Mount Fuji)
- *   7. Resume content sections
- *   8. Contact info layout
- */
-
-
-/* =============================================================================
-   1. CSS VARIABLES AND BASE RESET
-   ============================================================================= */
+/* variables */
 
 :root {
 
@@ -108,9 +91,7 @@
 }
 
 
-/* =============================================================================
-   2. STAR MAP / SKY BACKGROUND
-   ============================================================================= */
+/* star map */
 
 		.star {
 			position: absolute;
@@ -174,9 +155,7 @@
 		}
 
 
-/* =============================================================================
-   3. GROUND (ROCK FIELD, SHADOWS)
-   ============================================================================= */
+/* ground */
 
 		#rock_container {
 			width: 100vw;
@@ -206,9 +185,7 @@
 		}
 
 
-/* =============================================================================
-   4. TOOLTIP AND CALLOUT UI COMPONENTS
-   ============================================================================= */
+/* tooltip / callout */
 
 /*
  *
@@ -379,9 +356,7 @@
 }
 
 
-/* =============================================================================
-   5. SKY AND WAVE CONTAINERS
-   ============================================================================= */
+/* waves */
 
 /*
  * The heavens are in a box
@@ -504,9 +479,7 @@ div.page_footer_wave {
 }
 
 
-/* =============================================================================
-   6. HEADER ELEMENTS (NAME, TOC, MOUNT FUJI, SIGNATURE)
-   ============================================================================= */
+/* name, toc, fuji, signature */
 
 /*
  * A box to put my name in as the page title
@@ -596,9 +569,7 @@ div.page_footer_wave {
 @media (max-width: 380px) { #signature {width:100%} }
 
 
-/* =============================================================================
-   7. RESUME CONTENT SECTIONS
-   ============================================================================= */
+/* content sections */
 
 h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:font-size ease .5s; }
 @media (max-width: 410px) { h2 { font-size: 1.9em; } }
@@ -654,9 +625,7 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 }
 
 
-/* =============================================================================
-   8. CONTACT INFO LAYOUT
-   ============================================================================= */
+/* contact info */
 
 /*
  *
