@@ -1,36 +1,10 @@
-/*
- * index.js - Main page script for Joshua Shuller's portfolio site
- *
- * Sections:
- *   1. Star viewer configuration
- *   2. Tooltip - generic floating tooltip component
- *   3. Tooltip offscreen sizing clone
- *   4. Mountains - javascript-generated SVG horizon mountains
- *   5. Waves - multi-layer SVG waves at content boundaries
- *   6. Rocks - procedural rock placement using FBM noise
- *   7. Callout boxes - floating info panels
- *   8. Toolbelt - interactive language/technology experience display
- *   9. Contact info - Vigenere-encoded contact details
- *  10. Signature animation - SVG path draw-on animation
- *  11. Page lifecycle - load, resize, and scroll handlers
- */
-
-
-// =============================================================================
-// 1. STAR VIEWER CONFIGURATION
-// Sets the observer's latitude and longitude for the star map projection.
-// See js/star_viewer.js for the canvas-based star rendering engine.
-// =============================================================================
+// star viewer - lat/lon default to equator
 
 STAR_VIEWER.latitude = 0;
 STAR_VIEWER.longitude = 0;
 
 
-// =============================================================================
-// 2. TOOLTIP
-// A generic animated tooltip that floats above any element.
-// Used throughout the page for star names, copy buttons, etc.
-// =============================================================================
+// tooltip
 
 // Returns element dimensions,
 // normally in a wrapper in a separate javascript file, but don't expect to use it here much
@@ -178,12 +152,6 @@ function tip(element, message, bgcolor, adjustX, adjustY, timeout) {
 }
 
 
-// =============================================================================
-// 3. TOOLTIP OFFSCREEN SIZING CLONE
-// Clones the tooltip box off-screen so we can measure its natural size before
-// animating it into position - avoids layout thrash during the transition.
-// =============================================================================
-
 // Make an offscreen tooltip box to get the size of the animated tooltip box
 const offscreenTooltipBox = document.getElementById('tooltip_box').cloneNode(true);
 offscreenTooltipBox.id = 'offscreen_tooltip_box';
@@ -198,11 +166,7 @@ offscreenTooltipBox.style.top = '-9999px';
 document.body.appendChild(offscreenTooltipBox);
 
 
-// =============================================================================
-// 4. MOUNTAINS
-// Delegates to mountains_bg.js (getHorizonMountainsSvg) to fill the
-// background_mountain_container div with a procedurally generated SVG.
-// =============================================================================
+// mountains
 
 function redrawBackgroundMountains() {
 	let box = document.getElementById('background_mountain_container');
@@ -212,12 +176,7 @@ function redrawBackgroundMountains() {
 }
 
 
-// =============================================================================
-// 5. WAVES
-// Multi-layer SVG waves at the top and bottom of the content area.
-// Each layer uses randomized cubic bezier curves for an organic look.
-// The drop shadow filter gives depth between layers.
-// =============================================================================
+// waves
 
 //
 // Waves right below 100vh
@@ -304,13 +263,7 @@ function redrawSvgFooterWaves() {
 }
 
 
-// =============================================================================
-// 6. ROCKS
-// Procedural rock placement using Fractal Brownian Motion (FBM) noise from
-// FBM.js. Rocks are SVG paths placed into the rock_svg element. Only redraws
-// rocks when the container height changes (e.g. on mobile rotation), not on
-// horizontal resize, to avoid unnecessary reflow.
-// =============================================================================
+// rocks - only redraws on height change, not width-only resize
 
 // Need to check if resize is width-only, in which case we do not really need to replace the rocks.
 // But if the resize is also in height, we need to clear the rocks and replace them.
@@ -385,11 +338,7 @@ function placeRocks() {
 }
 
 
-// =============================================================================
-// 7. CALLOUT BOXES
-// Floating semi-transparent panels for displaying contextual content.
-// Used by the toolbelt experience display.
-// =============================================================================
+// callout box
 
 // This constant is also used in CSS, to make the callout 100% of view width
 const CALLOUT_MIN_WIDTH_TO_FLUSH_LEFT = 400;
@@ -424,12 +373,7 @@ function hideCalloutBox(callout_id) {
 }
 
 
-// =============================================================================
-// 8. TOOLBELT
-// Interactive list of languages/technologies. Hovering shows a callout with
-// experience details. Clicking pins the callout open. Uses a pin icon SVG
-// that rotates to indicate pinned state.
-// =============================================================================
+// toolbelt
 
 // Place toolbelt callout right if the view width is at least this much
 const TOOLBELT_MIN_WIDTH_FOR_DISPLAY_TO_RIGHT = 500;
@@ -533,13 +477,7 @@ function hideExperience(id, listItem) {
 }
 
 
-// =============================================================================
-// 9. CONTACT INFO
-// Contact details are obfuscated with a Vigenere cipher to deter spam crawlers.
-// The writeInDivs() trick splits text into individual letter divs to further
-// confuse naive scrapers. Info is only decoded and written when the element
-// scrolls into view (IntersectionObserver in pageLoaded).
-// =============================================================================
+// contact info - vigenere cipher + per-char divs trip up spam crawlers
 
 // Writes contact info in divs, just trying to confuse spam crawlers
 function writeInDivs(container, text) {
@@ -697,12 +635,7 @@ function contactInfoCallback() {
 }
 
 
-// =============================================================================
-// 10. SIGNATURE ANIMATION
-// The SVG signature uses stroke-dashoffset animation to simulate handwriting.
-// IntersectionObserver triggers it when it scrolls into view. The get/put
-// inner SVG trick forces a DOM re-insert so the CSS animation replays.
-// =============================================================================
+// signature - stroke-dashoffset handwriting animation, triggered on scroll
 
 // Returns the SVG content using a timeout, because javascript
 // won't update if the same content is simple replaced in one step
@@ -761,13 +694,7 @@ const signatureCallback = (entries, observer) => {
 };
 
 
-// =============================================================================
-// 11. PAGE LIFECYCLE
-// pageLoaded: wires up all event listeners and kicks off initial renders.
-// pageResized: redraws anything that depends on viewport dimensions.
-// pageScrolled: pans the star map as the user scrolls, throttled via rAF
-//   so we never queue more than one repaint per frame.
-// =============================================================================
+// page lifecycle
 
 function pageLoaded() {
 	loadBackgroundStars();
