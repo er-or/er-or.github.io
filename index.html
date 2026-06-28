@@ -20,7 +20,8 @@
 
 To do:
 
-	- include photo in 'background' section
+	- move javascript and css to separate files
+
 	- put underground martian colony design in right margin
 
 	- add some type of link to portfolio, maybe a dynamically generated ajax list tree in the same page, or a separate page
@@ -30,7 +31,6 @@ To do:
 	- possibly create a brightness control bar, using :root variables to adjust the colors dynamically
 		but keeping so many variables might not be so much fun
 
-	- move javascript and css to separate files
 
 	- add some comments to code
 
@@ -962,20 +962,24 @@ window.addEventListener('resize', pageResized);
 
 // Scroll the background stars, when they are in the background
 let previousScrollPosition = window.scrollY;
+let starmapRafId = null;
 function pageScrolled() {
 
 	let currentScrollPosition = window.scrollY;
 
 	let sixtyVH = window.innerHeight * 0.6;
 
-	// Lets go ahead and crash that browser
-	if (true && (currentScrollPosition < sixtyVH || previousScrollPosition < sixtyVH)) {
+	if (currentScrollPosition < sixtyVH || previousScrollPosition < sixtyVH) {
 		if (currentScrollPosition > previousScrollPosition) {
 			STAR_VIEWER.panDown((currentScrollPosition - previousScrollPosition) / 55);
-			updateStarmapOrientation();
 		} else if (currentScrollPosition < previousScrollPosition) {
 			STAR_VIEWER.panUp((previousScrollPosition - currentScrollPosition) / 55);
-			updateStarmapOrientation();
+		}
+		if (starmapRafId === null) {
+			starmapRafId = requestAnimationFrame(() => {
+				starmapRafId = null;
+				updateStarmapOrientation();
+			});
 		}
 	}
 	previousScrollPosition = currentScrollPosition;
@@ -1028,12 +1032,20 @@ window.addEventListener('scroll', pageScrolled);
 			<li><a href="#content_section_programming">Programming</a></li>
 			<li><a href="#content_section_contact">Contact</a></li>
 		</ul>
-		(not a graphic designer)
 	</div>
 
 </div>
 
 
+
+<!-- Shared SVG filter definitions referenced by individual star SVGs -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+	<defs>
+		<filter id="littleRotatingBlur" x="-50%" y="-50%" width="200%" height="200%">
+			<feGaussianBlur in="SourceGraphic" stdDeviation="0 0.5" />
+		</filter>
+	</defs>
+</svg>
 
 <!-- Contains the sky background -->
 <div id="sky_container">
@@ -1698,7 +1710,6 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 }
 
 
-
 #my_profile_photo {
 	float:right;
 	border-radius: 50%;
@@ -1713,6 +1724,7 @@ h2 { font-family:"Bakbak One";font-size:2em;font-variant:small-caps;transition:f
 	width: 160px;
 	height: 160px;
 }
+
 @media (max-width: 570px) { 
 	#my_profile_photo {width:190px;height:190px}
 	#my_profile_photo > img:nth-of-type(1) { width: 150px;height:150px; margin:20px; }

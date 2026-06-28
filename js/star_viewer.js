@@ -1,3 +1,35 @@
+/*----=----=----=----=----=----=----=----=----=----=----=----=----=----=----=----=----
+    ████████████  ██          ▄██████▄
+          ██      ██         ██▀    ▀██
+          ██      ██         ██▄
+          ██      ██          ▀██████▄
+          ██      ██                ▀██
+    ██▄  ▄██      ██         ██▄    ▄██
+     ▀████▀       █████████   ▀██████▀
+
+
+    Just License Software (JLS) License
+    Copyright (c) 2023 Joshua L Shuller
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM,
+    OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE, OR OTHER DEALINGS IN
+    THE SOFTWARE.
+----=----=----=----=----=----=----=----=----=----=----=----=----=----=----=----=----*/
+
 
 // Apply a rotation to the galactic coordinates first.
 // This is for use with the repeating CSS background,
@@ -383,17 +415,14 @@ function getStarSizeFromMagnitude(maxMagSize, mag) {
 }
 
 function getStarSvg(starX, starY, starR, starColor, star) {
-	// Might want to give the star.name as the title
+	const blurId = 'bigBackgroundBlur_' + star.id;
 	return '<svg width="' + STAR_DIV_SIZE + '" height="' + STAR_DIV_SIZE + '" viewBox="0 0 ' + STAR_DIV_SIZE + ' ' + STAR_DIV_SIZE + '" xmlns="http://www.w3.org/2000/svg">'
 		+ '<defs>'
-			+ '<filter id="bigBackgroundBlur" x="-' + STAR_DIV_SIZE/2 + '" y="-' + STAR_DIV_SIZE/2 + '" width="' + STAR_DIV_SIZE + '" height="' + STAR_DIV_SIZE + '">'
+			+ '<filter id="' + blurId + '" x="-' + STAR_DIV_SIZE/2 + '" y="-' + STAR_DIV_SIZE/2 + '" width="' + STAR_DIV_SIZE + '" height="' + STAR_DIV_SIZE + '">'
 			+ '	<feGaussianBlur in="SourceGraphic" stdDeviation="' + starR*4 + '" />'
 			+ '</filter>'
-			+ '<filter id="littleRotatingBlur" x="-50%" y="-50%" width="200%" height="200%">'
-			+ '	<feGaussianBlur in="SourceGraphic" stdDeviation="0 0.5" />'
-			+ '</filter>'
 		+ '</defs>'
-		+ '<circle cx="' + starX + '" cy="' + starY + '" r="' + starR + '" fill="' + starColor + '" filter="url(#bigBackgroundBlur)" />'
+		+ '<circle cx="' + starX + '" cy="' + starY + '" r="' + starR + '" fill="' + starColor + '" filter="url(#' + blurId + ')" />'
 		+ '<circle cx="' + starX + '" cy="' + starY + '" r="' + starR + '" fill="' + starColor + '" filter="url(#littleRotatingBlur)">'
 			+ '<animateTransform '
 			+ '	attributeName="transform" attributeType="XML" '
@@ -401,7 +430,7 @@ function getStarSvg(starX, starY, starR, starColor, star) {
 			+ '	begin="0s" dur="' + Math.floor(1 + Math.random() * 5) +'s" repeatCount="indefinite" '
 			+ '/>'
 		+ '</circle>'
-		+ '<circle cx="' + starX + '" cy="' + starY + '" r="' + starR + '" fill="' + starColor + '" />'
+		+ '<circle onmouseenter="tip&&tip(this,\'' + star.name + '\',\'#000033\',0, 5)" onmouseleave="tip&&tip()" cx="' + starX + '" cy="' + starY + '" r="' + starR + '" fill="' + starColor + '" />'
 		+ '</svg>'
 	;
 }
@@ -465,11 +494,44 @@ function placeStarInDocument(star, starX, starY, viewportW, viewportH) {
 // This can use a repeating background image of the galaxy, but the corners
 // are highly skewed
 //
+
+// Positions of bright stars on the canvas this frame, used for mousemove hit testing
+let brightStarPositions = [];
+let starTooltipAnchor = null;
+
+function onCanvasMouseMove(event) {
+	if (!brightStarPositions.length) return;
+	const rect = event.target.getBoundingClientRect();
+	const mx = event.clientX - rect.left;
+	const my = event.clientY - rect.top;
+	for (const { starX, starY, starR, star } of brightStarPositions) {
+		const dx = mx - starX;
+		const dy = my - starY;
+		if (dx * dx + dy * dy <= (starR + 6) * (starR + 6)) {
+			if (star.name && typeof tip !== 'undefined') {
+				if (!starTooltipAnchor) {
+					starTooltipAnchor = document.createElement('div');
+					starTooltipAnchor.style.cssText = 'position:absolute;width:1px;height:1px;pointer-events:none;';
+					document.body.appendChild(starTooltipAnchor);
+				}
+				starTooltipAnchor.style.left = starX + 'px';
+				starTooltipAnchor.style.top = starY + 'px';
+				tip(starTooltipAnchor, star.name, '#000033', 0, 5);
+			}
+			return;
+		}
+	}
+	typeof tip !== 'undefined' && tip();
+}
+
 function updateStarmapOrientationEquirectangular() {
 
-	let starMapContainer = document.getElementById('star_map_bg_container');
+	const starMapContainer = document.getElementById('star_map_bg_container');
+	if (!starMapContainer) {
+		return;
+	}
 
-	let observer = STAR_VIEWER;
+	const observer = STAR_VIEWER;
 
 	// Define field of view variables
 	let observerFovW = observer.getHorizontalFov();	// This is the FOV width in degrees
@@ -484,9 +546,6 @@ function updateStarmapOrientationEquirectangular() {
 	if (observerLat < 360) observerLat = -((-observerLat) % 360);
 	if (observerLon > 360) observerLon = observerLon % 360;
 	if (observerLon < -360) observerLon = -((-observerLon) % 360);
-	//while (observerLon > 180) observerLon -= 360; // Spin around
-	//while (observerLon < -180) observerLon += 360; // Spin around
-
 
 	// Get viewport dimensions
 	let viewportW = Math.max(window.innerWidth, document.body.scrollWidth);
@@ -496,21 +555,15 @@ function updateStarmapOrientationEquirectangular() {
 	let scaleW = viewportW;
 	let scaleH = viewportH;
 	if (viewportW / observerFovW > viewportH / observerFovH) {
-		// Too wide, make the overflow height taller
 		scaleH = viewportH * (viewportW / observerFovW) / (viewportH / observerFovH);
 	} else {
-		// Too tall, make the overflow width wider
 		scaleW = viewportW * (viewportH / observerFovH) / (viewportW / observerFovW);
 	}
 
-
 	// Calculate background size in pixels from FOVs
-
 	let backgroundW = scaleW * 360 / observerFovW;
 	let backgroundH = scaleH * 180 / observerFovH;
 
-
-	// GALACTIC_COORDINATE_ROTATION
 	switch (GALACTIC_COORDINATE_ROTATION) {
 		case 90:
 		case -90:
@@ -555,9 +608,7 @@ function updateStarmapOrientationEquirectangular() {
 		}
 	}
 
-
 	// Set background positioning
-
 	if (starContainerImage) {
 		starContainerImage.style.left = backgroundX + 'px';
 		starContainerImage.style.top = backgroundY + 'px';
@@ -570,178 +621,118 @@ function updateStarmapOrientationEquirectangular() {
 		starMapContainer.style.backgroundPositionY = backgroundY + 'px';
 	}
 
-
-
-
 	const centerX = backgroundX + backgroundW/2;
 	const centerY = backgroundY + backgroundH/2;
+	const galacticCoordinateRotationRad = GALACTIC_COORDINATE_ROTATION * Math.PI / 180;
+	const maxMagnitudeSize = STAR_MAX_RADIUS * 2;
 
 
-	//
-	// Render bright stars
-	//
-	const galacticCoordinateRotationRad = GALACTIC_COORDINATE_ROTATION*Math.PI/180;
-	BRIGHT_STARS.forEach(star => {
+	// Canvas: always create upfront so both background and bright stars share one draw surface
+	const canvasWidth = document.documentElement.clientWidth;
+	const canvasHeight = document.documentElement.clientHeight;
+	const backgroundCanvasContainer = document.getElementById('star_map_background_canvas_container');
+	let backgroundCanvas = document.getElementById('background_canvas');
 
-		let starRelLon = star.getGalacticLongitude();
-		let starRelLat = star.getGalacticLatitude();
+	if (!backgroundCanvas) {
+		backgroundCanvas = document.createElement('canvas');
+		backgroundCanvas.id = 'background_canvas';
+		backgroundCanvas.width = canvasWidth;
+		backgroundCanvas.height = canvasHeight;
+		backgroundCanvas.style.background = 'transparent';
+		backgroundCanvas.style.opacity = '0';
+		backgroundCanvas.style.transition = 'opacity 1s ease';
+		setTimeout(() => { backgroundCanvas.style.opacity = '1'; }, 100);
+		backgroundCanvasContainer.appendChild(backgroundCanvas);
+		backgroundCanvas.addEventListener('mousemove', onCanvasMouseMove);
+		backgroundCanvas.addEventListener('mouseleave', () => { typeof tip !== 'undefined' && tip(); });
+	} else if (backgroundCanvas.width != canvasWidth || backgroundCanvas.height != canvasHeight) {
+		backgroundCanvas.width = canvasWidth;
+		backgroundCanvas.height = canvasHeight;
+	}
+
+	const ctx = backgroundCanvas.getContext('2d');
+	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
 
-		let starX = centerX - backgroundW * starRelLon / (2*Math.PI);
-		let starY = centerY - backgroundH * starRelLat / (Math.PI);
-
+	// Helper: apply the galactic coordinate rotation to a star's screen position
+	function applyRotation(starRelLon, starRelLat) {
+		let starX, starY;
 		if (GALACTIC_COORDINATE_ROTATION == 0) {
 			starX = centerX - backgroundW * starRelLon / (2*Math.PI);
-			starY = centerY - backgroundH * starRelLat / (Math.PI);
+			starY = centerY - backgroundH * starRelLat / Math.PI;
 		} else if (GALACTIC_COORDINATE_ROTATION == -90) {
-			starX = centerX - backgroundW * starRelLat / (Math.PI);
+			starX = centerX - backgroundW * starRelLat / Math.PI;
 			starY = centerY + backgroundH * starRelLon / (2*Math.PI);
 		} else if (GALACTIC_COORDINATE_ROTATION == 90) {
-			starX = centerX + backgroundW * starRelLat / (Math.PI);
+			starX = centerX + backgroundW * starRelLat / Math.PI;
 			starY = centerY - backgroundH * starRelLon / (2*Math.PI);
 		} else if (GALACTIC_COORDINATE_ROTATION == 180) {
 			starX = centerX + backgroundW * starRelLon / (2*Math.PI);
-			starY = centerY + backgroundH * starRelLat / (Math.PI);
+			starY = centerY + backgroundH * starRelLat / Math.PI;
 		} else {
-			// rotate
 			starX = centerX - backgroundW * starRelLon / (2*Math.PI);
-			starY = centerY - backgroundH * starRelLat / (Math.PI);
-
+			starY = centerY - backgroundH * starRelLat / Math.PI;
 			const xDiff = starX - centerX;
 			const yDiff = starY - centerY;
-			const r = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
+			const r = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
 			const a = Math.atan2(yDiff, xDiff);
-
 			starX = centerX + r * Math.cos(a + galacticCoordinateRotationRad);
 			starY = centerY + r * Math.sin(a + galacticCoordinateRotationRad);
 		}
+		while (starX < 0) starX += backgroundW;
+		while (starX > viewportW) starX -= backgroundW;
+		while (starY < 0) starY += backgroundH;
+		while (starY > viewportH) starY -= backgroundH;
+		return { starX, starY };
+	}
 
 
-		while (starX < 0) {
-			starX += backgroundW;
-		}
-		while (starX > viewportW) {
-			starX -= backgroundW;
-		}
-		while (starY < 0) {
-			starY += backgroundH;
-		}
-		while (starY > viewportH) {
-			starY -= backgroundH;
-		}
-
-		placeStarInDocument(star, starX, starY, viewportW, viewportH);
-	});
-
+	// Draw dim background stars first (white dots, no glow)
 	if (typeof BACKGROUND_STARS !== 'undefined') {
-
-		const canvasWidth = document.documentElement.clientWidth;
-		const canvasHeight = document.documentElement.clientHeight;
-
-		const backgroundCanvasContainer = document.getElementById('star_map_background_canvas_container');
-		let backgroundCanvas = document.getElementById('background_canvas');
-
-		// Dynamically create a background canvas element as background stars are loaded
-		if (!backgroundCanvas) {
-			backgroundCanvas = document.createElement('canvas');
-			backgroundCanvas.id = 'background_canvas';
-			backgroundCanvas.width = canvasWidth;
-			backgroundCanvas.height = canvasHeight;
-			backgroundCanvas.style.background = 'transparent';
-
-			// Fade in slowly
-			backgroundCanvas.style.opacity = '0'; // Set initial opacity to 0
-			backgroundCanvas.style.transition = 'opacity 2s ease';
-
-			// Callback to make it fade in
-			setTimeout(() => {backgroundCanvas.style.opacity = '1';}, 500);
-
-			// Attach to canvas container div
-			backgroundCanvasContainer.appendChild(backgroundCanvas);
-
-		} else if (backgroundCanvas.width != canvasWidth || backgroundCanvas.height != canvasHeight) {
-			// Might need to adjust the size
-			backgroundCanvas.width = canvasWidth;
-			backgroundCanvas.height = canvasHeight;
-		}
-
-
-		// Clear the background
-		const ctx = backgroundCanvas.getContext('2d');
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 		ctx.fillStyle = 'white';
-
-		const maxMagnitudeSize = STAR_MAX_RADIUS * 2;
-
-		// Draw the stars
 		BACKGROUND_STARS.forEach(star => {
-			// Calculate the screen position of the star
-
 			let starRelLon = star.getGalacticLongitude();
 			let starRelLat = star.getGalacticLatitude();
-
 			while (starRelLon > Math.PI) starRelLon -= 2 * Math.PI;
 			while (starRelLon <= -Math.PI) starRelLon += 2 * Math.PI;
 			while (starRelLat > Math.PI / 2) starRelLat -= 2 * Math.PI;
 			while (starRelLat <= -Math.PI / 2) starRelLat += 2 * Math.PI;
-
-	// ROTATE
-
-			let starX = centerX - backgroundW * starRelLon / (2*Math.PI);
-			let starY = centerY - backgroundH * starRelLat / Math.PI;
-
-
-			if (GALACTIC_COORDINATE_ROTATION == 0) {
-				starX = centerX - backgroundW * starRelLon / (2*Math.PI);
-				starY = centerY - backgroundH * starRelLat / (Math.PI);
-			} else if (GALACTIC_COORDINATE_ROTATION == -90) {
-				starX = centerX - backgroundW * starRelLat / (Math.PI);
-				starY = centerY - backgroundH * starRelLon / (2*Math.PI);
-			} else if (GALACTIC_COORDINATE_ROTATION == 90) {
-				starX = centerX + backgroundW * starRelLat / (Math.PI);
-				starY = centerY - backgroundH * starRelLon / (2*Math.PI);
-			} else if (GALACTIC_COORDINATE_ROTATION == 180) {
-				starX = centerX + backgroundW * starRelLon / (2*Math.PI);
-				starY = centerY + backgroundH * starRelLat / (Math.PI);
-			} else {
-
-				starX = centerX - backgroundW * starRelLon / (2*Math.PI);
-				starY = centerY - backgroundH * starRelLat / (Math.PI);
-
-				const xDiff = starX - centerX;
-				const yDiff = starY - centerY;
-				const r = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
-				const a = Math.atan2(yDiff, xDiff);
-
-				starX = centerX + r * Math.cos(a + galacticCoordinateRotationRad);
-				starY = centerY + r * Math.sin(a + galacticCoordinateRotationRad);
-			}
-
-
-			while (starX < 0) {
-				starX += backgroundW;
-			}
-			while (starX > viewportW) {
-				starX -= backgroundW;
-			}
-			while (starY < 0) {
-				starY += backgroundH;
-			}
-			while (starY > viewportH) {
-				starY -= backgroundH;
-			}
-
+			const { starX, starY } = applyRotation(starRelLon, starRelLat);
 			if (starX >= 0 && starY >= 0 && starX <= canvasWidth && starY <= canvasHeight) {
-				let starR = Math.ceil(getStarSizeFromMagnitude(maxMagnitudeSize, star.getMagnitude()) / 4);
+				const starR = Math.ceil(getStarSizeFromMagnitude(maxMagnitudeSize, star.getMagnitude()) / 4);
 				ctx.beginPath();
-				//ctx.fillStyle = Star.interpolateColor(star.getBvIndex());
 				ctx.arc(starX, starY, starR, 0, Math.PI * 2);
 				ctx.fill();
 			}
-
 		});
-
 	}
+
+
+	// Draw bright stars on canvas with a glow, replacing the old DOM SVG elements
+	brightStarPositions = [];
+	BRIGHT_STARS.forEach(star => {
+		const { starX, starY } = applyRotation(star.getGalacticLongitude(), star.getGalacticLatitude());
+		if (starX + STAR_DIV_SIZE > 0 && starX < viewportW && starY + STAR_DIV_SIZE > 0 && starY < viewportH) {
+			const starColor = Star.interpolateColor(star.getBvIndex());
+			let starR = getStarSizeFromMagnitude(maxMagnitudeSize, star.getMagnitude()) / 2;
+			if (starR < 0.5) starR = 0.5;
+			if (starR > maxMagnitudeSize / 2) starR = maxMagnitudeSize / 2;
+
+			ctx.save();
+			ctx.shadowColor = starColor;
+			ctx.shadowBlur = starR * 8;
+			ctx.fillStyle = starColor;
+			ctx.beginPath();
+			ctx.arc(starX, starY, starR, 0, Math.PI * 2);
+			ctx.fill();
+			ctx.restore();
+
+			if (star.name) {
+				brightStarPositions.push({ starX, starY, starR, star });
+			}
+		}
+	});
+
 }
 
 
